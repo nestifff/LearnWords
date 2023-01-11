@@ -1,4 +1,4 @@
-package com.nestifff.learnwords.presentation.root
+package com.nestifff.learnwords.presentation.screens.root
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,13 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ThemeCommon {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Text("Android")
-                }
+                RootScreen()
             }
         }
     }

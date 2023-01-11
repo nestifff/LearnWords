@@ -32,6 +32,7 @@ object Dependencies {
             private const val accompanistVersion = "0.27.0"
 
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+            const val animatedNavigation = "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
         }
 
         object Lifecycle {
