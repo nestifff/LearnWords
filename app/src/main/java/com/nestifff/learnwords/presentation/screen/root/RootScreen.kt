@@ -1,4 +1,4 @@
-package com.nestifff.learnwords.presentation.screens.root
+package com.nestifff.learnwords.presentation.screen.root
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box

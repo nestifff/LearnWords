@@ -14,7 +14,7 @@
         android:theme="@style/Theme.LearnWords"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.screens.root.MainActivity"
+            android:name=".presentation.screen.root.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LearnWords">

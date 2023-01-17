@@ -1,11 +1,12 @@
 package com.nestifff.learnwords.app.core
 
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 
-abstract class FlowViewModel<State : Any, Event : Any>(private val defaultState: State) :
+abstract class StatefulViewModel<State : Any, Event : Any>(private val defaultState: State) :
     AutoObserverViewModel(), EventHandler<Event> {
 
-    val stateData: MutableStateFlow<State> = MutableStateFlow(defaultState)
+    val stateData: MutableState<State> = mutableStateOf(defaultState)
 
     private var _state: State = defaultState
 

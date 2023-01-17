@@ -12,6 +12,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
 import com.nestifff.learnwords.app.navigation.Destination
+import com.nestifff.learnwords.presentation.screen.collection.CollectionScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.collectionScreenDestination(
@@ -24,10 +25,6 @@ fun NavGraphBuilder.collectionScreenDestination(
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() },
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.Cyan)
-        )
+        CollectionScreen()
     }
 }
