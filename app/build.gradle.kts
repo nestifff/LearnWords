@@ -66,7 +66,7 @@ dependencies {
     androidTestImplementation(Dependencies.Common.Test.androidJUnit)
     androidTestImplementation(Dependencies.Common.Test.espresso)
     androidTestImplementation(Dependencies.App.Compose.uiTest)
-    debugImplementation(Dependencies.App.Compose.tooling)
+    debugImplementation(Dependencies.App.Compose.toolingTest)
     debugImplementation(Dependencies.App.Compose.manifestTest)
     debugImplementation(Dependencies.App.Accompanist.uiController)
 }

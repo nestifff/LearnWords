@@ -23,9 +23,7 @@ fun CollectionTopBar(
 ) {
     Box(
         modifier = modifier
-            .padding(top = 4.dp)
-            .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 16.dp),
+            .fillMaxWidth(),
     ) {
 
         Icon(

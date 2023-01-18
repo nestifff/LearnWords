@@ -8,28 +8,42 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
 fun CollectionsSwitcher(
+    modifier: Modifier = Modifier,
     collections: List<String>
 ) {
     Box(
-        modifier = Modifier
-            .padding(top = 8.dp)
-            .padding(horizontal = 16.dp)
+        modifier = modifier
             .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        WordsTheme.colors.background,
+                        Color.Transparent
+                    )
+                )
+            )
+            .padding(top = 8.dp)
             .border(
                 width = 2.dp,
-                color = WordsTheme.colors.collectionSwitcherBordersColor,
+                color = WordsTheme.colors.mediumBackgroundColor,
                 shape = RoundedCornerShape(32.dp)
             )
             .clip(RoundedCornerShape(32.dp))
+            .background(color = WordsTheme.colors.background)
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             for (collection in collections) {
                 SwitcherItem(
                     modifier = Modifier.padding(horizontal = 4.dp),
@@ -50,11 +64,6 @@ private fun SwitcherItem(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-//            .border(
-//                width = if (isActive) 2.dp else 1.dp,
-//                color = WordsTheme.colors.collectionSwitcherBordersColor,
-//                shape = RoundedCornerShape(16.dp)
-//            )
             .background(
                 if (isActive) {
                     WordsTheme.colors.primaryColor

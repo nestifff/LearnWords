@@ -24,6 +24,7 @@ object Dependencies {
             const val material = "androidx.compose.material:material:$composeVersion"
             const val tooling = "androidx.compose.ui:ui-tooling-preview:$composeVersion"
 
+            const val toolingTest = "androidx.compose.ui:ui-tooling:$composeVersion"
             const val manifestTest = "androidx.compose.ui:ui-test-manifest:$composeVersion"
             const val uiTest = "androidx.compose.ui:ui-test-junit4:$composeVersion"
         }
