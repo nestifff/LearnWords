@@ -20,6 +20,7 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 fun CollectionTopBar(
     modifier: Modifier = Modifier,
+    settingsButtonClicked: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -30,7 +31,7 @@ fun CollectionTopBar(
             modifier = modifier
                 .align(Alignment.CenterEnd)
                 .clip(RoundedCornerShape(8.dp))
-                .rippleClickable {}
+                .rippleClickable(settingsButtonClicked)
                 .padding(2.dp),
             imageVector = Icons.Default.Settings,
             contentDescription = null,
@@ -43,6 +44,6 @@ fun CollectionTopBar(
 @Preview
 private fun CollectionTopBarPreview() {
     ThemeCommon {
-        CollectionTopBar()
+        CollectionTopBar(settingsButtonClicked = {})
     }
 }

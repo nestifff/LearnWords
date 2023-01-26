@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -56,8 +57,9 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(Dependencies.App.Core.corKtx)
+    implementation(Dependencies.App.Core.activityCompose)
     implementation(Dependencies.App.Lifecycle.lifecycleKtx)
-    implementation(Dependencies.App.Lifecycle.activityCompose)
+    implementation(Dependencies.App.Lifecycle.viewModelCompose)
     implementation(Dependencies.App.Compose.ui)
     implementation(Dependencies.App.Compose.tooling)
     implementation(Dependencies.App.Compose.material)
@@ -69,4 +71,7 @@ dependencies {
     debugImplementation(Dependencies.App.Compose.toolingTest)
     debugImplementation(Dependencies.App.Compose.manifestTest)
     debugImplementation(Dependencies.App.Accompanist.uiController)
+
+    implementation(Dependencies.Common.Dagger.dagger)
+    kapt(Dependencies.Common.Dagger.compiler)
 }

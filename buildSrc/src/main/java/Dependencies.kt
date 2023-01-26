@@ -10,6 +10,12 @@ object Dependencies {
             const val androidJUnit = "androidx.test.ext:junit:1.1.3"
             const val espresso = "androidx.test.espresso:espresso-core:3.4.0"
         }
+
+        object Dagger {
+            const val daggerVersion = "2.44.2"
+            const val dagger = "com.google.dagger:dagger:$daggerVersion"
+            const val compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+        }
     }
 
 
@@ -17,6 +23,7 @@ object Dependencies {
 
         object Core {
             const val corKtx = "androidx.core:core-ktx:1.9.0"
+            const val activityCompose = "androidx.activity:activity-compose:1.6.0"
         }
 
         object Compose {
@@ -37,8 +44,9 @@ object Dependencies {
         }
 
         object Lifecycle {
-            const val lifecycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
-            const val activityCompose = "androidx.activity:activity-compose:1.6.0"
+            const val lifecycleVersion = "2.5.1"
+            const val lifecycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
         }
 
         object Material {
