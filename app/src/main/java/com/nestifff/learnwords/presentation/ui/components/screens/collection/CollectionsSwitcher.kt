@@ -30,10 +30,10 @@ fun CollectionsSwitcher(
                     )
                 )
             )
-            .padding(top = 8.dp)
+            .padding(top = 4.dp)
             .border(
                 width = 2.dp,
-                color = WordsTheme.colors.mediumBackgroundColor,
+                color = WordsTheme.colors.backgroundMediumColor,
                 shape = RoundedCornerShape(32.dp)
             )
             .clip(RoundedCornerShape(32.dp))
@@ -72,7 +72,7 @@ private fun SwitcherItem(
                 }
             )
             .rippleClickable { }
-            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Text(
             text = collection,

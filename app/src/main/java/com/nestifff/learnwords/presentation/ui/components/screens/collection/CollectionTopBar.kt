@@ -3,6 +3,7 @@ package com.nestifff.learnwords.presentation.ui.components.screens.collection
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -32,7 +33,9 @@ fun CollectionTopBar(
                 .align(Alignment.CenterEnd)
                 .clip(RoundedCornerShape(8.dp))
                 .rippleClickable(settingsButtonClicked)
-                .padding(2.dp),
+                .padding(2.dp)
+                .size(24.dp)
+            ,
             imageVector = Icons.Default.Settings,
             contentDescription = null,
             tint = WordsTheme.colors.iconsColor

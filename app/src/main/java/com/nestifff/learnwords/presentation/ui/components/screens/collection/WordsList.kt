@@ -34,7 +34,7 @@ fun WordsList(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(top = 64.dp, bottom = 16.dp)
+        contentPadding = PaddingValues(top = 64.dp, bottom = 64.dp)
     ) {
         itemsIndexed(words) { ind, word ->
             WordsListItem(
@@ -61,16 +61,16 @@ fun WordsListItem(
             .clip(RoundedCornerShape(8.dp))
             .border(
                 width = 2.dp,
-                color = WordsTheme.colors.mediumBackgroundColor,
+                color = WordsTheme.colors.backgroundMediumColor,
                 shape = RoundedCornerShape(8.dp)
             )
-            .background(color = WordsTheme.colors.lightBackgroundColor)
+            .background(color = WordsTheme.colors.backgroundLightColor)
             .rippleClickable(itemOnClick)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             if (!isSelected) {
@@ -85,13 +85,15 @@ fun WordsListItem(
                     })
             }
             Icon(
-                modifier = if (isSelected) Modifier.padding(top = 6.dp) else Modifier,
+                modifier = Modifier
+                    .then(if (isSelected) Modifier.padding(top = 6.dp) else Modifier)
+                    .size(28.dp),
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {
                     WordsTheme.colors.primaryColor
                 } else {
-                    WordsTheme.colors.mediumBackgroundColor
+                    WordsTheme.colors.backgroundMediumColor
                 }
             )
         }
@@ -122,7 +124,7 @@ private fun SelectedItemContent(
                 textEng = it
                 isSaveButtonEnabled = isTextChanged()
             },
-            backgroundColor = WordsTheme.colors.mediumBackgroundColor.copy(alpha = 0.6f)
+            backgroundColor = WordsTheme.colors.backgroundMediumColor.copy(alpha = 0.6f)
         )
         WordsTextField(
             modifier = Modifier.padding(top = 6.dp),
@@ -131,7 +133,7 @@ private fun SelectedItemContent(
                 textRus = it
                 isSaveButtonEnabled = isTextChanged()
             },
-            backgroundColor = WordsTheme.colors.mediumBackgroundColor.copy(alpha = 0.6f)
+            backgroundColor = WordsTheme.colors.backgroundMediumColor.copy(alpha = 0.6f)
         )
         SaveChangedButton(
             modifier = Modifier.padding(top = 16.dp),

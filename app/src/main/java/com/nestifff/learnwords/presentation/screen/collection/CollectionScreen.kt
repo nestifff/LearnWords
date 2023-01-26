@@ -3,18 +3,12 @@ package com.nestifff.learnwords.presentation.screen.collection
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nestifff.learnwords.app.navigation.Graph
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionLearnButton
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionTopBar
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionsSwitcher
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.WordsList
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
@@ -31,17 +25,17 @@ fun CollectionScreen(
             .background(color = WordsTheme.colors.background)
     ) {
 
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
+        Column {
             CollectionTopBar(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 3.dp, end = 4.dp),
                 settingsButtonClicked = { navController.navigate(Graph.SettingsGraph.route) }
             )
             Box() {
                 WordsList(
-                    modifier = Modifier.fillMaxSize(),
-                    // TODO may have problems (list in state class)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    // TODO it might have problems (list in state class)
                     words = viewModel.state.words,
                     selectedIndex = selectedWordInd,
                     onNewSelected = { ind ->
@@ -50,6 +44,7 @@ fun CollectionScreen(
                     saveClicked = {}
                 )
                 CollectionsSwitcher(
+                    modifier = Modifier.padding(horizontal = 10.dp),
                     collections = listOf("In progress", "Learned", "Favorites")
                 )
             }
@@ -62,9 +57,12 @@ fun CollectionScreen(
         ) {
             CollectionLearnButton(
                 modifier = Modifier
-                    .padding(bottom = 23.dp, end = 16.dp)
+                    .padding(bottom = 68.dp, end = 10.dp)
                     .align(Alignment.End)
             )
+        }
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            AddWordDialog(onEnterWord = {})
         }
     }
 }

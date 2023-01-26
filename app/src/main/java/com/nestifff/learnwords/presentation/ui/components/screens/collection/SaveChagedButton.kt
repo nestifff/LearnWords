@@ -27,7 +27,7 @@ fun SaveChangedButton(
                         .background(color = WordsTheme.colors.primaryLightColor)
                         .rippleClickable(onClick)
                 } else {
-                    Modifier.background(color = WordsTheme.colors.mediumBackgroundColor)
+                    Modifier.background(color = WordsTheme.colors.backgroundMediumColor)
                 }
             )
             .padding(vertical = 6.dp, horizontal = 12.dp)

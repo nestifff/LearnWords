@@ -23,7 +23,7 @@ fun CollectionLearnButton(
         modifier = modifier
             .size(64.dp)
             .clip(CircleShape)
-            .background(color = WordsTheme.colors.primaryLightColor)
+            .background(color = WordsTheme.colors.primaryColor)
             .rippleClickable { },
         contentAlignment = Alignment.Center
     ) {

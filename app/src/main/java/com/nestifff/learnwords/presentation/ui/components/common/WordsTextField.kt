@@ -6,6 +6,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
@@ -14,14 +15,15 @@ fun WordsTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    backgroundColor: Color = WordsTheme.colors.lightBackgroundColor
+    backgroundColor: Color = WordsTheme.colors.backgroundLightColor,
+    textStyle: TextStyle = WordsTheme.typography.h3RegularTextStyle,
 ) {
     TextField(
         modifier = modifier,
         value = value,
         onValueChange = onValueChange,
         shape = RoundedCornerShape(8.dp),
-        textStyle = WordsTheme.typography.h3RegularTextStyle,
+        textStyle = textStyle,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = backgroundColor,
             cursorColor = WordsTheme.colors.primaryColor,
