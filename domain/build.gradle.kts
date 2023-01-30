@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -37,4 +38,7 @@ dependencies {
     testImplementation(Dependencies.Common.Test.jUnit)
     androidTestImplementation(Dependencies.Common.Test.androidJUnit)
     androidTestImplementation(Dependencies.Common.Test.espresso)
+
+    implementation(Dependencies.Common.Dagger.dagger)
+    kapt(Dependencies.Common.Dagger.compiler)
 }

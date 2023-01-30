@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -13,6 +14,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += "room.schemaLocation" to "$projectDir/schemas"
+            }
+        }
     }
 
     buildTypes {
@@ -39,4 +46,11 @@ dependencies {
     testImplementation(Dependencies.Common.Test.jUnit)
     androidTestImplementation(Dependencies.Common.Test.androidJUnit)
     androidTestImplementation(Dependencies.Common.Test.espresso)
+
+    implementation(Dependencies.Data.Room.runtime)
+    kapt(Dependencies.Data.Room.compiler)
+    implementation(Dependencies.Data.Room.ktx)
+
+    implementation(Dependencies.Common.Dagger.dagger)
+    kapt(Dependencies.Common.Dagger.compiler)
 }
