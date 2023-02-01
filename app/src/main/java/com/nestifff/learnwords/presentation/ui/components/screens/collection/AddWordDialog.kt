@@ -19,7 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
@@ -104,6 +103,14 @@ fun AddWordDialog(
 
                 var textRus by rememberSaveable { mutableStateOf(emptyString()) }
                 var textEng by rememberSaveable { mutableStateOf(emptyString()) }
+
+                val processValuesEntered: () -> Unit = {
+                    if (textRus.isNotEmpty() && textEng.isNotEmpty()) {
+                        onEnterWord(textRus, textEng)
+                        isVisible = false
+                    }
+                }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,17 +135,16 @@ fun AddWordDialog(
                             value = textEng,
                             onValueChange = { textEng = it },
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                            keyboardActions = KeyboardActions()
+                            keyboardActions = KeyboardActions(
+                                onDone = { processValuesEntered() }
+                            )
                         )
                     }
                     Icon(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .clip(RoundedCornerShape(8.dp))
-                            .rippleClickable {
-                                onEnterWord(textRus, textRus)
-                                isVisible = false
-                            }
+                            .rippleClickable(processValuesEntered)
                             .size(32.dp)
                             .padding(2.dp),
                         imageVector = Icons.Default.ArrowForward,
