@@ -1,22 +1,21 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.nestifff.learnwords.app.config.TAG
 import com.nestifff.learnwords.app.core.StatefulViewModel
 import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordCollectionScreen
+import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordDomain
 import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
 import com.nestifff.words.domain.model.WordDomain
 import com.nestifff.words.domain.usecase.AddWordUseCase
 import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
-import com.nestifff.words.domain.usecase.GetAllWordsUseCase
+import com.nestifff.words.domain.usecase.UpdateWordUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CollectionViewModel(
     private val getAllWordsFlowUseCase: GetAllWordsFlowUseCase,
-    private val getAllWordsUseCase: GetAllWordsUseCase, // TODO delete
+    private val updateWordUseCase: UpdateWordUseCase,
     private val addWordUseCase: AddWordUseCase,
 ) : StatefulViewModel<CollectionViewModel.State, CollectionViewModel.Event>(State()) {
 
@@ -26,6 +25,7 @@ class CollectionViewModel(
 
     sealed class Event {
         data class WordAdded(val rus: String, val eng: String) : Event()
+        data class WordUpdated(val updatedWord: WordCollectionScreen) : Event()
     }
 
     init {
@@ -50,6 +50,9 @@ class CollectionViewModel(
                         isFavorite = false
                     )
                 )
+            }
+            is Event.WordUpdated -> viewModelScope.launch {
+                updateWordUseCase.execute(event.updatedWord.toWordDomain())
             }
         }
     }

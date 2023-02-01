@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -17,15 +19,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.emptyString
-import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.rippleClickable
-import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
@@ -95,6 +99,9 @@ fun AddWordDialog(
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
+
+                val focusManager = LocalFocusManager.current
+
                 var textRus by rememberSaveable { mutableStateOf(emptyString()) }
                 var textEng by rememberSaveable { mutableStateOf(emptyString()) }
                 Row(
@@ -107,13 +114,21 @@ fun AddWordDialog(
                         OneValueEnterRow(
                             text = "Rus",
                             value = textRus,
-                            onValueChange = { textRus = it }
+                            onValueChange = { textRus = it },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            keyboardActions = KeyboardActions(
+                                onNext = {
+                                    focusManager.moveFocus(FocusDirection.Down)
+                                }
+                            )
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         OneValueEnterRow(
                             text = "Eng",
                             value = textEng,
-                            onValueChange = { textEng = it }
+                            onValueChange = { textEng = it },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions()
                         )
                     }
                     Icon(
@@ -141,7 +156,9 @@ private fun OneValueEnterRow(
     modifier: Modifier = Modifier,
     text: String,
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions,
+    keyboardActions: KeyboardActions,
 ) {
     Row(
         modifier = modifier.height(IntrinsicSize.Min),
@@ -159,6 +176,8 @@ private fun OneValueEnterRow(
             onValueChange = onValueChange,
             backgroundColor = WordsTheme.colors.backgroundLightColor.copy(alpha = 0.8f),
             textStyle = WordsTheme.typography.h2RegularTextStyle,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
         )
     }
 }

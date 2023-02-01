@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
@@ -27,7 +28,9 @@ fun SaveChangedButton(
                         .background(color = WordsTheme.colors.primaryLightColor)
                         .rippleClickable(onClick)
                 } else {
-                    Modifier.background(color = WordsTheme.colors.backgroundMediumColor)
+                    Modifier
+                        .background(color = WordsTheme.colors.backgroundMediumColor)
+                        .noRippleClickable {}
                 }
             )
             .padding(vertical = 6.dp, horizontal = 12.dp)

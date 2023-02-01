@@ -6,6 +6,7 @@ import com.nestifff.learnwords.presentation.screen.settings.di.SettingsScreenSco
 import com.nestifff.words.domain.usecase.AddWordUseCase
 import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
 import com.nestifff.words.domain.usecase.GetAllWordsUseCase
+import com.nestifff.words.domain.usecase.UpdateWordUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -17,12 +18,12 @@ class CollectionModule {
     @CollectionScreenScope
     fun provideViewModel(
         getAllWordsFlowUseCase: GetAllWordsFlowUseCase,
-        getAllWordsUseCase: GetAllWordsUseCase,
+        updateWordUseCase: UpdateWordUseCase,
         addWordUseCase: AddWordUseCase,
     ): CollectionViewModel =
         CollectionViewModel(
             getAllWordsFlowUseCase = getAllWordsFlowUseCase,
-            getAllWordsUseCase = getAllWordsUseCase,
+            updateWordUseCase = updateWordUseCase,
             addWordUseCase = addWordUseCase
         )
 }

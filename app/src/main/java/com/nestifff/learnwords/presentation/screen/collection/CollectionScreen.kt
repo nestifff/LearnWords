@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nestifff.learnwords.app.navigation.Graph
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.WordsList
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
@@ -17,7 +18,6 @@ fun CollectionScreen(
     vm: CollectionViewModel
 ) {
 
-    var selectedWordInd: Int? by remember { mutableStateOf(null) }
     val viewState = vm.stateData.collectAsState(initial = vm.getDefaultState())
 
     Box(
@@ -38,11 +38,9 @@ fun CollectionScreen(
                         .padding(horizontal = 16.dp),
                     // TODO it might have problems (list in state class)
                     words = viewState.value.words,
-                    selectedIndex = selectedWordInd,
-                    onNewSelected = { ind ->
-                        selectedWordInd = if (selectedWordInd == ind) null else ind
+                    saveClicked = { updatedWord ->
+                        vm.onEvent(CollectionViewModel.Event.WordUpdated(updatedWord))
                     },
-                    saveClicked = {}
                 )
                 CollectionsSwitcher(
                     modifier = Modifier.padding(horizontal = 10.dp),

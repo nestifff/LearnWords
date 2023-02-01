@@ -27,7 +27,6 @@ class WordsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertWord(word: WordDomain) {
-        Log.i("Lalala", "WordsRepositoryImpl insertWord: $word")
         wordsDatabaseDao.insertWord(word.toWordEntity())
     }
 
