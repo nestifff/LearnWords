@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.rippleClickable
-import com.nestifff.learnwords.presentation.screen.collection.model.Word
+import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
@@ -26,10 +26,10 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 fun WordsList(
     modifier: Modifier = Modifier,
-    words: List<Word>,
+    words: List<WordCollectionScreen>,
     selectedIndex: Int? = null,
     onNewSelected: (Int) -> Unit,
-    saveClicked: (newWord: Word) -> Unit,
+    saveClicked: (newWord: WordCollectionScreen) -> Unit,
 ) {
 
     LazyColumn(
@@ -51,10 +51,10 @@ fun WordsList(
 @Composable
 fun WordsListItem(
     modifier: Modifier = Modifier,
-    word: Word,
+    word: WordCollectionScreen,
     isSelected: Boolean,
     itemOnClick: () -> Unit,
-    saveClicked: (newWord: Word) -> Unit,
+    saveClicked: (newWord: WordCollectionScreen) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -80,7 +80,7 @@ fun WordsListItem(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     word = word,
                     saveButtonClicked = {
-                        saveClicked(Word(id = "", eng = "", rus = "", isFavorite = false))
+                        saveClicked(WordCollectionScreen(id = "", eng = "", rus = "", isFavorite = false))
                         itemOnClick()
                     })
             }
@@ -103,8 +103,8 @@ fun WordsListItem(
 @Composable
 private fun SelectedItemContent(
     modifier: Modifier = Modifier,
-    word: Word,
-    saveButtonClicked: (newWord: Word) -> Unit,
+    word: WordCollectionScreen,
+    saveButtonClicked: (newWord: WordCollectionScreen) -> Unit,
 ) {
     var textEng by rememberSaveable { mutableStateOf(word.eng) }
     var textRus by rememberSaveable { mutableStateOf(word.rus) }
@@ -148,7 +148,7 @@ private fun SelectedItemContent(
 @Composable
 private fun NotSelectedItemContent(
     modifier: Modifier = Modifier,
-    word: Word,
+    word: WordCollectionScreen,
 ) {
     Row(
         modifier = modifier,
@@ -180,7 +180,7 @@ private fun NotSelectedItemContent(
 private fun SelectedItemContentPreview() {
     ThemeCommon {
         SelectedItemContent(
-            word = Word(
+            word = WordCollectionScreen(
                 id = "",
                 eng = "English",
                 rus = "Russian",

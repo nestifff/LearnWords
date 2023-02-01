@@ -2,15 +2,24 @@ package com.nestifff.learnwords.app.di
 
 import android.app.Application
 import com.nestifff.learnwords.app.App
+import com.nestifff.learnwords.presentation.screen.collection.di.CollectionComponent
 import com.nestifff.learnwords.presentation.screen.root.MainActivity
 import com.nestifff.learnwords.presentation.screen.root.MainActivityModule
 import com.nestifff.words.data.di.DatabaseModule
+import com.nestifff.words.data.di.DomainBindsModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [MainActivityModule::class, DatabaseModule::class])
+@Component(
+    modules = [
+        SubcomponentsModule::class,
+        MainActivityModule::class,
+        DatabaseModule::class,
+        DomainBindsModule::class
+    ]
+)
 interface AppComponent {
 
     @Component.Builder
@@ -23,5 +32,9 @@ interface AppComponent {
 
     fun inject(app: App)
 
+    // TODO move to MainActivityModule
     fun inject(mainActivity: MainActivity)
+
+    // TODO try implement
+    fun collectionComponent(): CollectionComponent.Factory
 }

@@ -41,4 +41,6 @@ dependencies {
 
     implementation(Dependencies.Common.Dagger.dagger)
     kapt(Dependencies.Common.Dagger.compiler)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 }

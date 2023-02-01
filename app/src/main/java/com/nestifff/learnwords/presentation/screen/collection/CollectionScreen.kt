@@ -14,10 +14,11 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 fun CollectionScreen(
     navController: NavHostController,
-    viewModel: CollectionViewModel
+    vm: CollectionViewModel
 ) {
 
     var selectedWordInd: Int? by remember { mutableStateOf(null) }
+    val viewState = vm.stateData.collectAsState(initial = vm.getDefaultState())
 
     Box(
         modifier = Modifier
@@ -36,7 +37,7 @@ fun CollectionScreen(
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
                     // TODO it might have problems (list in state class)
-                    words = viewModel.state.words,
+                    words = viewState.value.words,
                     selectedIndex = selectedWordInd,
                     onNewSelected = { ind ->
                         selectedWordInd = if (selectedWordInd == ind) null else ind
@@ -62,7 +63,9 @@ fun CollectionScreen(
             )
         }
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-            AddWordDialog(onEnterWord = {})
+            AddWordDialog(onEnterWord = { rus, eng ->
+                vm.onEvent(CollectionViewModel.Event.WordAdded(rus = rus, eng = eng))
+            })
         }
     }
 }

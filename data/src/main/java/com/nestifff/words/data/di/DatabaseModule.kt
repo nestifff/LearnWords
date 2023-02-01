@@ -18,6 +18,7 @@ class DatabaseModule {
             .databaseBuilder(app, AppDatabase::class.java, "words.db")
             .build()
 
+    // TODO try to make not sigleton
     @Singleton
     @Provides
     fun provideUserDao(db: AppDatabase): WordsDatabaseDao {

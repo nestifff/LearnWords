@@ -1,18 +1,25 @@
 package com.nestifff.words.data.local.database.repository
 
+import android.util.Log
 import com.nestifff.words.data.local.database.dao.WordsDatabaseDao
 import com.nestifff.words.data.local.database.mapper.toWordDomain
 import com.nestifff.words.data.local.database.mapper.toWordEntity
 import com.nestifff.words.domain.interfaces.WordsRepository
 import com.nestifff.words.domain.model.WordDomain
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class WordsRepositoryImpl @Inject constructor(
     private val wordsDatabaseDao: WordsDatabaseDao
-): WordsRepository {
+) : WordsRepository {
 
     override suspend fun getWords(): List<WordDomain> {
-        return wordsDatabaseDao.getWords().map {it.toWordDomain()}
+        return wordsDatabaseDao.getWords().map { it.toWordDomain() }
+    }
+
+    override suspend fun getWordsFlow(): Flow<List<WordDomain>> {
+        return wordsDatabaseDao.getWordsFlow().map { list -> list.map { it.toWordDomain() } }
     }
 
     override suspend fun getWordById(id: String): WordDomain? {
@@ -20,6 +27,7 @@ class WordsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertWord(word: WordDomain) {
+        Log.i("Lalala", "WordsRepositoryImpl insertWord: $word")
         wordsDatabaseDao.insertWord(word.toWordEntity())
     }
 

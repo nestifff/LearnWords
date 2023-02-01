@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Words",)
+@Entity(tableName = "Words")
 data class WordEntity(
     @PrimaryKey val id: String,
     @ColumnInfo val rus: String,

@@ -25,7 +25,7 @@ import com.nestifff.learnwords.ext.emptyString
 import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.rippleClickable
-import com.nestifff.learnwords.presentation.screen.collection.model.Word
+import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
@@ -33,7 +33,7 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 fun AddWordDialog(
     modifier: Modifier = Modifier,
-    onEnterWord: (newWord: Word) -> Unit,
+    onEnterWord: (rus: String, eng: String) -> Unit,
 ) {
     var isVisible by rememberSaveable { mutableStateOf(false) }
     if (isVisible) {
@@ -121,14 +121,8 @@ fun AddWordDialog(
                             .align(Alignment.CenterVertically)
                             .clip(RoundedCornerShape(8.dp))
                             .rippleClickable {
-                                onEnterWord(
-                                    Word(
-                                        id = generateUUID(),
-                                        rus = textRus,
-                                        eng = textEng,
-                                        isFavorite = false
-                                    )
-                                )
+                                onEnterWord(textRus, textRus)
+                                isVisible = false
                             }
                             .size(32.dp)
                             .padding(2.dp),
@@ -173,6 +167,6 @@ private fun OneValueEnterRow(
 @Composable
 fun AddWordComponentPreview() {
     ThemeCommon {
-        AddWordDialog(onEnterWord = {})
+        AddWordDialog(onEnterWord = { _, _ -> })
     }
 }

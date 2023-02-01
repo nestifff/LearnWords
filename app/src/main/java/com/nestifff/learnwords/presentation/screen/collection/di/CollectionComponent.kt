@@ -5,15 +5,16 @@ import com.nestifff.learnwords.presentation.screen.settings.di.SettingsComponent
 import com.nestifff.learnwords.presentation.screen.settings.di.SettingsModule
 import com.nestifff.learnwords.presentation.screen.settings.di.SettingsScreenScope
 import dagger.Component
+import dagger.Subcomponent
 
 
-@Component(modules = [CollectionModule::class])
 @CollectionScreenScope
+@Subcomponent(modules = [CollectionModule::class])
 interface CollectionComponent {
 
-    @Component.Builder
-    interface Builder {
-        fun build(): CollectionComponent
+    @Subcomponent.Factory
+    interface Factory {
+        fun create(): CollectionComponent
     }
 
     fun getViewModel() : CollectionViewModel

@@ -5,11 +5,11 @@ import com.nestifff.words.domain.model.WordDomain
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllWordsUseCase @Inject constructor(
+class GetAllWordsFlowUseCase @Inject constructor(
     private val wordsRepository: WordsRepository
 ) {
 
-    suspend fun execute(): List<WordDomain> {
-        return wordsRepository.getWords()
+    suspend fun execute(): Flow<List<WordDomain>> {
+        return wordsRepository.getWordsFlow()
     }
 }

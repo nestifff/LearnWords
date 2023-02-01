@@ -2,12 +2,16 @@ package com.nestifff.words.data.local.database.dao
 
 import androidx.room.*
 import com.nestifff.words.data.local.database.model.WordEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class WordsDatabaseDao {
 
     @Query("SELECT * FROM Words")
     abstract suspend fun getWords(): List<WordEntity>
+
+    @Query("SELECT * FROM Words")
+    abstract fun getWordsFlow(): Flow<List<WordEntity>>
 
     @Query("SELECT * FROM Words WHERE id = :id")
     abstract suspend fun getWordById(id: String): WordEntity?

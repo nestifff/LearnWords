@@ -1,6 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.collection.model
 
-data class Word(
+data class WordCollectionScreen(
     val id: String,
     val eng: String,
     val rus: String,
