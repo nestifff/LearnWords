@@ -2,6 +2,7 @@ package com.nestifff.learnwords.presentation.screen.collection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,6 +13,7 @@ import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.WordsList
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CollectionScreen(
     navController: NavHostController,
@@ -41,6 +43,9 @@ fun CollectionScreen(
                     saveClicked = { updatedWord ->
                         vm.onEvent(CollectionViewModel.Event.WordUpdated(updatedWord))
                     },
+                    deleteWordTriggered = {
+                        vm.onEvent(CollectionViewModel.Event.WordDeleted(it))
+                    }
                 )
                 CollectionsSwitcher(
                     modifier = Modifier.padding(horizontal = 10.dp),
@@ -49,21 +54,18 @@ fun CollectionScreen(
             }
         }
 
-        Column(
+        CollectionLearnButton(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-        ) {
-            CollectionLearnButton(
-                modifier = Modifier
-                    .padding(bottom = 68.dp, end = 10.dp)
-                    .align(Alignment.End)
-            )
-        }
+                .padding(bottom = 68.dp, end = 10.dp)
+                .align(Alignment.BottomEnd)
+        )
+
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-            AddWordDialog(onEnterWord = { rus, eng ->
-                vm.onEvent(CollectionViewModel.Event.WordAdded(rus = rus, eng = eng))
-            })
+            AddWordDialog(
+                onEnterWord = { rus, eng ->
+                    vm.onEvent(CollectionViewModel.Event.WordAdded(rus = rus, eng = eng))
+                }
+            )
         }
     }
 }

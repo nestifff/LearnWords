@@ -3,10 +3,7 @@ package com.nestifff.learnwords.presentation.screen.collection.di
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel
 import com.nestifff.learnwords.presentation.screen.collection.utils.WordsListCreator
 import com.nestifff.learnwords.presentation.screen.settings.di.SettingsScreenScope
-import com.nestifff.words.domain.usecase.AddWordUseCase
-import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
-import com.nestifff.words.domain.usecase.GetAllWordsUseCase
-import com.nestifff.words.domain.usecase.UpdateWordUseCase
+import com.nestifff.words.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 
@@ -20,10 +17,12 @@ class CollectionModule {
         getAllWordsFlowUseCase: GetAllWordsFlowUseCase,
         updateWordUseCase: UpdateWordUseCase,
         addWordUseCase: AddWordUseCase,
+        deleteWordUseCase: DeleteWordUseCase
     ): CollectionViewModel =
         CollectionViewModel(
             getAllWordsFlowUseCase = getAllWordsFlowUseCase,
             updateWordUseCase = updateWordUseCase,
-            addWordUseCase = addWordUseCase
+            addWordUseCase = addWordUseCase,
+            deleteWordUseCase = deleteWordUseCase,
         )
 }

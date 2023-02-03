@@ -8,6 +8,7 @@ import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordDomai
 import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
 import com.nestifff.words.domain.model.WordDomain
 import com.nestifff.words.domain.usecase.AddWordUseCase
+import com.nestifff.words.domain.usecase.DeleteWordUseCase
 import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
 import com.nestifff.words.domain.usecase.UpdateWordUseCase
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ class CollectionViewModel(
     private val getAllWordsFlowUseCase: GetAllWordsFlowUseCase,
     private val updateWordUseCase: UpdateWordUseCase,
     private val addWordUseCase: AddWordUseCase,
+    private val deleteWordUseCase: DeleteWordUseCase,
 ) : StatefulViewModel<CollectionViewModel.State, CollectionViewModel.Event>(State()) {
 
     data class State(
@@ -26,6 +28,7 @@ class CollectionViewModel(
     sealed class Event {
         data class WordAdded(val rus: String, val eng: String) : Event()
         data class WordUpdated(val updatedWord: WordCollectionScreen) : Event()
+        data class WordDeleted(val id: String): Event()
     }
 
     init {
@@ -53,6 +56,9 @@ class CollectionViewModel(
             }
             is Event.WordUpdated -> viewModelScope.launch {
                 updateWordUseCase.execute(event.updatedWord.toWordDomain())
+            }
+            is Event.WordDeleted -> viewModelScope.launch {
+                deleteWordUseCase.execute(event.id)
             }
         }
     }
