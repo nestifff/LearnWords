@@ -41,16 +41,18 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun rememberDragDropState(
+fun rememberDragDropColumnState(
     lazyListState: LazyListState,
+    draggableItemsIndexes: List<Int>,
     onMove: (Int, Int) -> Unit
-): DragDropState {
+): DragDropLazyColumnState {
     val scope = rememberCoroutineScope()
     val state = remember(lazyListState) {
-        DragDropState(
+        DragDropLazyColumnState(
             state = lazyListState,
+            scope = scope,
+            draggableItemsIndexes = draggableItemsIndexes,
             onMove = onMove,
-            scope = scope
         )
     }
     LaunchedEffect(state) {
@@ -62,11 +64,11 @@ fun rememberDragDropState(
     return state
 }
 
-// count first item{} as not draggable => ignore it (you have to set proper indexes)
-class DragDropState internal constructor(
+class DragDropLazyColumnState internal constructor(
     private val state: LazyListState,
     private val scope: CoroutineScope,
-    private val onMove: (Int, Int) -> Unit
+    private val draggableItemsIndexes: List<Int>,
+    private val onMove: (Int, Int) -> Unit,
 ) {
     var draggingItemIndex by mutableStateOf<Int?>(null) // менятеся, когда item закрыл больше половины другого item (их индексы меняются местами)
         private set
@@ -83,7 +85,7 @@ class DragDropState internal constructor(
     private val draggingItemLayoutInfo: LazyListItemInfo?
         get() = state.layoutInfo.visibleItemsInfo
             .firstOrNull {
-                it.index == draggingItemIndex && it.index != 0
+                it.index == draggingItemIndex && it.index in draggableItemsIndexes
             }
 
     internal var previousIndexOfDraggedItem by mutableStateOf<Int?>(null)
@@ -94,7 +96,8 @@ class DragDropState internal constructor(
     internal fun onDragStart(offset: Offset) {
         state.layoutInfo.visibleItemsInfo
             .firstOrNull { item ->
-                offset.y.toInt() in item.offset..(item.offset + item.size) && item.index != 0
+                offset.y.toInt() in item.offset..(item.offset + item.size) &&
+                        item.index in draggableItemsIndexes
             }?.also {
                 draggingItemIndex = it.index
                 draggingItemInitialOffset = it.offset
@@ -132,7 +135,7 @@ class DragDropState internal constructor(
 
         val targetItem = state.layoutInfo.visibleItemsInfo.find { item ->
             middleOffset.toInt() in item.offset..item.offsetEnd &&
-                    draggingItem.index != item.index && item.index != 0
+                    draggingItem.index != item.index && item.index in draggableItemsIndexes
         }
         if (targetItem != null) {
             val scrollToIndex = if (targetItem.index == state.firstVisibleItemIndex) {
@@ -170,7 +173,7 @@ class DragDropState internal constructor(
         get() = this.offset + this.size
 }
 
-fun Modifier.dragContainer(dragDropState: DragDropState, haptic: HapticFeedback): Modifier {
+fun Modifier.dragContainer(dragDropState: DragDropLazyColumnState, haptic: HapticFeedback): Modifier {
 
     return pointerInput(dragDropState) {
         detectDragGesturesAfterLongPress(
@@ -190,8 +193,8 @@ fun Modifier.dragContainer(dragDropState: DragDropState, haptic: HapticFeedback)
 
 @ExperimentalFoundationApi
 @Composable
-fun LazyItemScope.DraggableItem(
-    dragDropState: DragDropState,
+fun LazyItemScope.DraggableColumnItem(
+    dragDropState: DragDropLazyColumnState,
     index: Int,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.(isDragging: Boolean) -> Unit
