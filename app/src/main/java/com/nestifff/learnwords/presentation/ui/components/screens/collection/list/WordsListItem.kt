@@ -28,11 +28,11 @@ fun WordsListItem(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .border(
-                width = 2.dp,
-                color = WordsTheme.colors.backgroundMediumColor,
-                shape = RoundedCornerShape(8.dp)
-            )
+//            .border(
+//                width = 2.dp,
+//                color = WordsTheme.colors.backgroundMediumColor,
+//                shape = RoundedCornerShape(8.dp)
+//            )
             .background(color = WordsTheme.colors.backgroundLightColor)
             .rippleClickable(itemOnClick)
     ) {

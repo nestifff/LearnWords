@@ -55,6 +55,9 @@ object Dependencies {
             const val material3 = "androidx.compose.material3:material3:$material3Version"
             const val materialWindowSize = "androidx.compose.material3:material3-window-size-class:$material3Version"
         }
+
+        const val immutableCollections =
+            "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
     }
 
     object Data {

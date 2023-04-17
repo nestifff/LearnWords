@@ -11,6 +11,8 @@ import com.nestifff.words.domain.usecase.AddWordUseCase
 import com.nestifff.words.domain.usecase.DeleteWordUseCase
 import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
 import com.nestifff.words.domain.usecase.UpdateWordUseCase
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,20 +24,20 @@ class CollectionViewModel(
 ) : StatefulViewModel<CollectionViewModel.State, CollectionViewModel.Event>(State()) {
 
     data class State(
-        val words: List<WordCollectionScreen> = emptyList()
+        val words: ImmutableList<WordCollectionScreen> = listOf<WordCollectionScreen>().toImmutableList()
     )
 
     sealed class Event {
         data class WordAdded(val rus: String, val eng: String) : Event()
         data class WordUpdated(val updatedWord: WordCollectionScreen) : Event()
-        data class WordDeleted(val id: String): Event()
+        data class WordDeleted(val id: String) : Event()
     }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getAllWordsFlowUseCase.execute().collect() { words ->
                 produceState(
-                    state.copy(words = words.map { it.toWordCollectionScreen() })
+                    state.copy(words = words.map { it.toWordCollectionScreen() }.toImmutableList())
                 )
             }
         }

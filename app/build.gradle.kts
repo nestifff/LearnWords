@@ -97,4 +97,6 @@ dependencies {
 
     implementation(Dependencies.Common.Dagger.dagger)
     kapt(Dependencies.Common.Dagger.compiler)
+
+    implementation(Dependencies.App.immutableCollections)
 }

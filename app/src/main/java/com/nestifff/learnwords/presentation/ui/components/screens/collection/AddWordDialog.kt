@@ -88,6 +88,7 @@ fun AddWordDialog(
                 modifier = Modifier
                     .padding(top = 6.dp, start = 6.dp)
                     .size(32.dp)
+                    .clip(RoundedCornerShape(12.dp))
                     .rippleClickable { isVisible = false },
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
@@ -143,7 +144,7 @@ fun AddWordDialog(
                     Icon(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(12.dp))
                             .rippleClickable(processValuesEntered)
                             .size(32.dp)
                             .padding(2.dp),
