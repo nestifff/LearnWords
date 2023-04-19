@@ -16,8 +16,8 @@ import com.nestifff.learnwords.presentation.screen.collection.model.WordCollecti
 fun WordsList(
     modifier: Modifier = Modifier,
     words: List<WordCollectionScreen>,
-    saveClicked: (updatedWord: WordCollectionScreen) -> Unit,
-    deleteWordTriggered: (id: String) -> Unit,
+    onSaveClick: (updatedWord: WordCollectionScreen) -> Unit,
+    onDeleteWordTrigger: (id: String) -> Unit,
 ) {
 
     var selectedWordInd: Int? by remember { mutableStateOf(null) }
@@ -33,7 +33,7 @@ fun WordsList(
             val dismissState2 = rememberDismissState(
                 confirmStateChange = {
                     if (it == DismissValue.DismissedToStart) {
-                        deleteWordTriggered(currentItem.id)
+                        onDeleteWordTrigger(currentItem.id)
                         true
                     } else {
                         false
@@ -55,10 +55,10 @@ fun WordsList(
                     modifier = Modifier.padding(vertical = 4.dp),
                     word = word,
                     isSelected = selectedWordInd == ind,
-                    itemOnClick = {
+                    onItemClick = {
                         selectedWordInd = if (selectedWordInd == ind) null else ind
                     },
-                    saveClicked = saveClicked
+                    onSaveClick = onSaveClick
                 )
             }
         }

@@ -191,7 +191,7 @@ private fun OneValueEnterRow(
 
 @Preview
 @Composable
-fun AddWordComponentPreview() {
+private fun AddWordComponentPreview() {
     ThemeCommon {
         AddWordDialog(onEnterWord = { _, _ -> })
     }

@@ -1,6 +1,5 @@
 package com.nestifff.words.data.local.database.repository
 
-import android.util.Log
 import com.nestifff.words.data.local.database.dao.WordsDatabaseDao
 import com.nestifff.words.data.local.database.mapper.toWordDomain
 import com.nestifff.words.data.local.database.mapper.toWordEntity

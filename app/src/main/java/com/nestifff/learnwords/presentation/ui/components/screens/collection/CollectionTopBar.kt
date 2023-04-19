@@ -21,7 +21,7 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 fun CollectionTopBar(
     modifier: Modifier = Modifier,
-    settingsButtonClicked: () -> Unit,
+    onSettingsButtonClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -29,10 +29,10 @@ fun CollectionTopBar(
     ) {
 
         Icon(
-            modifier = modifier
+            modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .clip(RoundedCornerShape(8.dp))
-                .rippleClickable(settingsButtonClicked)
+                .rippleClickable(onSettingsButtonClick)
                 .padding(2.dp)
                 .size(24.dp)
             ,
@@ -47,6 +47,6 @@ fun CollectionTopBar(
 @Preview
 private fun CollectionTopBarPreview() {
     ThemeCommon {
-        CollectionTopBar(settingsButtonClicked = {})
+        CollectionTopBar(onSettingsButtonClick = {})
     }
 }

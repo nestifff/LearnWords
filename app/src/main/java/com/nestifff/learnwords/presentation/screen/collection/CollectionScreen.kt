@@ -31,7 +31,7 @@ fun CollectionScreen(
         Column {
             CollectionTopBar(
                 modifier = Modifier.padding(top = 3.dp, end = 4.dp),
-                settingsButtonClicked = { navController.navigate(Graph.SettingsGraph.route) }
+                onSettingsButtonClick = { navController.navigate(Graph.SettingsGraph.route) }
             )
             Box() {
                 WordsList(
@@ -39,10 +39,10 @@ fun CollectionScreen(
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
                     words = viewState.value.words,
-                    saveClicked = { updatedWord ->
+                    onSaveClick = { updatedWord ->
                         vm.onEvent(CollectionViewModel.Event.WordUpdated(updatedWord))
                     },
-                    deleteWordTriggered = {
+                    onDeleteWordTrigger = {
                         vm.onEvent(CollectionViewModel.Event.WordDeleted(it))
                     }
                 )

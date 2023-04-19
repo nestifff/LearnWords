@@ -36,9 +36,7 @@ class CollectionViewModel(
         data class WordDeleted(val id: String) : Event()
     }
 
-    sealed class Effect: UiEffect {
-
-    }
+    sealed class Effect: UiEffect
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

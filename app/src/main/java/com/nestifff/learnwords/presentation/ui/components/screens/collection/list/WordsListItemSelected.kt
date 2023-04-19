@@ -26,7 +26,7 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 internal fun SelectedItemContent(
     modifier: Modifier = Modifier,
     word: WordCollectionScreen,
-    saveButtonClicked: (updatedWord: WordCollectionScreen) -> Unit,
+    onSaveButtonClick: (updatedWord: WordCollectionScreen) -> Unit,
     isSavingLoadingVisible: Boolean,
 ) {
     var textEng by rememberSaveable { mutableStateOf(word.eng) }
@@ -67,7 +67,7 @@ internal fun SelectedItemContent(
             keyboardActions = KeyboardActions(onDone = {
                 if (isTextChanged()) {
                     isSaveButtonEnabled = true
-                    saveButtonClicked(word.copy(rus = textRus, eng = textEng))
+                    onSaveButtonClick(word.copy(rus = textRus, eng = textEng))
                 }
             })
         )
@@ -75,7 +75,7 @@ internal fun SelectedItemContent(
             modifier = Modifier.padding(top = 16.dp)
         ) {
             SaveChangedButton(
-                onClick = { saveButtonClicked(word.copy(rus = textRus, eng = textEng)) },
+                onClick = { onSaveButtonClick(word.copy(rus = textRus, eng = textEng)) },
                 isEnabled = isSaveButtonEnabled
             )
             if (isSavingLoadingVisible) {
@@ -103,7 +103,7 @@ private fun SelectedItemContentPreview() {
                 rus = "Russian",
                 isFavorite = false
             ),
-            saveButtonClicked = { },
+            onSaveButtonClick = { },
             isSavingLoadingVisible = true,
         )
     }

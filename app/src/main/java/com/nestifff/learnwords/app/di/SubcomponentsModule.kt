@@ -4,4 +4,4 @@ import com.nestifff.learnwords.presentation.screen.collection.di.CollectionCompo
 import dagger.Module
 
 @Module(subcomponents = [CollectionComponent::class])
-class SubcomponentsModule {}
+class SubcomponentsModule

@@ -1,7 +1,7 @@
 object Dependencies {
-    const val kotlinVersion = "1.7.20"
-    const val composeVersion = "1.3.1"
-    const val composeCompilerVersion = "1.3.2"
+    const val kotlinVersion = "1.8.20"
+    const val composeVersion = "1.4.1"
+    const val composeCompilerVersion = "1.4.5"
 
     object Common {
 
@@ -15,6 +15,10 @@ object Dependencies {
             const val daggerVersion = "2.44.2"
             const val dagger = "com.google.dagger:dagger:$daggerVersion"
             const val compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+        }
+
+        object DetektPlugins {
+            const val composeRules = "ru.kode:detekt-rules-compose:1.0.1"
         }
     }
 

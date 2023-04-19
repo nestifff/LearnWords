@@ -3,7 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("kotlin-android")
-    id("kotlin-parcelize")}
+    id("kotlin-parcelize")
+}
 
 android {
     namespace = "com.nestifff.learnwords"
@@ -61,7 +62,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = "1.4.5"
     }
     packagingOptions {
         resources {
@@ -99,4 +100,7 @@ dependencies {
     kapt(Dependencies.Common.Dagger.compiler)
 
     implementation(Dependencies.App.immutableCollections)
+
+    detektPlugins(Dependencies.Common.DetektPlugins.composeRules)
+
 }

@@ -19,6 +19,6 @@ class SettingsViewModel :
     override fun createInitialState(): State = State()
 
     override fun onEvent(event: Event) {
-
+        Unit
     }
 }

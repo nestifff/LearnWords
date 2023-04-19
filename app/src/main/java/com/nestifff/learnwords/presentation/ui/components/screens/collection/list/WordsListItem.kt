@@ -4,7 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DismissState
@@ -31,15 +30,15 @@ fun WordsListItem(
     modifier: Modifier = Modifier,
     word: WordCollectionScreen,
     isSelected: Boolean,
-    itemOnClick: () -> Unit,
-    saveClicked: (updatedWord: WordCollectionScreen) -> Unit,
+    onItemClick: () -> Unit,
+    onSaveClick: (updatedWord: WordCollectionScreen) -> Unit,
 ) {
     var isSavingLoadingVisible by remember { mutableStateOf(false) }
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(color = WordsTheme.colors.backgroundLightColor)
-            .rippleClickable(itemOnClick)
+            .rippleClickable(onItemClick)
     ) {
         Row(
             modifier = Modifier
@@ -53,8 +52,8 @@ fun WordsListItem(
                 SelectedItemContent(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     word = word,
-                    saveButtonClicked = {
-                        saveClicked(it)
+                    onSaveButtonClick = {
+                        onSaveClick(it)
                         isSavingLoadingVisible = true
                     },
                     isSavingLoadingVisible = isSavingLoadingVisible,
@@ -79,7 +78,7 @@ fun WordsListItem(
         if (isSavingLoadingVisible) {
             delay(400)
             isSavingLoadingVisible = false
-            itemOnClick()
+            onItemClick()
         }
     }
 }

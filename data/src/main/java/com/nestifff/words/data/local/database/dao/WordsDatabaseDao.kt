@@ -5,27 +5,27 @@ import com.nestifff.words.data.local.database.model.WordEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class WordsDatabaseDao {
+interface WordsDatabaseDao {
 
     @Query("SELECT * FROM Words")
-    abstract suspend fun getWords(): List<WordEntity>
+    suspend fun getWords(): List<WordEntity>
 
     @Query("SELECT * FROM Words")
-    abstract fun getWordsFlow(): Flow<List<WordEntity>>
+    fun getWordsFlow(): Flow<List<WordEntity>>
 
     @Query("SELECT * FROM Words WHERE id = :id")
-    abstract suspend fun getWordById(id: String): WordEntity?
+    suspend fun getWordById(id: String): WordEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertWord(word: WordEntity)
+    suspend fun insertWord(word: WordEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun updateWord(word: WordEntity)
+    suspend fun updateWord(word: WordEntity)
 
     @Delete
-    abstract suspend fun deleteWord(word: WordEntity)
+    suspend fun deleteWord(word: WordEntity)
 
     @Query("DELETE FROM Words WHERE id = :id")
-    abstract suspend fun deleteWord(id: String)
+    suspend fun deleteWord(id: String)
 
 }
