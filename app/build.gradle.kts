@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nestifff.learnwords"
+    namespace = AppBuildConfig.PackageName
     compileSdk = AppBuildConfig.CompileSDK
 
     signingConfigs {
@@ -62,7 +62,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.5"
+        kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
     packagingOptions {
         resources {
@@ -72,8 +72,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
+
+    implementation(project(Dependencies.Project.data))
+    implementation(project(Dependencies.Project.domain))
 
     implementation(Dependencies.App.Core.corKtx)
     implementation(Dependencies.App.Core.activityCompose)
@@ -99,8 +100,7 @@ dependencies {
     implementation(Dependencies.Common.Dagger.dagger)
     kapt(Dependencies.Common.Dagger.compiler)
 
-    implementation(Dependencies.App.immutableCollections)
+    implementation(Dependencies.App.Collections.immutableCollections)
 
     detektPlugins(Dependencies.Common.DetektPlugins.composeRules)
-
 }

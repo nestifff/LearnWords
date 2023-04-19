@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(Dependencies.Project.domain))
 
     testImplementation(Dependencies.Common.Test.jUnit)
     androidTestImplementation(Dependencies.Common.Test.androidJUnit)
@@ -54,8 +54,7 @@ dependencies {
     implementation(Dependencies.Common.Dagger.dagger)
     kapt(Dependencies.Common.Dagger.compiler)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation(Dependencies.Data.Coroutines.coroutines)
 
     detektPlugins(Dependencies.Common.DetektPlugins.composeRules)
-
 }
