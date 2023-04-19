@@ -1,7 +1,10 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
 import androidx.lifecycle.viewModelScope
-import com.nestifff.learnwords.app.core.StatefulViewModel
+import com.nestifff.learnwords.app.core.BaseViewModel
+import com.nestifff.learnwords.app.core.UiEffect
+import com.nestifff.learnwords.app.core.UiEvent
+import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordCollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordDomain
@@ -21,16 +24,20 @@ class CollectionViewModel(
     private val updateWordUseCase: UpdateWordUseCase,
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
-) : StatefulViewModel<CollectionViewModel.State, CollectionViewModel.Event>(State()) {
+) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Event, CollectionViewModel.Effect>() {
 
     data class State(
         val words: ImmutableList<WordCollectionScreen> = listOf<WordCollectionScreen>().toImmutableList()
-    )
+    ) : UiState
 
-    sealed class Event {
+    sealed class Event: UiEvent {
         data class WordAdded(val rus: String, val eng: String) : Event()
         data class WordUpdated(val updatedWord: WordCollectionScreen) : Event()
         data class WordDeleted(val id: String) : Event()
+    }
+
+    sealed class Effect: UiEffect {
+
     }
 
     init {
@@ -42,6 +49,8 @@ class CollectionViewModel(
             }
         }
     }
+
+    override fun createInitialState(): State = State()
 
     override fun onEvent(event: Event) {
         when (event) {

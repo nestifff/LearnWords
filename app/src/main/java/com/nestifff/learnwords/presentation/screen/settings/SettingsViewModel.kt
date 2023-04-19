@@ -1,19 +1,22 @@
 package com.nestifff.learnwords.presentation.screen.settings
 
-import android.util.Log
-import com.nestifff.learnwords.app.config.TAG
-import com.nestifff.learnwords.app.core.StatefulViewModel
+import com.nestifff.learnwords.app.core.BaseViewModel
+import com.nestifff.learnwords.app.core.UiEffect
+import com.nestifff.learnwords.app.core.UiEvent
+import com.nestifff.learnwords.app.core.UiState
 
 class SettingsViewModel :
-    StatefulViewModel<SettingsViewModel.State, SettingsViewModel.Event>(State()) {
+    BaseViewModel<SettingsViewModel.State, SettingsViewModel.Event, SettingsViewModel.Effect>() {
 
     data class State(
         val words: List<Any> = emptyList()
-    )
+    ) : UiState
 
-    sealed class Event {
+    sealed class Event : UiEvent
 
-    }
+    sealed class Effect : UiEffect
+
+    override fun createInitialState(): State = State()
 
     override fun onEvent(event: Event) {
 

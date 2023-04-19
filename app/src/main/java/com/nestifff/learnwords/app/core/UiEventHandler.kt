@@ -1,5 +1,5 @@
 package com.nestifff.learnwords.app.core
 
-interface EventHandler<T> {
+interface UiEventHandler<T : UiEvent> {
     fun onEvent(event: T)
 }

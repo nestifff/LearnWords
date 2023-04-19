@@ -20,7 +20,7 @@ fun CollectionScreen(
     vm: CollectionViewModel
 ) {
 
-    val viewState = vm.stateData.collectAsState(initial = vm.getDefaultState())
+    val viewState = vm.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -38,7 +38,6 @@ fun CollectionScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
-                    // TODO it might have problems (list in state class)
                     words = viewState.value.words,
                     saveClicked = { updatedWord ->
                         vm.onEvent(CollectionViewModel.Event.WordUpdated(updatedWord))

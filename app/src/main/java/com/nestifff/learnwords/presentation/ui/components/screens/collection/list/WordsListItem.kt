@@ -1,15 +1,25 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.list
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DismissState
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
@@ -28,11 +38,6 @@ fun WordsListItem(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-//            .border(
-//                width = 2.dp,
-//                color = WordsTheme.colors.backgroundMediumColor,
-//                shape = RoundedCornerShape(8.dp)
-//            )
             .background(color = WordsTheme.colors.backgroundLightColor)
             .rippleClickable(itemOnClick)
     ) {
@@ -78,3 +83,40 @@ fun WordsListItem(
         }
     }
 }
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun WordListItemDeleteBackground(dismissState: DismissState) {
+    val color by animateColorAsState(
+        targetValue = when (dismissState.targetValue) {
+            DismissValue.Default -> Color.White
+            else -> Color.Red
+        },
+        animationSpec = tween(durationMillis = 1000)
+    )
+    val alignment = Alignment.CenterEnd
+    val icon = Icons.Default.Delete
+
+    val scale by animateFloatAsState(
+        if (dismissState.targetValue == DismissValue.Default) 0.75f else 1f
+    )
+
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(vertical = 4.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .size(32.dp)
+            .background(color)
+            .padding(end = 12.dp),
+        contentAlignment = alignment
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.scale(scale)
+        )
+    }
+}
+
