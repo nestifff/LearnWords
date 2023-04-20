@@ -18,7 +18,7 @@ inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier
 
 fun Modifier.rippleClickable(onClick: () -> Unit): Modifier = composed {
     clickable(
-        indication = rememberRipple(color = WordsTheme.colors.rippleColor),
+        indication = rememberRipple(color = WordsTheme.colors.ripple),
         interactionSource = remember { MutableInteractionSource() },
         onClick = onClick,
     )

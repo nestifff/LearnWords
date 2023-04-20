@@ -33,7 +33,7 @@ fun CollectionsSwitcher(
             .padding(top = 4.dp)
             .border(
                 width = 2.dp,
-                color = WordsTheme.colors.backgroundMediumColor,
+                color = WordsTheme.colors.backgroundMedium,
                 shape = RoundedCornerShape(32.dp)
             )
             .clip(RoundedCornerShape(32.dp))
@@ -66,9 +66,9 @@ private fun SwitcherItem(
             .clip(RoundedCornerShape(16.dp))
             .background(
                 if (isActive) {
-                    WordsTheme.colors.primaryColor
+                    WordsTheme.colors.primary
                 } else {
-                    WordsTheme.colors.primaryLightColor
+                    WordsTheme.colors.primaryLight
                 }
             )
             .rippleClickable { }
@@ -77,7 +77,7 @@ private fun SwitcherItem(
         Text(
             text = collection,
             style = WordsTheme.typography.h3MediumTextStyle,
-            color = WordsTheme.colors.textColor,
+            color = WordsTheme.colors.text,
         )
     }
 }

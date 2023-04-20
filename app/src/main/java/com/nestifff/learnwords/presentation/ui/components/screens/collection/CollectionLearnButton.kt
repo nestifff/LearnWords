@@ -23,14 +23,14 @@ fun CollectionLearnButton(
         modifier = modifier
             .size(64.dp)
             .clip(CircleShape)
-            .background(color = WordsTheme.colors.primaryColor)
+            .background(color = WordsTheme.colors.primary)
             .rippleClickable { },
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = Icons.Default.PlayArrow,
             contentDescription = null,
-            tint = WordsTheme.colors.iconsColor
+            tint = WordsTheme.colors.icons
         )
     }
 }

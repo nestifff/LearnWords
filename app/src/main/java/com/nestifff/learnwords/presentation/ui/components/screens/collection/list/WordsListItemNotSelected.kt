@@ -11,13 +11,13 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
 internal fun NotSelectedItemContent(
     modifier: Modifier = Modifier,
-    word: WordCollectionScreen,
+    word: CollectionScreenWord,
 ) {
     Row(
         modifier = modifier,
@@ -27,19 +27,19 @@ internal fun NotSelectedItemContent(
             modifier = Modifier.padding(end = 6.dp),
             text = word.eng,
             style = WordsTheme.typography.h2RegularTextStyle,
-            color = WordsTheme.colors.textColor,
+            color = WordsTheme.colors.text,
         )
         Icon(
             modifier = Modifier.offset(y = 3.dp),
             imageVector = Icons.Default.ArrowForward,
             contentDescription = null,
-            tint = WordsTheme.colors.textColor
+            tint = WordsTheme.colors.text
         )
         Text(
             modifier = Modifier.padding(start = 6.dp),
             text = word.rus,
             style = WordsTheme.typography.h2RegularTextStyle,
-            color = WordsTheme.colors.textColor,
+            color = WordsTheme.colors.text,
         )
     }
 }

@@ -21,23 +21,23 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.rippleClickable
-import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun WordsListItem(
     modifier: Modifier = Modifier,
-    word: WordCollectionScreen,
+    word: CollectionScreenWord,
     isSelected: Boolean,
     onItemClick: () -> Unit,
-    onSaveClick: (updatedWord: WordCollectionScreen) -> Unit,
+    onSaveClick: (updatedWord: CollectionScreenWord) -> Unit,
 ) {
     var isSavingLoadingVisible by remember { mutableStateOf(false) }
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(color = WordsTheme.colors.backgroundLightColor)
+            .background(color = WordsTheme.colors.backgroundLight)
             .rippleClickable(onItemClick)
     ) {
         Row(
@@ -66,9 +66,9 @@ fun WordsListItem(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {
-                    WordsTheme.colors.primaryColor
+                    WordsTheme.colors.primary
                 } else {
-                    WordsTheme.colors.backgroundMediumColor
+                    WordsTheme.colors.backgroundMedium
                 }
             )
         }

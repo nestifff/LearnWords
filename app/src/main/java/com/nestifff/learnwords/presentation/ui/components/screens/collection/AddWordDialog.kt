@@ -1,7 +1,9 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -36,29 +38,31 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 fun AddWordDialog(
     modifier: Modifier = Modifier,
+    isExpanded: Boolean,
     onEnterWord: (rus: String, eng: String) -> Unit,
+    onDismiss
 ) {
-    var isVisible by rememberSaveable { mutableStateOf(false) }
-    if (isVisible) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(WordsTheme.colors.black.copy(alpha = 0.1f))
-                .noRippleClickable { isVisible = false }
-        )
-    }
+    val cornerRadiusDp by animateDpAsState(
+        targetValue = if (isExpanded) 24.dp else 0.dp,
+        animationSpec = tween(1000)
+    )
     Column(
         modifier = modifier
             .fillMaxWidth()
             .then(
-                if (isVisible) {
-                    Modifier.clip(RoundedCornerShape(topEnd = 24.dp, topStart = 24.dp))
+                if (isExpanded) {
+                    Modifier.clip(
+                        RoundedCornerShape(
+                            topEnd = cornerRadiusDp,
+                            topStart = cornerRadiusDp
+                        )
+                    )
                 } else {
                     Modifier
                 }
             )
             .noRippleClickable { }
-            .background(color = WordsTheme.colors.primaryLightColor)
+            .background(color = WordsTheme.colors.primaryLight)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = 0.4f,
@@ -67,21 +71,21 @@ fun AddWordDialog(
             )
             .padding(bottom = 6.dp)
     ) {
-        if (!isVisible) {
+        if (!isExpanded) {
             Text(
                 modifier = Modifier
                     .padding(top = 6.dp, start = 24.dp)
                     .clip(RoundedCornerShape(24.dp))
                     .border(
                         width = 2.dp,
-                        color = WordsTheme.colors.textLightColor,
+                        color = WordsTheme.colors.textLight,
                         shape = RoundedCornerShape(24.dp)
                     )
                     .rippleClickable { isVisible = true }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
                 style = WordsTheme.typography.h2MediumTextStyle,
-                color = WordsTheme.colors.textLightColor
+                color = WordsTheme.colors.textLight
             )
         } else {
             Icon(
@@ -95,7 +99,7 @@ fun AddWordDialog(
             )
         }
 
-        if (isVisible) {
+        if (isExpanded) {
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -150,7 +154,7 @@ fun AddWordDialog(
                             .padding(2.dp),
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
-                        tint = WordsTheme.colors.iconsColor
+                        tint = WordsTheme.colors.icons
                     )
                 }
             }
@@ -174,14 +178,14 @@ private fun OneValueEnterRow(
         Text(
             text = text,
             style = WordsTheme.typography.h3RegularTextStyle,
-            color = WordsTheme.colors.textColor,
+            color = WordsTheme.colors.text,
         )
         Spacer(modifier = Modifier.width(12.dp))
         WordsTextField(
             modifier = Modifier.fillMaxWidth(0.75f),
             value = value,
             onValueChange = onValueChange,
-            backgroundColor = WordsTheme.colors.backgroundLightColor.copy(alpha = 0.8f),
+            backgroundColor = WordsTheme.colors.backgroundLight.copy(alpha = 0.8f),
             textStyle = WordsTheme.typography.h2RegularTextStyle,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,

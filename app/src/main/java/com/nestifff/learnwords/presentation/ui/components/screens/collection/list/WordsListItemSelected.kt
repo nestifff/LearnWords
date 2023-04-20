@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.SaveChangedButton
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
@@ -25,8 +25,8 @@ import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 @Composable
 internal fun SelectedItemContent(
     modifier: Modifier = Modifier,
-    word: WordCollectionScreen,
-    onSaveButtonClick: (updatedWord: WordCollectionScreen) -> Unit,
+    word: CollectionScreenWord,
+    onSaveButtonClick: (updatedWord: CollectionScreenWord) -> Unit,
     isSavingLoadingVisible: Boolean,
 ) {
     var textEng by rememberSaveable { mutableStateOf(word.eng) }
@@ -48,7 +48,7 @@ internal fun SelectedItemContent(
                 textEng = it
                 isSaveButtonEnabled = isTextChanged()
             },
-            backgroundColor = WordsTheme.colors.backgroundMediumColor.copy(alpha = 0.6f),
+            backgroundColor = WordsTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = {
@@ -63,7 +63,7 @@ internal fun SelectedItemContent(
                 textRus = it
                 isSaveButtonEnabled = isTextChanged()
             },
-            backgroundColor = WordsTheme.colors.backgroundMediumColor.copy(alpha = 0.6f),
+            backgroundColor = WordsTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardActions = KeyboardActions(onDone = {
                 if (isTextChanged()) {
                     isSaveButtonEnabled = true
@@ -83,7 +83,7 @@ internal fun SelectedItemContent(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .size(24.dp),
-                    color = WordsTheme.colors.primaryColor,
+                    color = WordsTheme.colors.primary,
                     strokeWidth = 3.dp
                 )
             }
@@ -97,7 +97,7 @@ internal fun SelectedItemContent(
 private fun SelectedItemContentPreview() {
     ThemeCommon {
         SelectedItemContent(
-            word = WordCollectionScreen(
+            word = CollectionScreenWord(
                 id = "",
                 eng = "English",
                 rus = "Russian",

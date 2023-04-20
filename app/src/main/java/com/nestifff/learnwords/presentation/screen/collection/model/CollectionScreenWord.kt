@@ -1,8 +1,8 @@
 package com.nestifff.learnwords.presentation.screen.collection.model
 
-data class WordCollectionScreen(
+data class CollectionScreenWord(
     val id: String,
-    val eng: String,
     val rus: String,
+    val eng: String,
     val isFavorite: Boolean,
 )

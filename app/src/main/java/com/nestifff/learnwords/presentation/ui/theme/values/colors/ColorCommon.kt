@@ -5,15 +5,14 @@ import androidx.compose.ui.graphics.Color
 
 @Immutable
 data class ColorCommon(
-    val black: Color,
-    val white: Color,
     val background: Color,
-    val backgroundLightColor: Color,
-    val backgroundMediumColor: Color,
-    val rippleColor: Color,
-    val iconsColor: Color,
-    val primaryColor: Color,
-    val primaryLightColor: Color,
-    val textColor: Color,
-    val textLightColor: Color,
+    val backgroundLight: Color,
+    val backgroundMedium: Color,
+    val ripple: Color,
+    val icons: Color,
+    val primary: Color,
+    val primaryLight: Color,
+    val text: Color,
+    val textLight: Color,
+    val expandedDialogBackground: Color,
 )

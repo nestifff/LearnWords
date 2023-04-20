@@ -18,7 +18,7 @@ fun WordsTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    backgroundColor: Color = WordsTheme.colors.backgroundLightColor,
+    backgroundColor: Color = WordsTheme.colors.backgroundLight,
     textStyle: TextStyle = WordsTheme.typography.h3RegularTextStyle,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     keyboardActions: KeyboardActions = KeyboardActions()
@@ -31,7 +31,7 @@ fun WordsTextField(
         textStyle = textStyle,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = backgroundColor,
-            cursorColor = WordsTheme.colors.primaryColor,
+            cursorColor = WordsTheme.colors.primary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),

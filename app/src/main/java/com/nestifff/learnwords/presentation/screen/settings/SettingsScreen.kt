@@ -15,5 +15,5 @@ fun SettingsScreen(
 ) {
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(color = WordsTheme.colors.primaryColor))
+        .background(color = WordsTheme.colors.primary))
 }

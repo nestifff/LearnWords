@@ -1,9 +1,11 @@
 package com.nestifff.learnwords.app.core
 
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<State : UiState, Event : UiEvent, Effect : UiEffect> :
     AutoObserverViewModel(), UiEventHandler<Event> {
@@ -22,5 +24,11 @@ abstract class BaseViewModel<State : UiState, Event : UiEvent, Effect : UiEffect
 
     fun produceState(state: State) {
         mutableUiState.value = state
+    }
+
+    fun produceEffect(effect: Effect) {
+        viewModelScope.launch {
+            mutableUiEffect.emit(effect)
+        }
     }
 }

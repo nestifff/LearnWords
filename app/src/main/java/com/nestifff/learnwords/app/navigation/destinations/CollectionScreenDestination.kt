@@ -10,7 +10,9 @@ import com.google.accompanist.navigation.animation.composable
 import com.nestifff.learnwords.app.App
 import com.nestifff.learnwords.app.di.utils.daggerViewModel
 import com.nestifff.learnwords.app.navigation.Destination
+import com.nestifff.learnwords.app.navigation.Graph
 import com.nestifff.learnwords.ext.getActivity
+import com.nestifff.learnwords.ext.getApplication
 import com.nestifff.learnwords.presentation.screen.collection.CollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel
 
@@ -25,10 +27,14 @@ fun NavGraphBuilder.collectionScreenDestination(
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() },
     ) {
-        // TODO create getApplication() instead of getActivity()
-        val daggerComponent = (LocalContext.current.getActivity()!!.application as App)
-            .appComponent.collectionComponent().create()
+
+        val daggerComponent = getApplication().appComponent.collectionComponent().create()
         val viewModel: CollectionViewModel = daggerViewModel { daggerComponent.getViewModel() }
-        CollectionScreen(navController = navController, vm = viewModel)
+
+        CollectionScreen(
+            viewModel = viewModel,
+            navigateToSettingsScreen = { navController.navigate(Graph.SettingsGraph.route) },
+            navigateToLearnScreen = {}
+        )
     }
 }

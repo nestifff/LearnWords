@@ -38,7 +38,7 @@ fun CollectionTopBar(
             ,
             imageVector = Icons.Default.Settings,
             contentDescription = null,
-            tint = WordsTheme.colors.iconsColor
+            tint = WordsTheme.colors.icons
         )
     }
 }

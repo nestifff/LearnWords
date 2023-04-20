@@ -8,15 +8,15 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.screen.collection.model.WordCollectionScreen
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun WordsList(
     modifier: Modifier = Modifier,
-    words: List<WordCollectionScreen>,
-    onSaveClick: (updatedWord: WordCollectionScreen) -> Unit,
+    words: List<CollectionScreenWord>,
+    onSaveClick: (updatedWord: CollectionScreenWord) -> Unit,
     onDeleteWordTrigger: (id: String) -> Unit,
 ) {
 

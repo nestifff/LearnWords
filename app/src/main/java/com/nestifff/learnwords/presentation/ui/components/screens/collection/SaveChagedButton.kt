@@ -25,11 +25,11 @@ fun SaveChangedButton(
             .then(
                 if (isEnabled) {
                     Modifier
-                        .background(color = WordsTheme.colors.primaryLightColor)
+                        .background(color = WordsTheme.colors.primaryLight)
                         .rippleClickable(onClick)
                 } else {
                     Modifier
-                        .background(color = WordsTheme.colors.backgroundMediumColor)
+                        .background(color = WordsTheme.colors.backgroundMedium)
                         .noRippleClickable {}
                 }
             )
@@ -39,7 +39,7 @@ fun SaveChangedButton(
         Text(
             text = "Save",
             style = WordsTheme.typography.h3MediumTextStyle,
-            color = WordsTheme.colors.textColor,
+            color = WordsTheme.colors.text,
         )
     }
 }
