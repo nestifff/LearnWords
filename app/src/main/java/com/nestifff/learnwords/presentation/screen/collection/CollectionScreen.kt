@@ -36,23 +36,21 @@ fun CollectionScreen(
         }
     }
 
-    val onEvent: (Event) -> Unit = remember { { viewModel.onEvent(it) } }
-
     CollectionScreen(
         state = state,
-        onSettingsClick = { onEvent(Event.SettingsClicked) },
-        onLearnButtonClick = { onEvent(Event.LearnButtonClicked) },
-        onWordsInProgressClick = { onEvent(Event.WordsInProgressClicked) },
-        onWordsLearnedClick = { onEvent(Event.WordsLearnedClicked) },
-        onWordsFavoriteClick = { onEvent(Event.WordsFavoriteClicked) },
-        onWordItemClick = { onEvent(Event.WordItemClicked(it)) },
-        onWordItemValueChange = { (rus, eng) -> onEvent(Event.WordItemValueChanged(rus, eng)) },
-        onWordUpdateClick = { onEvent(Event.WordUpdateClicked) },
-        onWordDeleteClick = { onEvent(Event.WordDeleteClicked(it)) },
-        onOpenAddWordDialogClick = { onEvent(Event.OpenAddWordDialogClicked) },
-        onCloseAddWordDialogClick = { onEvent(Event.CloseAddWordDialogClicked) },
-        onAddWordValuesChange = { (rus, eng) -> onEvent(Event.AddWordValuesChanged(rus, eng)) },
-        onAddWordClick = { onEvent(Event.AddWordClicked) },
+        onSettingsClick = { viewModel.onSettingsClicked() },
+        onLearnButtonClick = { viewModel.onLearnButtonClicked() },
+        onWordsInProgressClick = { viewModel.onWordsInProgressClicked() },
+        onWordsLearnedClick = { viewModel.onWordsLearnedClicked() },
+        onWordsFavoriteClick = { viewModel.onWordsFavoriteClicked() },
+        onWordItemClick = { viewModel.onWordItemClicked(it) },
+        onWordItemValueChange = { (rus, eng) -> viewModel.onWordItemValueChanged(rus, eng) },
+        onWordUpdateClick = { viewModel.onWordUpdateClicked() },
+        onWordDeleteClick = { viewModel.onWordDeleteClicked(it) },
+        onOpenAddWordDialogClick = { viewModel.onOpenAddWordDialogClicked() },
+        onCloseAddWordDialogClick = { viewModel.onCloseAddWordDialogClicked() },
+        onAddWordValuesChange = { (rus, eng) -> viewModel.onAddWordValuesChanged(rus, eng) },
+        onAddWordClick = { viewModel.onAddWordClicked() },
     )
 }
 

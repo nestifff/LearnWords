@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<State : UiState, Event : UiEvent, Effect : UiEffect> :
-    AutoObserverViewModel(), UiEventHandler<Event> {
+abstract class BaseViewModel<State : UiState, Effect : UiEffect> :
+    AutoObserverViewModel() {
 
     private val mutableUiState: MutableStateFlow<State> by lazy {
         MutableStateFlow(createInitialState())
