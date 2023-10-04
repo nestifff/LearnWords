@@ -10,12 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
+import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun WordsList(
-    words: List<CollectionScreenWord>,
+    words: ImmutableList<CollectionScreenWord>,
     expandedWordState: ExpandedWordState?,
     modifier: Modifier = Modifier,
     onWordClick: (id: String) -> Unit,
@@ -32,7 +33,7 @@ fun WordsList(
 
             val currentItem by rememberUpdatedState(word)
 
-            val dismissState2 = rememberDismissState(
+            val removeDismissState = rememberDismissState(
                 confirmStateChange = {
                     if (it == DismissValue.DismissedToStart) {
                         onDeleteWordClick(currentItem.id)
@@ -44,10 +45,10 @@ fun WordsList(
             )
 
             SwipeToDismiss(
-                state = dismissState2,
+                state = removeDismissState,
                 modifier = Modifier
                     .animateItemPlacement(),
-                background = { WordListItemDeleteBackground(dismissState2) },
+                background = { WordListItemDeleteBackground(removeDismissState) },
                 directions = setOf(DismissDirection.EndToStart),
                 dismissThresholds = {
                     FractionalThreshold(0.2f)
