@@ -8,14 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.nestifff.learnwords.app.navigation.Graph
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect
-import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Event
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.WordsList
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
@@ -44,12 +40,12 @@ fun CollectionScreen(
         onWordsLearnedClick = { viewModel.onWordsLearnedClicked() },
         onWordsFavoriteClick = { viewModel.onWordsFavoriteClicked() },
         onWordItemClick = { viewModel.onWordItemClicked(it) },
-        onWordItemValueChange = { (rus, eng) -> viewModel.onWordItemValueChanged(rus, eng) },
+        onEditWordValuesChange = { rus, eng -> viewModel.onEditWordValuesChanged(rus, eng) },
         onWordUpdateClick = { viewModel.onWordUpdateClicked() },
-        onWordDeleteClick = { viewModel.onWordDeleteClicked(it) },
+        onDeleteWordClick = { viewModel.onWordDeleteClicked(it) },
         onOpenAddWordDialogClick = { viewModel.onOpenAddWordDialogClicked() },
         onCloseAddWordDialogClick = { viewModel.onCloseAddWordDialogClicked() },
-        onAddWordValuesChange = { (rus, eng) -> viewModel.onAddWordValuesChanged(rus, eng) },
+        onAddWordValuesChange = { rus, eng -> viewModel.onAddWordValuesChanged(rus, eng) },
         onAddWordClick = { viewModel.onAddWordClicked() },
     )
 }
@@ -63,10 +59,10 @@ fun CollectionScreen(
     onWordsInProgressClick: () -> Unit,
     onWordsLearnedClick: () -> Unit,
     onWordsFavoriteClick: () -> Unit,
-    onWordItemClick: (CollectionScreenWord) -> Unit,
-    onWordItemValueChange: (rus: String, eng: String) -> Unit,
+    onWordItemClick: (String) -> Unit,
+    onEditWordValuesChange: (rus: String, eng: String) -> Unit,
     onWordUpdateClick: () -> Unit,
-    onWordDeleteClick: (CollectionScreenWord) -> Unit,
+    onDeleteWordClick: (String) -> Unit,
     onOpenAddWordDialogClick: () -> Unit,
     onCloseAddWordDialogClick: () -> Unit,
     onAddWordValuesChange: (rus: String, eng: String) -> Unit,
@@ -77,7 +73,7 @@ fun CollectionScreen(
 
         if (state.addWordDialogState is AddWordDialogState.Expanded) {
             Box(
-                Modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .background(color = WordsTheme.colors.expandedDialogBackground)
                     .noRippleClickable { onCloseAddWordDialogClick() }
@@ -88,13 +84,17 @@ fun CollectionScreen(
             modifier = Modifier.imePadding(),
             topBar = {
                 CollectionTopBar(
-                    modifier = Modifier.padding(top = 3.dp, end = 4.dp),
+                    modifier = Modifier.padding(top = 4.dp, end = 4.dp),
                     onSettingsButtonClick = onSettingsClick
                 )
             },
             bottomBar = {
                 AddWordDialog(
-                    onEnterWord = { rus, eng -> }
+                    state = state.addWordDialogState,
+                    onValuesChange = { rus, eng -> onAddWordValuesChange(rus, eng) },
+                    onAddWordClick = { onAddWordClick() },
+                    onDismiss = { onCloseAddWordDialogClick() },
+                    onOpenClick = { onOpenAddWordDialogClick() }
                 )
             }
         ) { scaffoldPadding ->
@@ -104,16 +104,15 @@ fun CollectionScreen(
                     .padding(scaffoldPadding)
             ) {
                 WordsList(
+                    expandedWordState = state.expandedWordState,
+                    words = state.currWordsCollection,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
-                    words = state.currWordsCollection,
-                    onSaveClick = { updatedWord ->
-                        vm.onEvent(Event.WordUpdated(updatedWord))
-                    },
-                    onDeleteWordTrigger = {
-                        vm.onEvent(Event.WordDeleted(it))
-                    }
+                    onEditWordSaveClick = { onWordUpdateClick() },
+                    onDeleteWordClick = { onDeleteWordClick(it) },
+                    onWordClick = { onWordItemClick(it) },
+                    onEditWordValuesChange = onEditWordValuesChange,
                 )
                 CollectionsSwitcher(
                     modifier = Modifier.padding(horizontal = 10.dp),
@@ -121,7 +120,7 @@ fun CollectionScreen(
                 )
                 CollectionLearnButton(
                     modifier = Modifier
-                        .padding(bottom = 68.dp, end = 10.dp)
+                        .padding(bottom = 24.dp, end = 10.dp)
                         .align(Alignment.BottomEnd)
                 )
             }

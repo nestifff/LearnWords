@@ -6,7 +6,17 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,9 +27,6 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,38 +35,36 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.ext.emptyString
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.rippleClickable
+import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
 fun AddWordDialog(
+    state: AddWordDialogState,
     modifier: Modifier = Modifier,
-    isExpanded: Boolean,
-    onEnterWord: (rus: String, eng: String) -> Unit,
-    onDismiss
+    onValuesChange: (rus: String, eng: String) -> Unit,
+    onAddWordClick: () -> Unit,
+    onDismiss: () -> Unit,
+    onOpenClick: () -> Unit,
 ) {
+    val isExpanded = state is AddWordDialogState.Expanded
     val cornerRadiusDp by animateDpAsState(
         targetValue = if (isExpanded) 24.dp else 0.dp,
-        animationSpec = tween(1000)
+        animationSpec = tween(300),
+        label = ""
     )
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .then(
-                if (isExpanded) {
-                    Modifier.clip(
-                        RoundedCornerShape(
-                            topEnd = cornerRadiusDp,
-                            topStart = cornerRadiusDp
-                        )
-                    )
-                } else {
-                    Modifier
-                }
+            .clip(
+                RoundedCornerShape(
+                    topEnd = cornerRadiusDp,
+                    topStart = cornerRadiusDp
+                )
             )
             .noRippleClickable { }
             .background(color = WordsTheme.colors.primaryLight)
@@ -81,7 +86,7 @@ fun AddWordDialog(
                         color = WordsTheme.colors.textLight,
                         shape = RoundedCornerShape(24.dp)
                     )
-                    .rippleClickable { isVisible = true }
+                    .rippleClickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
                 style = WordsTheme.typography.h2MediumTextStyle,
@@ -93,28 +98,18 @@ fun AddWordDialog(
                     .padding(top = 6.dp, start = 6.dp)
                     .size(32.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .rippleClickable { isVisible = false },
+                    .rippleClickable { onDismiss() },
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
             )
         }
 
-        if (isExpanded) {
+        if (state is AddWordDialogState.Expanded) {
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
 
                 val focusManager = LocalFocusManager.current
-
-                var textRus by rememberSaveable { mutableStateOf(emptyString()) }
-                var textEng by rememberSaveable { mutableStateOf(emptyString()) }
-
-                val processValuesEntered: () -> Unit = {
-                    if (textRus.isNotEmpty() && textEng.isNotEmpty()) {
-                        onEnterWord(textRus, textEng)
-                        isVisible = false
-                    }
-                }
 
                 Row(
                     modifier = Modifier
@@ -125,8 +120,8 @@ fun AddWordDialog(
                     Column {
                         OneValueEnterRow(
                             text = "Rus",
-                            value = textRus,
-                            onValueChange = { textRus = it },
+                            value = state.rus,
+                            onValueChange = { onValuesChange(it, state.eng) },
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                             keyboardActions = KeyboardActions(
                                 onNext = {
@@ -137,11 +132,11 @@ fun AddWordDialog(
                         Spacer(modifier = Modifier.height(12.dp))
                         OneValueEnterRow(
                             text = "Eng",
-                            value = textEng,
-                            onValueChange = { textEng = it },
+                            value = state.eng,
+                            onValueChange = { onValuesChange(state.rus, it) },
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                             keyboardActions = KeyboardActions(
-                                onDone = { processValuesEntered() }
+                                onDone = { onAddWordClick() }
                             )
                         )
                     }
@@ -149,7 +144,7 @@ fun AddWordDialog(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .clip(RoundedCornerShape(12.dp))
-                            .rippleClickable(processValuesEntered)
+                            .rippleClickable { onAddWordClick() }
                             .size(32.dp)
                             .padding(2.dp),
                         imageVector = Icons.Default.ArrowForward,
@@ -197,6 +192,12 @@ private fun OneValueEnterRow(
 @Composable
 private fun AddWordComponentPreview() {
     ThemeCommon {
-        AddWordDialog(onEnterWord = { _, _ -> })
+        AddWordDialog(
+            state = AddWordDialogState.Hidden,
+            onValuesChange = { s: String, s1: String -> },
+            onAddWordClick = {},
+            onDismiss = {},
+            onOpenClick = {},
+        )
     }
 }

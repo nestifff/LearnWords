@@ -22,23 +22,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun WordsListItem(
-    modifier: Modifier = Modifier,
     word: CollectionScreenWord,
-    isSelected: Boolean,
-    onItemClick: () -> Unit,
-    onSaveClick: (updatedWord: CollectionScreenWord) -> Unit,
+    onClick: () -> Unit,
+    onEditWordValuesChange: (rus: String, eng: String) -> Unit,
+    onEditWordSaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    expandedWordState: ExpandedWordState? = null,
 ) {
-    var isSavingLoadingVisible by remember { mutableStateOf(false) }
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(color = WordsTheme.colors.backgroundLight)
-            .rippleClickable(onItemClick)
+            .rippleClickable(onClick)
     ) {
         Row(
             modifier = Modifier
@@ -46,22 +47,19 @@ fun WordsListItem(
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (!isSelected) {
+            if (expandedWordState == null) {
                 NotSelectedItemContent(word = word)
             } else {
-                SelectedItemContent(
+                ExpandedWordItem(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    word = word,
-                    onSaveButtonClick = {
-                        onSaveClick(it)
-                        isSavingLoadingVisible = true
-                    },
-                    isSavingLoadingVisible = isSavingLoadingVisible,
+                    state = expandedWordState,
+                    onEditWordValuesChange = onEditWordValuesChange,
+                    onSaveButtonClick = onEditWordSaveClick,
                 )
             }
             Icon(
                 modifier = Modifier
-                    .then(if (isSelected) Modifier.padding(top = 6.dp) else Modifier)
+                    .then(if (expandedWordState != null) Modifier.padding(top = 6.dp) else Modifier)
                     .size(28.dp),
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
@@ -71,14 +69,6 @@ fun WordsListItem(
                     WordsTheme.colors.backgroundMedium
                 }
             )
-        }
-    }
-
-    LaunchedEffect(isSavingLoadingVisible) {
-        if (isSavingLoadingVisible) {
-            delay(400)
-            isSavingLoadingVisible = false
-            onItemClick()
         }
     }
 }
@@ -92,7 +82,8 @@ fun WordListItemDeleteBackground(dismissState: DismissState) {
             DismissValue.Default -> Color.White
             else -> Color.Red
         },
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 1000),
+        label = ""
     )
     val alignment = Alignment.CenterEnd
     val icon = Icons.Default.Delete

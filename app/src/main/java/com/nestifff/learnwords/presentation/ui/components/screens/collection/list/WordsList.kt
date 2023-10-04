@@ -9,18 +9,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun WordsList(
-    modifier: Modifier = Modifier,
     words: List<CollectionScreenWord>,
-    onSaveClick: (updatedWord: CollectionScreenWord) -> Unit,
-    onDeleteWordTrigger: (id: String) -> Unit,
+    expandedWordState: ExpandedWordState?,
+    modifier: Modifier = Modifier,
+    onWordClick: (id: String) -> Unit,
+    onDeleteWordClick: (id: String) -> Unit,
+    onEditWordValuesChange: (rus: String, eng: String) -> Unit,
+    onEditWordSaveClick: () -> Unit,
 ) {
-
-    var selectedWordInd: Int? by remember { mutableStateOf(null) }
 
     LazyColumn(
         modifier = modifier,
@@ -33,7 +35,7 @@ fun WordsList(
             val dismissState2 = rememberDismissState(
                 confirmStateChange = {
                     if (it == DismissValue.DismissedToStart) {
-                        onDeleteWordTrigger(currentItem.id)
+                        onDeleteWordClick(currentItem.id)
                         true
                     } else {
                         false
@@ -52,13 +54,14 @@ fun WordsList(
                 },
             ) {
                 WordsListItem(
-                    modifier = Modifier.padding(vertical = 4.dp),
                     word = word,
-                    isSelected = selectedWordInd == ind,
-                    onItemClick = {
-                        selectedWordInd = if (selectedWordInd == ind) null else ind
+                    onEditWordSaveClick = { onEditWordSaveClick() },
+                    onClick = { onWordClick(word.id) },
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    expandedWordState = expandedWordState.takeIf {
+                        word.id == expandedWordState?.word?.id
                     },
-                    onSaveClick = onSaveClick
+                    onEditWordValuesChange = onEditWordValuesChange,
                 )
             }
         }

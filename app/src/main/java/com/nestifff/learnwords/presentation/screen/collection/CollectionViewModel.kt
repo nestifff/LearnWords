@@ -1,9 +1,9 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
-import com.nestifff.learnwords.app.core.UiEvent
 import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.ext.copy
 import com.nestifff.learnwords.ext.generateUUID
@@ -16,8 +16,8 @@ import com.nestifff.learnwords.presentation.screen.collection.model.CollectionTy
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.InProgress
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.Learned
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
-import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.screen.collection.model.change
+import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.words.domain.model.WordDomain
 import com.nestifff.words.domain.usecase.AddWordUseCase
 import com.nestifff.words.domain.usecase.DeleteWordUseCase
@@ -26,6 +26,7 @@ import com.nestifff.words.domain.usecase.UpdateWordUseCase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CollectionViewModel(
@@ -96,32 +97,45 @@ class CollectionViewModel(
         produceState(state.copy(currCollectionType = Favorites))
     }
 
-    fun onWordItemClicked(word: CollectionScreenWord) {
-        if (state.currWordsCollection.any { it.id == word.id }) {
-            val new = word.toExpandedState().takeIf { state.expandedWordState?.word != word }
-            produceState(state.copy(expandedWordState = new))
-        }
+    fun onWordItemClicked(id: String) {
+        val clickedWord = state.currWordsCollection.find { id == it.id } ?: return
+        val new = clickedWord.toExpandedState()
+            .takeIf { state.expandedWordState?.word != clickedWord }
+        produceState(state.copy(expandedWordState = new))
     }
 
-    fun onWordItemValueChanged(rus: String, eng: String) {
+    fun onEditWordValuesChanged(rus: String, eng: String) {
+        Log.i("Lalala", "onEditWordValuesChanged: rus = $rus, eng = $eng")
         state.expandedWordState?.let { expanded ->
             produceState(state.copy(expandedWordState = expanded.change(rus = rus, eng = eng)))
         }
     }
+
     fun onWordUpdateClicked() {
-        state.expandedWordState?.let { toUpdate ->
-            if (!toUpdate.isChanged) {
-                return@let
-            }
-            viewModelScope.launch {
-                updateWordUseCase.execute(toUpdate.word.toWordDomain())
-            }
+        Log.i("Lalala", "onWordUpdateClicked: 1, ${state.expandedWordState}")
+        val wordState = state.expandedWordState ?: return
+        if (!wordState.isSaveEnabled) {
+            return
+        }
+        Log.i("Lalala", "onWordUpdateClicked: 2")
+        viewModelScope.launch(Dispatchers.IO) {
+            produceState(
+                state.copy(
+                    expandedWordState = wordState.copy(
+                        isLoading = true,
+                        isSaveEnabled = false
+                    )
+                )
+            )
+            updateWordUseCase.execute(wordState.word.toWordDomain())
+            delay(400)
+            produceState(state.copy(expandedWordState = null))
         }
     }
 
-    fun onWordDeleteClicked(word: CollectionScreenWord) {
+    fun onWordDeleteClicked(id: String) {
         viewModelScope.launch {
-            deleteWordUseCase.execute(word.id)
+            deleteWordUseCase.execute(id)
         }
     }
 
@@ -146,7 +160,7 @@ class CollectionViewModel(
         if (dialogState !is AddWordDialogState.Expanded) {
             return
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             addWordUseCase.execute(
                 WordDomain(
                     id = generateUUID(),
@@ -156,6 +170,7 @@ class CollectionViewModel(
                     isFavorite = false
                 )
             )
+            produceState(state.copy(addWordDialogState = AddWordDialogState.Hidden))
         }
     }
 }

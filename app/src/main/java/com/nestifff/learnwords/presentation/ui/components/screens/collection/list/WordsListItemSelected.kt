@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -17,25 +16,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
+import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.SaveChangedButton
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
-internal fun SelectedItemContent(
+internal fun ExpandedWordItem(
     modifier: Modifier = Modifier,
-    word: CollectionScreenWord,
-    onSaveButtonClick: (updatedWord: CollectionScreenWord) -> Unit,
-    isSavingLoadingVisible: Boolean,
+    state: ExpandedWordState,
+    onEditWordValuesChange: (rus: String, eng: String) -> Unit,
+    onSaveButtonClick: () -> Unit,
 ) {
-    var textEng by rememberSaveable { mutableStateOf(word.eng) }
-    var textRus by rememberSaveable { mutableStateOf(word.rus) }
-
-    var isSaveButtonEnabled by remember {
-        mutableStateOf(false)
-    }
-    val isTextChanged: () -> Boolean = { textEng != word.eng || textRus != word.rus }
 
     val focusManager = LocalFocusManager.current
 
@@ -43,10 +37,9 @@ internal fun SelectedItemContent(
         modifier = modifier.padding(vertical = 12.dp)
     ) {
         WordsTextField(
-            value = textEng,
+            value = state.word.eng,
             onValueChange = {
-                textEng = it
-                isSaveButtonEnabled = isTextChanged()
+                onEditWordValuesChange(state.word.rus, it)
             },
             backgroundColor = WordsTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -58,27 +51,25 @@ internal fun SelectedItemContent(
         )
         WordsTextField(
             modifier = Modifier.padding(top = 6.dp),
-            value = textRus,
+            value = state.word.rus,
             onValueChange = {
-                textRus = it
-                isSaveButtonEnabled = isTextChanged()
+                onEditWordValuesChange(it, state.word.eng)
             },
             backgroundColor = WordsTheme.colors.backgroundMedium.copy(alpha = 0.6f),
-            keyboardActions = KeyboardActions(onDone = {
-                if (isTextChanged()) {
-                    isSaveButtonEnabled = true
-                    onSaveButtonClick(word.copy(rus = textRus, eng = textEng))
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
                 }
-            })
+            )
         )
         Box(
             modifier = Modifier.padding(top = 16.dp)
         ) {
             SaveChangedButton(
-                onClick = { onSaveButtonClick(word.copy(rus = textRus, eng = textEng)) },
-                isEnabled = isSaveButtonEnabled
+                isEnabled = state.isSaveEnabled,
+                onClick = onSaveButtonClick,
             )
-            if (isSavingLoadingVisible) {
+            if (state.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -96,15 +87,15 @@ internal fun SelectedItemContent(
 @Preview(showBackground = true)
 private fun SelectedItemContentPreview() {
     ThemeCommon {
-        SelectedItemContent(
-            word = CollectionScreenWord(
+        ExpandedWordItem(
+            state = CollectionScreenWord(
                 id = "",
                 eng = "English",
                 rus = "Russian",
                 isFavorite = false
-            ),
+            ).toExpandedState(),
             onSaveButtonClick = { },
-            isSavingLoadingVisible = true,
+            onEditWordValuesChange = { s: String, s1: String -> },
         )
     }
 }
