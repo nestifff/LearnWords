@@ -16,10 +16,6 @@ import com.nestifff.learnwords.presentation.screen.settings.di.DaggerSettingsCom
 fun NavGraphBuilder.settingsScreenDestination(navController: NavHostController) {
     composable(
         route = Destination.SettingsDestination.route,
-        enterTransition = { fadeIn() },
-        exitTransition = { fadeOut() },
-        popEnterTransition = { fadeIn() },
-        popExitTransition = { fadeOut() },
     ) {
         val daggerComponent = DaggerSettingsComponent.builder().build()
         val viewModel: SettingsViewModel = daggerViewModel { daggerComponent.getViewModel() }

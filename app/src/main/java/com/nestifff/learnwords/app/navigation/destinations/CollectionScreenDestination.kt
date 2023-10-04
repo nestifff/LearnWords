@@ -22,10 +22,6 @@ fun NavGraphBuilder.collectionScreenDestination(
 ) {
     composable(
         route = Destination.CollectionDestination.route,
-        enterTransition = { fadeIn() },
-        exitTransition = { fadeOut() },
-        popEnterTransition = { fadeIn() },
-        popExitTransition = { fadeOut() },
     ) {
 
         val daggerComponent = getApplication().appComponent.collectionComponent().create()
