@@ -85,8 +85,8 @@ dependencies {
     implementation(Dependencies.App.Compose.ui)
     implementation(Dependencies.App.Compose.tooling)
     implementation(Dependencies.App.Compose.material)
+    implementation(Dependencies.App.Compose.navigation)
 
-    implementation(Dependencies.App.Accompanist.animatedNavigation)
     implementation(Dependencies.App.Accompanist.uiController)
 
     testImplementation(Dependencies.Common.Test.jUnit)

@@ -44,6 +44,8 @@ object Dependencies {
             const val material = "androidx.compose.material:material:${Versions.compose}"
             const val tooling = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
 
+            const val navigation = "androidx.navigation:navigation-compose:2.7.4"
+
             const val toolingTest = "androidx.compose.ui:ui-tooling:${Versions.compose}"
             const val manifestTest = "androidx.compose.ui:ui-test-manifest:${Versions.compose}"
             const val uiTest = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
@@ -54,8 +56,6 @@ object Dependencies {
 
             const val uiController =
                 "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
-            const val animatedNavigation =
-                "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
         }
 
         object Lifecycle {
