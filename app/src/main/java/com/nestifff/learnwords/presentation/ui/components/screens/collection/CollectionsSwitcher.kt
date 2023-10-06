@@ -2,6 +2,7 @@ package com.nestifff.learnwords.presentation.ui.components.screens.collection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -11,7 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
@@ -71,7 +71,7 @@ private fun SwitcherItem(
                     WordsTheme.colors.primaryLight
                 }
             )
-            .rippleClickable { }
+            .clickable { }
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Text(

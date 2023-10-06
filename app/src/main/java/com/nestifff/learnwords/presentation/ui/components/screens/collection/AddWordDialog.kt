@@ -6,6 +6,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
-import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
@@ -86,7 +86,7 @@ fun AddWordDialog(
                         color = WordsTheme.colors.textLight,
                         shape = RoundedCornerShape(24.dp)
                     )
-                    .rippleClickable { onOpenClick() }
+                    .clickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
                 style = WordsTheme.typography.h2MediumTextStyle,
@@ -98,7 +98,7 @@ fun AddWordDialog(
                     .padding(top = 6.dp, start = 6.dp)
                     .size(32.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .rippleClickable { onDismiss() },
+                    .clickable { onDismiss() },
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
             )
@@ -144,7 +144,7 @@ fun AddWordDialog(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .clip(RoundedCornerShape(12.dp))
-                            .rippleClickable { onAddWordClick() }
+                            .clickable { onAddWordClick() }
                             .size(32.dp)
                             .padding(2.dp),
                         imageVector = Icons.Default.ArrowForward,

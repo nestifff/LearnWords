@@ -1,5 +1,8 @@
 package com.nestifff.learnwords.presentation.ui.theme
 
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -23,20 +26,30 @@ fun ThemeCommon(
 
     val typography = wordsTypography
 
+    val rippleIndication = rememberRipple()
+
     val systemUiController = rememberSystemUiController()
     SideEffect {
+        val darkIcons = when (paletteMode) {
+            PaletteMode.Dark -> false
+            PaletteMode.Light -> true
+        }
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = when (paletteMode) {
-                PaletteMode.Dark -> false
-                PaletteMode.Light -> true
-            }
+            darkIcons = darkIcons
+        )
+
+        systemUiController.setNavigationBarColor(
+            color = Color.Transparent,
+            darkIcons = darkIcons
         )
     }
 
     CompositionLocalProvider(
         LocalQuizColors provides colors,
         LocalQuizTypography provides typography,
+        LocalIndication provides rippleIndication,
+        LocalRippleTheme provides AppRippleTheme,
         content = content
     )
 }

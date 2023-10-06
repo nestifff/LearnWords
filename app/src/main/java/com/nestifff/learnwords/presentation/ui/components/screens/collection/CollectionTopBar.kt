@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
@@ -32,7 +32,7 @@ fun CollectionTopBar(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .clip(RoundedCornerShape(8.dp))
-                .rippleClickable(onSettingsButtonClick)
+                .clickable { onSettingsButtonClick() }
                 .padding(2.dp)
                 .size(24.dp)
             ,

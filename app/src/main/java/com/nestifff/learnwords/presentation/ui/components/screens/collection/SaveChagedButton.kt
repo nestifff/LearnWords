@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
-import com.nestifff.learnwords.ext.rippleClickable
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
@@ -26,7 +26,7 @@ fun SaveChangedButton(
                 if (isEnabled) {
                     Modifier
                         .background(color = WordsTheme.colors.primaryLight)
-                        .rippleClickable(onClick)
+                        .clickable { onClick() }
                 } else {
                     Modifier
                         .background(color = WordsTheme.colors.backgroundMedium)

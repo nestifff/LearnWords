@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DismissState
@@ -20,11 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.ext.rippleClickable
+import com.nestifff.learnwords.ext.thenIfCondition
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun WordsListItem(
@@ -39,7 +39,7 @@ fun WordsListItem(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(color = WordsTheme.colors.backgroundLight)
-            .rippleClickable(onClick)
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier
@@ -59,7 +59,10 @@ fun WordsListItem(
             }
             Icon(
                 modifier = Modifier
-                    .then(if (expandedWordState != null) Modifier.padding(top = 6.dp) else Modifier)
+                    .thenIfCondition(
+                        condition = expandedWordState != null,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
                     .size(28.dp),
                 imageVector = Icons.Default.Star,
                 contentDescription = null,

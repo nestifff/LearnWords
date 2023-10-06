@@ -119,9 +119,11 @@ fun CollectionScreen(
                     collections = listOf("In progress", "Learned", "Favorites")
                 )
                 CollectionLearnButton(
+                    onClick = onLearnButtonClick,
+                    onLongClick = {},
                     modifier = Modifier
                         .padding(bottom = 24.dp, end = 10.dp)
-                        .align(Alignment.BottomEnd)
+                        .align(Alignment.BottomEnd),
                 )
             }
         }
