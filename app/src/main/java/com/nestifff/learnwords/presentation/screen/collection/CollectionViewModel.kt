@@ -5,15 +5,14 @@ import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
 import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.ext.copy
+import com.nestifff.learnwords.ext.emptyImmutableList
 import com.nestifff.learnwords.ext.generateUUID
+import com.nestifff.learnwords.ext.immutableListOf
+import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordCollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.mapper.toWordDomain
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.Favorites
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.InProgress
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.Learned
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.screen.collection.model.change
@@ -36,10 +35,16 @@ class CollectionViewModel(
     private val deleteWordUseCase: DeleteWordUseCase,
 ) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Effect>() {
 
+    private var wordsInProgress: ImmutableList<CollectionScreenWord> = emptyImmutableList()
+    private var wordsLearned: ImmutableList<CollectionScreenWord> = emptyImmutableList()
+    private var wordsFavorites: ImmutableList<CollectionScreenWord> = emptyImmutableList()
+
     data class State(
-        val wordsInProgress: ImmutableList<CollectionScreenWord>,
-        val wordsLearned: ImmutableList<CollectionScreenWord>,
-        val wordsFavorites: ImmutableList<CollectionScreenWord>,
+        val collectionTypes: ImmutableList<CollectionType> = immutableListOf(
+            CollectionType.InProgress,
+            CollectionType.Learned,
+            CollectionType.Favorite
+        ),
         val currCollectionType: CollectionType,
         val currWordsCollection: ImmutableList<CollectionScreenWord>,
         val addWordDialogState: AddWordDialogState,
@@ -48,20 +53,21 @@ class CollectionViewModel(
     ) : UiState
 
     sealed class Effect : UiEffect {
-        object NavigateToSettingsScreen : Effect()
-        object NavigateToLearnScreen : Effect()
+        data object NavigateToSettingsScreen : Effect()
+        data object NavigateToLearnScreen : Effect()
     }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            getAllWordsFlowUseCase.execute().collect() { dbWords ->
+            getAllWordsFlowUseCase.execute().collect { dbWords ->
                 val words = dbWords.map { it.toWordCollectionScreen() }.toImmutableList()
+                wordsInProgress = words
+                wordsFavorites = words.subList(4, 10)
+                wordsLearned = words.subList(3, 5)
                 produceState(
                     state.copy(
-                        wordsLearned = words,
-                        wordsInProgress = words.copy(),
-                        wordsFavorites = words.copy(),
                         currWordsCollection = words,
+                        currCollectionType = CollectionType.InProgress,
                     )
                 )
             }
@@ -69,11 +75,8 @@ class CollectionViewModel(
     }
 
     override fun createInitialState(): State = State(
-        wordsInProgress = listOf<CollectionScreenWord>().toImmutableList(),
-        wordsLearned = listOf<CollectionScreenWord>().toImmutableList(),
-        wordsFavorites = listOf<CollectionScreenWord>().toImmutableList(),
-        currCollectionType = InProgress,
-        currWordsCollection = listOf<CollectionScreenWord>().toImmutableList(),
+        currCollectionType = CollectionType.InProgress,
+        currWordsCollection = emptyImmutableList(),
         addWordDialogState = AddWordDialogState.Hidden,
         expandedWordState = null,
         customLearnDialogState = CustomLearnDialogState.Hidden,
@@ -107,16 +110,16 @@ class CollectionViewModel(
         produceEffect(Effect.NavigateToLearnScreen)
     }
 
-    fun onWordsInProgressClicked() {
-        produceState(state.copy(currCollectionType = InProgress))
-    }
-
-    fun onWordsLearnedClicked() {
-        produceState(state.copy(currCollectionType = Learned))
-    }
-
-    fun onWordsFavoriteClicked() {
-        produceState(state.copy(currCollectionType = Favorites))
+    fun onCollectionTypeClicked(type: CollectionType) {
+        val newState = state.copy(
+            currCollectionType = type,
+            currWordsCollection = when(type) {
+                CollectionType.InProgress -> wordsInProgress
+                CollectionType.Learned -> wordsLearned
+                CollectionType.Favorite -> wordsFavorites
+            }
+        )
+        produceState(newState)
     }
 
     fun onWordItemClicked(id: String) {

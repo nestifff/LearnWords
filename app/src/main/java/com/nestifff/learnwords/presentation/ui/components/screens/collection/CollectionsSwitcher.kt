@@ -3,7 +3,11 @@ package com.nestifff.learnwords.presentation.ui.components.screens.collection
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,12 +16,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
 fun CollectionsSwitcher(
+    types: List<CollectionType>,
+    selectedType: CollectionType,
+    onCollectionTypeClick: (CollectionType) -> Unit,
     modifier: Modifier = Modifier,
-    collections: List<String>
 ) {
     Box(
         modifier = modifier
@@ -44,11 +51,12 @@ fun CollectionsSwitcher(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            for (collection in collections) {
+            for (type in types) {
                 SwitcherItem(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    collection = collection,
-                    isActive = collection == collections.first()
+                    collection = type.text(),
+                    isActive = type == selectedType,
+                    onClick = { onCollectionTypeClick(type) }
                 )
             }
         }
@@ -60,6 +68,7 @@ private fun SwitcherItem(
     modifier: Modifier = Modifier,
     collection: String,
     isActive: Boolean,
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -71,7 +80,7 @@ private fun SwitcherItem(
                     WordsTheme.colors.primaryLight
                 }
             )
-            .clickable { }
+            .clickable { onClick() }
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Text(
@@ -79,5 +88,13 @@ private fun SwitcherItem(
             style = WordsTheme.typography.h2MediumTextStyle,
             color = WordsTheme.colors.text,
         )
+    }
+}
+
+private fun CollectionType.text(): String {
+    return when (this) {
+        CollectionType.InProgress -> "In progress"
+        CollectionType.Learned -> "Learned"
+        CollectionType.Favorite -> "Favorite"
     }
 }

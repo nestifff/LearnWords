@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.onEffect
+import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordDialog
@@ -38,9 +39,7 @@ fun CollectionScreen(
         onCustomLeanDialogDismiss = { viewModel.onCustomLeanDialogDismissed() },
         onCustomLeanDialogNumberChange = { viewModel.onCustomLeanDialogNumberChanged(it) },
         onCustomLeanDialogLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
-        onWordsInProgressClick = { viewModel.onWordsInProgressClicked() },
-        onWordsLearnedClick = { viewModel.onWordsLearnedClicked() },
-        onWordsFavoriteClick = { viewModel.onWordsFavoriteClicked() },
+        onCollectionTypeClick = { viewModel.onCollectionTypeClicked(it) },
         onWordItemClick = { viewModel.onWordItemClicked(it) },
         onEditWordValuesChange = { rus, eng -> viewModel.onEditWordValuesChanged(rus, eng) },
         onWordUpdateClick = { viewModel.onWordUpdateClicked() },
@@ -59,12 +58,10 @@ fun CollectionScreen(
     onSettingsClick: () -> Unit,
     onLearnButtonClick: () -> Unit,
     onLearnButtonLongClick: () -> Unit,
-    onWordsInProgressClick: () -> Unit,
     onCustomLeanDialogDismiss: () -> Unit,
     onCustomLeanDialogNumberChange: (Int) -> Unit,
     onCustomLeanDialogLearnClick: () -> Unit,
-    onWordsLearnedClick: () -> Unit,
-    onWordsFavoriteClick: () -> Unit,
+    onCollectionTypeClick: (CollectionType) -> Unit,
     onWordItemClick: (String) -> Unit,
     onEditWordValuesChange: (rus: String, eng: String) -> Unit,
     onWordUpdateClick: () -> Unit,
@@ -111,8 +108,10 @@ fun CollectionScreen(
                     onEditWordValuesChange = onEditWordValuesChange,
                 )
                 CollectionsSwitcher(
+                    types = state.collectionTypes,
+                    selectedType = state.currCollectionType,
+                    onCollectionTypeClick = onCollectionTypeClick,
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    collections = listOf("In progress", "Learned", "Favorites")
                 )
                 CollectionLearnButton(
                     onClick = onLearnButtonClick,
