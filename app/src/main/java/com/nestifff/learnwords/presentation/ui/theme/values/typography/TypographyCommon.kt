@@ -14,7 +14,4 @@ data class TypographyCommon(
     val h3RegularTextStyle: TextStyle,
     val h3MediumTextStyle: TextStyle,
     val h3BoldTextStyle: TextStyle,
-    val h4RegularTextStyle: TextStyle,
-    val h4MediumTextStyle: TextStyle,
-    val h4BoldTextStyle: TextStyle,
 )

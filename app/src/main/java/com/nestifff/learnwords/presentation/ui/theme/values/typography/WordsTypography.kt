@@ -19,60 +19,45 @@ val robotoFontFamily = FontFamily(
 val wordsTypography = TypographyCommon(
     h1RegularTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 26.sp,
+        fontSize = 20.sp,
         fontWeight = FontWeight.Normal
     ),
     h1MediumTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 26.sp,
+        fontSize = 20.sp,
         fontWeight = FontWeight.Medium
     ),
     h1BoldTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 26.sp,
+        fontSize = 20.sp,
         fontWeight = FontWeight.Bold
     ),
     h2RegularTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Normal
     ),
     h2MediumTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Medium
     ),
     h2BoldTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Bold
     ),
     h3RegularTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 16.sp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.Normal
     ),
     h3MediumTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
-        fontSize = 16.sp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.Medium
     ),
     h3BoldTextStyle = TextStyle(
-        fontFamily = robotoFontFamily,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Bold
-    ),
-    h4RegularTextStyle = TextStyle(
-        fontFamily = robotoFontFamily,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Normal
-    ),
-    h4MediumTextStyle = TextStyle(
-        fontFamily = robotoFontFamily,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Medium
-    ),
-    h4BoldTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold

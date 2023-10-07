@@ -76,7 +76,7 @@ private fun SwitcherItem(
     ) {
         Text(
             text = collection,
-            style = WordsTheme.typography.h3MediumTextStyle,
+            style = WordsTheme.typography.h2MediumTextStyle,
             color = WordsTheme.colors.text,
         )
     }

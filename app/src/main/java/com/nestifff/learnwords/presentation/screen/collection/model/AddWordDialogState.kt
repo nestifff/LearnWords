@@ -4,15 +4,10 @@ import com.nestifff.learnwords.ext.emptyString
 
 sealed class AddWordDialogState {
 
-    object Hidden : AddWordDialogState()
+    data object Hidden : AddWordDialogState()
 
     data class Expanded(
-        val rus: String,
-        val eng: String,
-    ) : AddWordDialogState() {
-
-        companion object {
-            fun empty() = Expanded(emptyString(), emptyString())
-        }
-    }
+        val rus: String = emptyString(),
+        val eng: String = emptyString(),
+    ) : AddWordDialogState()
 }

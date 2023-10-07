@@ -1,6 +1,5 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
@@ -8,13 +7,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect
-import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordDialog
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.CustomLearnDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.WordsList
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
 
 @Composable
 fun CollectionScreen(
@@ -36,6 +34,10 @@ fun CollectionScreen(
         state = state,
         onSettingsClick = { viewModel.onSettingsClicked() },
         onLearnButtonClick = { viewModel.onLearnButtonClicked() },
+        onLearnButtonLongClick = { viewModel.onLearnButtonLongClicked() },
+        onCustomLeanDialogDismiss = { viewModel.onCustomLeanDialogDismissed() },
+        onCustomLeanDialogNumberChange = { viewModel.onCustomLeanDialogNumberChanged(it) },
+        onCustomLeanDialogLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
         onWordsInProgressClick = { viewModel.onWordsInProgressClicked() },
         onWordsLearnedClick = { viewModel.onWordsLearnedClicked() },
         onWordsFavoriteClick = { viewModel.onWordsFavoriteClicked() },
@@ -56,7 +58,11 @@ fun CollectionScreen(
     state: CollectionViewModel.State,
     onSettingsClick: () -> Unit,
     onLearnButtonClick: () -> Unit,
+    onLearnButtonLongClick: () -> Unit,
     onWordsInProgressClick: () -> Unit,
+    onCustomLeanDialogDismiss: () -> Unit,
+    onCustomLeanDialogNumberChange: (Int) -> Unit,
+    onCustomLeanDialogLearnClick: () -> Unit,
     onWordsLearnedClick: () -> Unit,
     onWordsFavoriteClick: () -> Unit,
     onWordItemClick: (String) -> Unit,
@@ -70,16 +76,6 @@ fun CollectionScreen(
 ) {
 
     Box(modifier = Modifier.fillMaxSize()) {
-
-        if (state.addWordDialogState is AddWordDialogState.Expanded) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = WordsTheme.colors.expandedDialogBackground)
-                    .noRippleClickable { onCloseAddWordDialogClick() }
-            )
-        }
-
         Scaffold(
             modifier = Modifier.imePadding(),
             topBar = {
@@ -120,10 +116,17 @@ fun CollectionScreen(
                 )
                 CollectionLearnButton(
                     onClick = onLearnButtonClick,
-                    onLongClick = {},
+                    onLongClick = onLearnButtonLongClick,
                     modifier = Modifier
                         .padding(bottom = 24.dp, end = 10.dp)
                         .align(Alignment.BottomEnd),
+                )
+
+                CustomLearnDialog(
+                    state = state.customLearnDialogState,
+                    onNumberToLearnChange = onCustomLeanDialogNumberChange,
+                    onLearnClick = onCustomLeanDialogLearnClick,
+                    onDismiss = onCustomLeanDialogDismiss
                 )
             }
         }

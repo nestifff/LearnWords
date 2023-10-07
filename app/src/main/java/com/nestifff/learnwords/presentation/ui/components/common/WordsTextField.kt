@@ -19,7 +19,7 @@ fun WordsTextField(
     value: String,
     onValueChange: (String) -> Unit,
     backgroundColor: Color = WordsTheme.colors.backgroundLight,
-    textStyle: TextStyle = WordsTheme.typography.h3RegularTextStyle,
+    textStyle: TextStyle = WordsTheme.typography.h2RegularTextStyle,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     keyboardActions: KeyboardActions = KeyboardActions()
 ) {

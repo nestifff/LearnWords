@@ -1,4 +1,4 @@
-package com.nestifff.learnwords.presentation.ui.components.screens.collection
+package com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
@@ -89,7 +89,7 @@ fun AddWordDialog(
                     .clickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
-                style = WordsTheme.typography.h2MediumTextStyle,
+                style = WordsTheme.typography.h1MediumTextStyle,
                 color = WordsTheme.colors.textLight
             )
         } else {
@@ -172,7 +172,7 @@ private fun OneValueEnterRow(
     ) {
         Text(
             text = text,
-            style = WordsTheme.typography.h3RegularTextStyle,
+            style = WordsTheme.typography.h2RegularTextStyle,
             color = WordsTheme.colors.text,
         )
         Spacer(modifier = Modifier.width(12.dp))
@@ -181,7 +181,7 @@ private fun OneValueEnterRow(
             value = value,
             onValueChange = onValueChange,
             backgroundColor = WordsTheme.colors.backgroundLight.copy(alpha = 0.8f),
-            textStyle = WordsTheme.typography.h2RegularTextStyle,
+            textStyle = WordsTheme.typography.h1RegularTextStyle,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
         )

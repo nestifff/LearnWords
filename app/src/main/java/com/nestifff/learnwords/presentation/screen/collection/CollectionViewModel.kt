@@ -1,6 +1,5 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
@@ -15,6 +14,7 @@ import com.nestifff.learnwords.presentation.screen.collection.model.CollectionTy
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.Favorites
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.InProgress
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionType.Learned
+import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
@@ -44,6 +44,7 @@ class CollectionViewModel(
         val currWordsCollection: ImmutableList<CollectionScreenWord>,
         val addWordDialogState: AddWordDialogState,
         val expandedWordState: ExpandedWordState? = null,
+        val customLearnDialogState: CustomLearnDialogState,
     ) : UiState
 
     sealed class Effect : UiEffect {
@@ -75,6 +76,7 @@ class CollectionViewModel(
         currWordsCollection = listOf<CollectionScreenWord>().toImmutableList(),
         addWordDialogState = AddWordDialogState.Hidden,
         expandedWordState = null,
+        customLearnDialogState = CustomLearnDialogState.Hidden,
     )
 
     fun onSettingsClicked() {
@@ -82,6 +84,26 @@ class CollectionViewModel(
     }
 
     fun onLearnButtonClicked() {
+        produceEffect(Effect.NavigateToLearnScreen)
+    }
+
+    fun onLearnButtonLongClicked() {
+        produceState(state.copy(customLearnDialogState = CustomLearnDialogState.Expanded(20)))
+    }
+
+    fun onCustomLeanDialogDismissed() {
+        produceState(state.copy(customLearnDialogState = CustomLearnDialogState.Hidden))
+    }
+
+    fun onCustomLeanDialogNumberChanged(number: Int) {
+        val dialogState = state.customLearnDialogState
+        if (dialogState !is CustomLearnDialogState.Expanded) {
+            return
+        }
+        produceState(state.copy(customLearnDialogState = dialogState.copy(numberToLearn = number)))
+    }
+
+    fun onCustomLeanDialogLearnClicked() {
         produceEffect(Effect.NavigateToLearnScreen)
     }
 
@@ -105,30 +127,26 @@ class CollectionViewModel(
     }
 
     fun onEditWordValuesChanged(rus: String, eng: String) {
-        Log.i("Lalala", "onEditWordValuesChanged: rus = $rus, eng = $eng")
         state.expandedWordState?.let { expanded ->
             produceState(state.copy(expandedWordState = expanded.change(rus = rus, eng = eng)))
         }
     }
 
     fun onWordUpdateClicked() {
-        Log.i("Lalala", "onWordUpdateClicked: 1, ${state.expandedWordState}")
         val wordState = state.expandedWordState ?: return
         if (!wordState.isSaveEnabled) {
             return
         }
-        Log.i("Lalala", "onWordUpdateClicked: 2")
         viewModelScope.launch(Dispatchers.IO) {
             produceState(
                 state.copy(
                     expandedWordState = wordState.copy(
-                        isLoading = true,
-                        isSaveEnabled = false
+                        isLoading = true, isSaveEnabled = false
                     )
                 )
             )
             updateWordUseCase.execute(wordState.word.toWordDomain())
-            delay(400)
+            delay(600)
             produceState(state.copy(expandedWordState = null))
         }
     }
@@ -140,7 +158,7 @@ class CollectionViewModel(
     }
 
     fun onOpenAddWordDialogClicked() {
-        produceState(state.copy(addWordDialogState = AddWordDialogState.Expanded.empty()))
+        produceState(state.copy(addWordDialogState = AddWordDialogState.Expanded()))
     }
 
     fun onCloseAddWordDialogClicked() {

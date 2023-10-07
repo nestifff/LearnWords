@@ -26,7 +26,7 @@ internal fun NotSelectedItemContent(
         Text(
             modifier = Modifier.padding(end = 6.dp),
             text = word.eng,
-            style = WordsTheme.typography.h2RegularTextStyle,
+            style = WordsTheme.typography.h1RegularTextStyle,
             color = WordsTheme.colors.text,
         )
         Icon(
@@ -38,7 +38,7 @@ internal fun NotSelectedItemContent(
         Text(
             modifier = Modifier.padding(start = 6.dp),
             text = word.rus,
-            style = WordsTheme.typography.h2RegularTextStyle,
+            style = WordsTheme.typography.h1RegularTextStyle,
             color = WordsTheme.colors.text,
         )
     }
