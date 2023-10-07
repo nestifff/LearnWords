@@ -6,6 +6,7 @@ import androidx.navigation.navigation
 import com.nestifff.learnwords.app.navigation.Destination
 import com.nestifff.learnwords.app.navigation.Graph
 import com.nestifff.learnwords.app.navigation.destinations.collectionScreenDestination
+import com.nestifff.learnwords.app.navigation.destinations.learnScreenDestination
 
 fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
@@ -15,5 +16,6 @@ fun NavGraphBuilder.mainGraph(
         route = Graph.MainGraph.route
     ) {
         collectionScreenDestination(navController)
+        learnScreenDestination(navController)
     }
 }

@@ -17,13 +17,13 @@ fun NavGraphBuilder.collectionScreenDestination(
         route = Destination.CollectionDestination.route,
     ) {
 
-        val daggerComponent = getApplication().appComponent.collectionComponent().create()
+        val daggerComponent = getApplication().appComponent.collectionScreenComponent().create()
         val viewModel: CollectionViewModel = daggerViewModel { daggerComponent.getViewModel() }
 
         CollectionScreen(
             viewModel = viewModel,
             navigateToSettingsScreen = { navController.navigate(Graph.SettingsGraph.route) },
-            navigateToLearnScreen = {}
+            navigateToLearnScreen = { navController.navigate(Destination.CollectionDestination.route) }
         )
     }
 }

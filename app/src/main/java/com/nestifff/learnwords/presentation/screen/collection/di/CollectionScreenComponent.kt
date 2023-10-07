@@ -5,12 +5,12 @@ import dagger.Subcomponent
 
 
 @CollectionScreenScope
-@Subcomponent(modules = [CollectionModule::class])
-interface CollectionComponent {
+@Subcomponent(modules = [CollectionScreenModule::class])
+interface CollectionScreenComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(): CollectionComponent
+        fun create(): CollectionScreenComponent
     }
 
     fun getViewModel() : CollectionViewModel

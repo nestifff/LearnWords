@@ -31,7 +31,7 @@ fun CollectionScreen(
         }
     }
 
-    CollectionScreen(
+    CollectionScreenContent(
         state = state,
         onSettingsClick = { viewModel.onSettingsClicked() },
         onLearnButtonClick = { viewModel.onLearnButtonClicked() },
@@ -53,7 +53,7 @@ fun CollectionScreen(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CollectionScreen(
+private fun CollectionScreenContent(
     state: CollectionViewModel.State,
     onSettingsClick: () -> Unit,
     onLearnButtonClick: () -> Unit,

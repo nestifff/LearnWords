@@ -10,7 +10,7 @@ import dagger.Provides
 
 
 @Module
-class CollectionModule {
+class CollectionScreenModule {
 
     @Provides
     @CollectionScreenScope

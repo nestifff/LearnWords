@@ -2,7 +2,8 @@ package com.nestifff.learnwords.app.di
 
 import android.app.Application
 import com.nestifff.learnwords.app.App
-import com.nestifff.learnwords.presentation.screen.collection.di.CollectionComponent
+import com.nestifff.learnwords.presentation.screen.collection.di.CollectionScreenComponent
+import com.nestifff.learnwords.presentation.screen.learn.di.LearnScreenComponent
 import com.nestifff.learnwords.presentation.screen.root.MainActivity
 import com.nestifff.learnwords.presentation.screen.root.MainActivityModule
 import com.nestifff.words.data.di.DatabaseModule
@@ -36,5 +37,7 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
 
     // TODO try implement
-    fun collectionComponent(): CollectionComponent.Factory
+    fun collectionScreenComponent(): CollectionScreenComponent.Factory
+
+    fun learnScreenComponent(): LearnScreenComponent.Factory
 }
