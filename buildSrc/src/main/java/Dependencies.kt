@@ -24,10 +24,20 @@ object Dependencies {
             const val daggerVersion = "2.48.1"
             const val dagger = "com.google.dagger:dagger:$daggerVersion"
             const val compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+
+            const val assistedInjectAnnotations = "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
+            const val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
         }
 
         object DetektPlugins {
             const val composeRules = "ru.kode:detekt-rules-compose:1.0.1"
+        }
+
+        object Json {
+            const val kotlinxSerialization =
+                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+            const val kotlinxSerializationConverter =
+                "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
         }
     }
 
@@ -84,13 +94,6 @@ object Dependencies {
 
         object Coroutines {
             const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
-        }
-
-        object Json {
-            const val kotlinxSerialization =
-                "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
-            const val kotlinxSerializationConverter =
-                "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
         }
 
         object DataStore {

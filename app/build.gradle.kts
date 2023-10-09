@@ -100,10 +100,12 @@ dependencies {
 
     implementation(Dependencies.Common.Dagger.dagger)
     kapt(Dependencies.Common.Dagger.compiler)
+    compileOnly(Dependencies.Common.Dagger.assistedInjectAnnotations)
+    kapt(Dependencies.Common.Dagger.assistedInjectProcessor)
 
     implementation(Dependencies.App.Collections.immutableCollections)
 
     detektPlugins(Dependencies.Common.DetektPlugins.composeRules)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(Dependencies.Common.Json.kotlinxSerialization)
 }

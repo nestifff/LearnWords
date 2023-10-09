@@ -1,11 +1,10 @@
 package com.nestifff.learnwords.presentation.screen.learn.di
 
-import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel
 import dagger.Subcomponent
 
 
 @LearnScreenScope
-@Subcomponent(modules = [LearnScreenModule::class])
+@Subcomponent
 interface LearnScreenComponent {
 
     @Subcomponent.Factory
@@ -13,5 +12,5 @@ interface LearnScreenComponent {
         fun create(): LearnScreenComponent
     }
 
-    fun getViewModel() : LearnViewModel
+    val viewModelFactory: LearnViewModelFactory
 }

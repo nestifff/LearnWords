@@ -3,13 +3,14 @@ package com.nestifff.learnwords.presentation.screen.learn
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
 import com.nestifff.learnwords.app.core.UiState
+import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class LearnViewModel(
-//    wordsNum: Int,
-//    mayToLearn: WayToLearn,
-//    collectionType: CollectionType,
+class LearnViewModel @AssistedInject constructor(
+    @Assisted navigationArgument: LearnScreenArgument,
 ) : BaseViewModel<LearnViewModel.State, LearnViewModel.Effect>() {
 
     sealed class State : UiState {
@@ -26,4 +27,5 @@ class LearnViewModel(
     sealed class Effect : UiEffect
 
     override fun createInitialState(): State = State.Loading
+
 }

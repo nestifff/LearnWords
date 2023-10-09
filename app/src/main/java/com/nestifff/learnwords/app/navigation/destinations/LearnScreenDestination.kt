@@ -16,6 +16,7 @@ import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.learn.LearnScreen
 import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel
+import com.nestifff.learnwords.presentation.screen.learn.di.learnViewModelFactory
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -55,7 +56,9 @@ fun NavGraphBuilder.learnScreenDestination(
         Log.i("Lalala", "learnScreenDestination: $arg")
 
         val daggerComponent = getApplication().appComponent.learnScreenComponent().create()
-        val viewModel: LearnViewModel = daggerViewModel { daggerComponent.getViewModel() }
+        val viewModel: LearnViewModel = daggerViewModel {
+            learnViewModelFactory(daggerComponent.viewModelFactory, arg).create(LearnViewModel::class.java)
+        }
 
         LearnScreen(viewModel = viewModel)
     }
