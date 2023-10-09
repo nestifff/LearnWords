@@ -9,7 +9,7 @@ import com.nestifff.learnwords.presentation.ui.theme.values.colors.ColorCommon
 const val ColorProviderError = "No colors provided"
 const val TypographyProviderError = "No typography provided"
 
-object WordsTheme {
+object AppTheme {
     val colors: ColorCommon
         @Composable
         @ReadOnlyComposable

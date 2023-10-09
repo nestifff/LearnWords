@@ -23,7 +23,7 @@ fun NavGraphBuilder.collectionScreenDestination(
         CollectionScreen(
             viewModel = viewModel,
             navigateToSettingsScreen = { navController.navigate(Graph.SettingsGraph.route) },
-            navigateToLearnScreen = { navController.navigate(Destination.CollectionDestination.route) }
+            navigateToLearnScreen = { navController.navigate(Destination.LearnDestination.route) }
         )
     }
 }

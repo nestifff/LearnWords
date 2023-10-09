@@ -1,9 +1,14 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import com.nestifff.learnwords.ext.onEffect
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun LearnScreen(
@@ -28,5 +33,11 @@ fun LearnScreen(
 fun LearnScreenContent(
     state: LearnViewModel.State,
 ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = AppTheme.colors.secondary)
+    ) {
 
+    }
 }

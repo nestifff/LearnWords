@@ -20,8 +20,8 @@ import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWord
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.SaveChangedButton
-import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 internal fun ExpandedWordItem(
@@ -41,7 +41,7 @@ internal fun ExpandedWordItem(
             onValueChange = {
                 onEditWordValuesChange(state.word.rus, it)
             },
-            backgroundColor = WordsTheme.colors.backgroundMedium.copy(alpha = 0.6f),
+            backgroundColor = AppTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = {
@@ -55,7 +55,7 @@ internal fun ExpandedWordItem(
             onValueChange = {
                 onEditWordValuesChange(it, state.word.eng)
             },
-            backgroundColor = WordsTheme.colors.backgroundMedium.copy(alpha = 0.6f),
+            backgroundColor = AppTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
@@ -74,7 +74,7 @@ internal fun ExpandedWordItem(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .size(24.dp),
-                    color = WordsTheme.colors.primary,
+                    color = AppTheme.colors.primary,
                     strokeWidth = 3.dp
                 )
             }
@@ -86,7 +86,7 @@ internal fun ExpandedWordItem(
 @Composable
 @Preview(showBackground = true)
 private fun SelectedItemContentPreview() {
-    ThemeCommon {
+    ThemeProvider {
         ExpandedWordItem(
             state = CollectionScreenWord(
                 id = "",

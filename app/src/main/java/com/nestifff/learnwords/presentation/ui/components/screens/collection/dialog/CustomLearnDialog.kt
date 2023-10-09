@@ -22,8 +22,8 @@ import androidx.core.text.isDigitsOnly
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
-import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun CustomLearnDialog(
@@ -43,7 +43,7 @@ fun CustomLearnDialog(
             Column(
                 modifier = modifier
                     .clip(RoundedCornerShape(12.dp))
-                    .background(WordsTheme.colors.background)
+                    .background(AppTheme.colors.background)
                     .fillMaxWidth(0.75f)
                     .padding(16.dp),
             ) {
@@ -52,8 +52,8 @@ fun CustomLearnDialog(
                 ) {
                     Text(
                         text = "Number:",
-                        style = WordsTheme.typography.h2MediumTextStyle,
-                        color = WordsTheme.colors.text,
+                        style = AppTheme.typography.h2MediumTextStyle,
+                        color = AppTheme.colors.text,
                     )
                     WordsTextField(
                         value = state.numberToLearn.toString(),
@@ -75,8 +75,8 @@ fun CustomLearnDialog(
                 ) {
                     Text(
                         text = "Way to learn: todo",
-                        style = WordsTheme.typography.h2MediumTextStyle,
-                        color = WordsTheme.colors.text,
+                        style = AppTheme.typography.h2MediumTextStyle,
+                        color = AppTheme.colors.text,
                     )
                 }
 
@@ -89,8 +89,8 @@ fun CustomLearnDialog(
                 ) {
                     Text(
                         text = "Learn",
-                        style = WordsTheme.typography.h2MediumTextStyle,
-                        color = WordsTheme.colors.text,
+                        style = AppTheme.typography.h2MediumTextStyle,
+                        color = AppTheme.colors.text,
                     )
                 }
             }
@@ -101,7 +101,7 @@ fun CustomLearnDialog(
 @Preview(showBackground = true)
 @Composable
 private fun CustomLearnDialogPreview() {
-    ThemeCommon {
+    ThemeProvider {
         CustomLearnDialog(
             state = CustomLearnDialogState.Expanded(20),
             onNumberToLearnChange = {},

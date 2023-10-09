@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 internal fun NotSelectedItemContent(
@@ -26,20 +26,20 @@ internal fun NotSelectedItemContent(
         Text(
             modifier = Modifier.padding(end = 6.dp),
             text = word.eng,
-            style = WordsTheme.typography.h1RegularTextStyle,
-            color = WordsTheme.colors.text,
+            style = AppTheme.typography.h1RegularTextStyle,
+            color = AppTheme.colors.text,
         )
         Icon(
             modifier = Modifier.offset(y = 3.dp),
             imageVector = Icons.Default.ArrowForward,
             contentDescription = null,
-            tint = WordsTheme.colors.text
+            tint = AppTheme.colors.text
         )
         Text(
             modifier = Modifier.padding(start = 6.dp),
             text = word.rus,
-            style = WordsTheme.typography.h1RegularTextStyle,
-            color = WordsTheme.colors.text,
+            style = AppTheme.typography.h1RegularTextStyle,
+            color = AppTheme.colors.text,
         )
     }
 }

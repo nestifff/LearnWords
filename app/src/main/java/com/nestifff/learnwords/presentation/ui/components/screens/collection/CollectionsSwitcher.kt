@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.model.CollectionType
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun CollectionsSwitcher(
@@ -32,7 +32,7 @@ fun CollectionsSwitcher(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        WordsTheme.colors.background,
+                        AppTheme.colors.background,
                         Color.Transparent
                     )
                 )
@@ -40,11 +40,11 @@ fun CollectionsSwitcher(
             .padding(top = 4.dp)
             .border(
                 width = 2.dp,
-                color = WordsTheme.colors.backgroundMedium,
+                color = AppTheme.colors.backgroundMedium,
                 shape = RoundedCornerShape(32.dp)
             )
             .clip(RoundedCornerShape(32.dp))
-            .background(color = WordsTheme.colors.background)
+            .background(color = AppTheme.colors.background)
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
         Row(
@@ -75,9 +75,9 @@ private fun SwitcherItem(
             .clip(RoundedCornerShape(16.dp))
             .background(
                 if (isActive) {
-                    WordsTheme.colors.primary
+                    AppTheme.colors.primary
                 } else {
-                    WordsTheme.colors.primaryLight
+                    AppTheme.colors.primaryLight
                 }
             )
             .clickable { onClick() }
@@ -85,8 +85,8 @@ private fun SwitcherItem(
     ) {
         Text(
             text = collection,
-            style = WordsTheme.typography.h2MediumTextStyle,
-            color = WordsTheme.colors.text,
+            style = AppTheme.typography.h2MediumTextStyle,
+            color = AppTheme.colors.text,
         )
     }
 }

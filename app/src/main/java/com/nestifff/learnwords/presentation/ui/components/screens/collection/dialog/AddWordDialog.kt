@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
-import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun AddWordDialog(
@@ -67,7 +67,7 @@ fun AddWordDialog(
                 )
             )
             .noRippleClickable { }
-            .background(color = WordsTheme.colors.primaryLight)
+            .background(color = AppTheme.colors.primaryLight)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = 0.4f,
@@ -83,14 +83,14 @@ fun AddWordDialog(
                     .clip(RoundedCornerShape(24.dp))
                     .border(
                         width = 2.dp,
-                        color = WordsTheme.colors.textLight,
+                        color = AppTheme.colors.textLight,
                         shape = RoundedCornerShape(24.dp)
                     )
                     .clickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
-                style = WordsTheme.typography.h1MediumTextStyle,
-                color = WordsTheme.colors.textLight
+                style = AppTheme.typography.h1MediumTextStyle,
+                color = AppTheme.colors.textLight
             )
         } else {
             Icon(
@@ -149,7 +149,7 @@ fun AddWordDialog(
                             .padding(2.dp),
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
-                        tint = WordsTheme.colors.icons
+                        tint = AppTheme.colors.icons
                     )
                 }
             }
@@ -172,16 +172,16 @@ private fun OneValueEnterRow(
     ) {
         Text(
             text = text,
-            style = WordsTheme.typography.h2RegularTextStyle,
-            color = WordsTheme.colors.text,
+            style = AppTheme.typography.h2RegularTextStyle,
+            color = AppTheme.colors.text,
         )
         Spacer(modifier = Modifier.width(12.dp))
         WordsTextField(
             modifier = Modifier.fillMaxWidth(0.75f),
             value = value,
             onValueChange = onValueChange,
-            backgroundColor = WordsTheme.colors.backgroundLight.copy(alpha = 0.8f),
-            textStyle = WordsTheme.typography.h1RegularTextStyle,
+            backgroundColor = AppTheme.colors.backgroundLight.copy(alpha = 0.8f),
+            textStyle = AppTheme.typography.h1RegularTextStyle,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
         )
@@ -191,7 +191,7 @@ private fun OneValueEnterRow(
 @Preview
 @Composable
 private fun AddWordComponentPreview() {
-    ThemeCommon {
+    ThemeProvider {
         AddWordDialog(
             state = AddWordDialogState.Hidden,
             onValuesChange = { s: String, s1: String -> },

@@ -15,7 +15,7 @@ import com.nestifff.learnwords.presentation.ui.theme.values.colors.wordsLightPal
 
 
 @Composable
-fun ThemeCommon(
+fun ThemeProvider(
     paletteMode: PaletteMode = PaletteMode.Light,
     content: @Composable () -> Unit
 ) {

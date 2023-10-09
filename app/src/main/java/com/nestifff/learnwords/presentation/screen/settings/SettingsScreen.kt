@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun SettingsScreen(
@@ -15,5 +15,5 @@ fun SettingsScreen(
 ) {
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(color = WordsTheme.colors.primary))
+        .background(color = AppTheme.colors.primary))
 }

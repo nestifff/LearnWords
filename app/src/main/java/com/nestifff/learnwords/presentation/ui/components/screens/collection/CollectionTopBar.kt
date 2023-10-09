@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.ui.theme.ThemeCommon
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun CollectionTopBar(
@@ -38,7 +38,7 @@ fun CollectionTopBar(
             ,
             imageVector = Icons.Default.Settings,
             contentDescription = null,
-            tint = WordsTheme.colors.icons
+            tint = AppTheme.colors.icons
         )
     }
 }
@@ -46,7 +46,7 @@ fun CollectionTopBar(
 @Composable
 @Preview
 private fun CollectionTopBarPreview() {
-    ThemeCommon {
+    ThemeProvider {
         CollectionTopBar(onSettingsButtonClick = {})
     }
 }

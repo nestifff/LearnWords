@@ -11,15 +11,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun WordsTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    backgroundColor: Color = WordsTheme.colors.backgroundLight,
-    textStyle: TextStyle = WordsTheme.typography.h2RegularTextStyle,
+    backgroundColor: Color = AppTheme.colors.backgroundLight,
+    textStyle: TextStyle = AppTheme.typography.h2RegularTextStyle,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     keyboardActions: KeyboardActions = KeyboardActions()
 ) {
@@ -31,7 +31,7 @@ fun WordsTextField(
         textStyle = textStyle,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = backgroundColor,
-            cursorColor = WordsTheme.colors.primary,
+            cursorColor = AppTheme.colors.primary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),

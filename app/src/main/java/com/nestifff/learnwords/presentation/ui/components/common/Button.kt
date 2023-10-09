@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun PrimaryButton(
@@ -26,11 +26,11 @@ fun PrimaryButton(
             .then(
                 if (isEnabled) {
                     Modifier
-                        .background(color = WordsTheme.colors.primaryLight)
+                        .background(color = AppTheme.colors.primaryLight)
                         .clickable { onClick() }
                 } else {
                     Modifier
-                        .background(color = WordsTheme.colors.backgroundMedium)
+                        .background(color = AppTheme.colors.backgroundMedium)
                         .noRippleClickable {}
                 }
             )

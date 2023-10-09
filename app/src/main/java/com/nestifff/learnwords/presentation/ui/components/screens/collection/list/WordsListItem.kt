@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.thenIfCondition
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
-import com.nestifff.learnwords.presentation.ui.theme.WordsTheme
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun WordsListItem(
@@ -38,7 +38,7 @@ fun WordsListItem(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(color = WordsTheme.colors.backgroundLight)
+            .background(color = AppTheme.colors.backgroundLight)
             .clickable { onClick() }
     ) {
         Row(
@@ -67,9 +67,9 @@ fun WordsListItem(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {
-                    WordsTheme.colors.primary
+                    AppTheme.colors.primary
                 } else {
-                    WordsTheme.colors.backgroundMedium
+                    AppTheme.colors.backgroundMedium
                 }
             )
         }

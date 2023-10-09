@@ -13,7 +13,7 @@ fun NavGraphBuilder.learnScreenDestination(
     navController: NavHostController,
 ) {
     composable(
-        route = Destination.CollectionDestination.route,
+        route = Destination.LearnDestination.route,
     ) {
 
         val daggerComponent = getApplication().appComponent.learnScreenComponent().create()
