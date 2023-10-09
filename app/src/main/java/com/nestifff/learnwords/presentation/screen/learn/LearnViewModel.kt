@@ -6,7 +6,11 @@ import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
 
-class LearnViewModel : BaseViewModel<LearnViewModel.State, LearnViewModel.Effect>() {
+class LearnViewModel(
+//    wordsNum: Int,
+//    mayToLearn: WayToLearn,
+//    collectionType: CollectionType,
+) : BaseViewModel<LearnViewModel.State, LearnViewModel.Effect>() {
 
     sealed class State : UiState {
 

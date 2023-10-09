@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -103,4 +104,6 @@ dependencies {
     implementation(Dependencies.App.Collections.immutableCollections)
 
     detektPlugins(Dependencies.Common.DetektPlugins.composeRules)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 }

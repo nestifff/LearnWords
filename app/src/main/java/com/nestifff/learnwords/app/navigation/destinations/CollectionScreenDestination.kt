@@ -4,17 +4,24 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.nestifff.learnwords.app.di.utils.daggerViewModel
-import com.nestifff.learnwords.app.navigation.Destination
-import com.nestifff.learnwords.app.navigation.Graph
+import com.nestifff.learnwords.app.navigation.core.NoArgsDestination
+import com.nestifff.learnwords.app.navigation.graphs.MainNavGraph
+import com.nestifff.learnwords.app.navigation.graphs.SettingsNavGraph
 import com.nestifff.learnwords.ext.getApplication
 import com.nestifff.learnwords.presentation.screen.collection.CollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel
+
+object CollectionScreenDestination : NoArgsDestination {
+
+    override val route: String = "${MainNavGraph.route}/collection"
+
+}
 
 fun NavGraphBuilder.collectionScreenDestination(
     navController: NavHostController,
 ) {
     composable(
-        route = Destination.CollectionDestination.route,
+        route = CollectionScreenDestination.route,
     ) {
 
         val daggerComponent = getApplication().appComponent.collectionScreenComponent().create()
@@ -22,8 +29,8 @@ fun NavGraphBuilder.collectionScreenDestination(
 
         CollectionScreen(
             viewModel = viewModel,
-            navigateToSettingsScreen = { navController.navigate(Graph.SettingsGraph.route) },
-            navigateToLearnScreen = { navController.navigate(Destination.LearnDestination.route) }
+            navigateToSettingsScreen = { navController.navigate(SettingsNavGraph.prepareRoute(Unit)) },
+            navigateToLearnScreen = { navController.navigate(LearnScreenDestination.prepareRoute(it)) }
         )
     }
 }

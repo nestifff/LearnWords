@@ -4,10 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
 import com.nestifff.learnwords.app.core.UiState
+import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.emptyImmutableList
 import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.ext.immutableListOf
 import com.nestifff.learnwords.presentation.model.CollectionType
+import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
@@ -53,7 +55,9 @@ class CollectionViewModel(
 
     sealed class Effect : UiEffect {
         data object NavigateToSettingsScreen : Effect()
-        data object NavigateToLearnScreen : Effect()
+        data class NavigateToLearnScreen(
+            val data: LearnScreenArgument
+        ) : Effect()
     }
 
     init {
@@ -86,7 +90,7 @@ class CollectionViewModel(
     }
 
     fun onLearnButtonClicked() {
-        produceEffect(Effect.NavigateToLearnScreen)
+        produceEffect(Effect.NavigateToLearnScreen(createLearnScreenArgument()))
     }
 
     fun onLearnButtonLongClicked() {
@@ -106,13 +110,13 @@ class CollectionViewModel(
     }
 
     fun onCustomLeanDialogLearnClicked() {
-        produceEffect(Effect.NavigateToLearnScreen)
+        produceEffect(Effect.NavigateToLearnScreen(createLearnScreenArgument()))
     }
 
     fun onCollectionTypeClicked(type: CollectionType) {
         val newState = state.copy(
             currCollectionType = type,
-            currWordsCollection = when(type) {
+            currWordsCollection = when (type) {
                 CollectionType.InProgress -> wordsInProgress
                 CollectionType.Learned -> wordsLearned
                 CollectionType.Favorite -> wordsFavorites
@@ -193,4 +197,11 @@ class CollectionViewModel(
             produceState(state.copy(addWordDialogState = AddWordDialogState.Hidden))
         }
     }
+
+    private fun createLearnScreenArgument() =
+        LearnScreenArgument(
+            wordsNum = 5,
+            mayToLearn = WayToLearn.EngToRus,
+            collectionType = CollectionType.InProgress
+        )
 }

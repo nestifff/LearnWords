@@ -7,9 +7,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.model.CollectionType
-import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect
+import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToLearnScreen
+import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToSettingsScreen
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.CustomLearnDialog
@@ -19,15 +21,15 @@ import com.nestifff.learnwords.presentation.ui.components.screens.collection.lis
 fun CollectionScreen(
     viewModel: CollectionViewModel,
     navigateToSettingsScreen: () -> Unit,
-    navigateToLearnScreen: () -> Unit,
+    navigateToLearnScreen: (LearnScreenArgument) -> Unit,
 ) {
 
     val state by viewModel.uiState.collectAsState()
 
-    onEffect(effect = viewModel.uiEffect) {
-        when (it) {
-            Effect.NavigateToSettingsScreen -> navigateToSettingsScreen()
-            Effect.NavigateToLearnScreen -> navigateToLearnScreen()
+    onEffect(effect = viewModel.uiEffect) { effect ->
+        when (effect) {
+            is NavigateToSettingsScreen -> navigateToSettingsScreen()
+            is NavigateToLearnScreen -> navigateToLearnScreen(effect.data)
         }
     }
 
