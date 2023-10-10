@@ -19,10 +19,10 @@ import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedSt
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordCollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
 import com.nestifff.words.domain.model.WordDomain
-import com.nestifff.words.domain.usecase.AddWordUseCase
-import com.nestifff.words.domain.usecase.DeleteWordUseCase
-import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
-import com.nestifff.words.domain.usecase.UpdateWordUseCase
+import com.nestifff.words.domain.usecase.word.AddWordUseCase
+import com.nestifff.words.domain.usecase.word.DeleteWordUseCase
+import com.nestifff.words.domain.usecase.word.GetAllWordsFlowUseCase
+import com.nestifff.words.domain.usecase.word.UpdateWordUseCase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers

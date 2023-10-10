@@ -1,4 +1,4 @@
-package com.nestifff.words.domain.usecase
+package com.nestifff.words.domain.usecase.word
 
 import com.nestifff.words.domain.interfaces.WordsRepository
 import com.nestifff.words.domain.model.WordDomain

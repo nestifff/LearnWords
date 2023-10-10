@@ -2,7 +2,9 @@ package com.nestifff.learnwords.presentation.ui.components.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -18,9 +20,9 @@ fun PrimaryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isEnabled: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable RowScope.() -> Unit,
 ) {
-    Box(
+    Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .then(
@@ -35,7 +37,8 @@ fun PrimaryButton(
                 }
             )
             .padding(vertical = 12.dp, horizontal = 16.dp),
-        contentAlignment = Alignment.Center,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         content()
     }

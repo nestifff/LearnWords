@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
-import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 
 @Composable
 fun AddWordDialog(

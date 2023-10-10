@@ -1,10 +1,10 @@
 package com.nestifff.learnwords.presentation.screen.collection.di
 
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel
-import com.nestifff.words.domain.usecase.AddWordUseCase
-import com.nestifff.words.domain.usecase.DeleteWordUseCase
-import com.nestifff.words.domain.usecase.GetAllWordsFlowUseCase
-import com.nestifff.words.domain.usecase.UpdateWordUseCase
+import com.nestifff.words.domain.usecase.word.AddWordUseCase
+import com.nestifff.words.domain.usecase.word.DeleteWordUseCase
+import com.nestifff.words.domain.usecase.word.GetAllWordsFlowUseCase
+import com.nestifff.words.domain.usecase.word.UpdateWordUseCase
 import dagger.Module
 import dagger.Provides
 

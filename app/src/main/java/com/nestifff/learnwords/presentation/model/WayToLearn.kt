@@ -1,6 +1,6 @@
 package com.nestifff.learnwords.presentation.model
 
-import com.nestifff.words.domain.model.WayToLearnDomain
+import com.nestifff.words.domain.model.learn.WayToLearnDomain
 
 enum class WayToLearn {
     RusToEng, EngToRus,

@@ -1,4 +1,4 @@
-package com.nestifff.words.domain.usecase
+package com.nestifff.words.domain.usecase.word
 
 import android.util.Log
 import com.nestifff.words.domain.interfaces.WordsRepository
