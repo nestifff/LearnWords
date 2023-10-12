@@ -6,6 +6,7 @@ import com.nestifff.words.domain.interfaces.LearnRepository
 import com.nestifff.words.domain.interfaces.WordsRepository
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 abstract class DomainBindsModule {
@@ -14,5 +15,6 @@ abstract class DomainBindsModule {
     abstract fun getWordsRepository(wordsRepositoryImpl: WordsRepositoryImpl): WordsRepository
 
     @Binds
-    abstract fun getWordsRepository(learnRepositoryImpl: LearnRepositoryImpl): LearnRepository
+    @Singleton
+    abstract fun getLearnRepository(learnRepositoryImpl: LearnRepositoryImpl): LearnRepository
 }

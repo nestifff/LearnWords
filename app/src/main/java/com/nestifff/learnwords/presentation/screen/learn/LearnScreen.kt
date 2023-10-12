@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ fun LearnScreen(
 fun LearnScreenContent(
     state: LearnViewModel.State,
 ) {
+    Log.i("Lalala", "LearnScreenContent: state = $state")
     Column(
         modifier = Modifier
             .fillMaxSize()

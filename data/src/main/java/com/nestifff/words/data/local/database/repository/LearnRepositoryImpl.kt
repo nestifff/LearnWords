@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LearnRepositoryImpl @Inject constructor() : LearnRepository {
 
     private var wordsToTriesToAnswer: MutableMap<WordLearnProcessDomain, Int> = mutableMapOf()
-    private val remainingWords: MutableList<WordLearnProcessDomain> = mutableListOf()
+    private var remainingWords: MutableList<WordLearnProcessDomain> = mutableListOf()
 
     private lateinit var wayToLearn: WayToLearnDomain
     private lateinit var collectionType: CollectionTypeDomain
@@ -21,7 +21,8 @@ class LearnRepositoryImpl @Inject constructor() : LearnRepository {
         collectionType: CollectionTypeDomain,
         wordsList: List<WordLearnProcessDomain>
     ) {
-        wordsToTriesToAnswer = wordsList.associateWith { 0 }.toMutableMap()
+        this.wordsToTriesToAnswer = wordsList.associateWith { 0 }.toMutableMap()
+        this.remainingWords = wordsList.toMutableList()
         this.wayToLearn = wayToLearn
         this.collectionType = collectionType
     }

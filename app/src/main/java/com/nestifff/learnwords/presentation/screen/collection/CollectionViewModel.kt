@@ -201,7 +201,7 @@ class CollectionViewModel(
     private fun createLearnScreenArgument() =
         LearnScreenArgument(
             wordsNum = 5,
-            mayToLearn = WayToLearn.EngToRus,
+            wayToLearn = WayToLearn.EngToRus,
             collectionType = CollectionType.InProcess
         )
 }

@@ -67,6 +67,6 @@ fun NavGraphBuilder.learnScreenDestination(
 @Serializable
 data class LearnScreenArgument(
     val wordsNum: Int,
-    val mayToLearn: WayToLearn,
+    val wayToLearn: WayToLearn,
     val collectionType: CollectionType
 )
