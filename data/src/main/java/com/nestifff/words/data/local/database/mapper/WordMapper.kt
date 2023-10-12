@@ -12,10 +12,11 @@ fun WordEntity.toWordDomain(): WordDomain =
         isFavorite = this.flags.flagsGetIsFavorite()
     )
 
-fun WordDomain.toWordEntity(): WordEntity =
+fun WordDomain.toWordEntity(enteredOnFirstTry: Int): WordEntity =
     WordEntity(
         id = this.id,
         rus = this.rus,
         eng = this.eng,
-        flags = createFlags(isFavorite = isFavorite, isLearned = isLearned)
+        flags = createFlags(isFavorite = isFavorite, isLearned = isLearned),
+        enteredOnFirstTry = enteredOnFirstTry,
     )

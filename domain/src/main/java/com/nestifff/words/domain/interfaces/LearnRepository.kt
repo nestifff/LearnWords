@@ -1,23 +1,28 @@
 package com.nestifff.words.domain.interfaces
 
 import com.nestifff.words.domain.model.CollectionTypeDomain
-import com.nestifff.words.domain.model.WordDomain
 import com.nestifff.words.domain.model.learn.WayToLearnDomain
-import com.nestifff.words.domain.model.learn.WordToLearnDomain
+import com.nestifff.words.domain.model.learn.WordLearnProcessDomain
 
 interface LearnRepository {
 
-    suspend fun createSetForLearning(
-        wordsNumber: Int,
-        wayToLearnDomain: WayToLearnDomain,
-        collectionTypeDomain: CollectionTypeDomain
+    suspend fun setDataForLearning(
+        wayToLearn: WayToLearnDomain,
+        collectionType: CollectionTypeDomain,
+        wordsList: List<WordLearnProcessDomain>
     )
 
-    suspend fun saveIntermediateResult(isCorrect: Boolean)
+    fun increaseNumberOfTries()
 
-    suspend fun getNextWord(): WordToLearnDomain?
+    fun removeFromRemaining()
+
+    suspend fun getRemainingWords(): List<WordLearnProcessDomain>
+
+    fun setNewCurrentWord(word: WordLearnProcessDomain)
 
     fun getWayToLearn(): WayToLearnDomain
 
-    fun getCurrentWord(): WordDomain
+    fun getCurrentWord(): WordLearnProcessDomain
+
+    fun getCurrentWordTries(): Int
 }

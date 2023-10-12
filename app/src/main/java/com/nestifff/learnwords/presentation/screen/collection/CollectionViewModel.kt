@@ -42,7 +42,7 @@ class CollectionViewModel(
 
     data class State(
         val collectionTypes: ImmutableList<CollectionType> = immutableListOf(
-            CollectionType.InProgress,
+            CollectionType.InProcess,
             CollectionType.Learned,
             CollectionType.Favorite
         ),
@@ -70,7 +70,7 @@ class CollectionViewModel(
                 produceState(
                     state.copy(
                         currWordsCollection = words,
-                        currCollectionType = CollectionType.InProgress,
+                        currCollectionType = CollectionType.InProcess,
                     )
                 )
             }
@@ -78,7 +78,7 @@ class CollectionViewModel(
     }
 
     override fun createInitialState(): State = State(
-        currCollectionType = CollectionType.InProgress,
+        currCollectionType = CollectionType.InProcess,
         currWordsCollection = emptyImmutableList(),
         addWordDialogState = AddWordDialogState.Hidden,
         expandedWordState = null,
@@ -117,7 +117,7 @@ class CollectionViewModel(
         val newState = state.copy(
             currCollectionType = type,
             currWordsCollection = when (type) {
-                CollectionType.InProgress -> wordsInProgress
+                CollectionType.InProcess -> wordsInProgress
                 CollectionType.Learned -> wordsLearned
                 CollectionType.Favorite -> wordsFavorites
             }
@@ -202,6 +202,6 @@ class CollectionViewModel(
         LearnScreenArgument(
             wordsNum = 5,
             mayToLearn = WayToLearn.EngToRus,
-            collectionType = CollectionType.InProgress
+            collectionType = CollectionType.InProcess
         )
 }

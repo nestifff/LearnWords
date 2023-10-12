@@ -93,7 +93,7 @@ private fun SwitcherItem(
 
 private fun CollectionType.text(): String {
     return when (this) {
-        CollectionType.InProgress -> "In progress"
+        CollectionType.InProcess -> "In progress"
         CollectionType.Learned -> "Learned"
         CollectionType.Favorite -> "Favorite"
     }

@@ -6,12 +6,18 @@ import javax.inject.Inject
 
 class ProcessUserAnswerUseCase @Inject constructor(
     private val repository: LearnRepository,
-    private val checkIsWordCorrect: CheckIsWordCorrectUseCase,
+    private val checkIsWordCorrectUseCase: CheckIsWordCorrectUseCase,
+    private val updateWordFlagsIfNeedUseCase: UpdateWordFlagsIfNeedUseCase,
 ) {
 
     suspend operator fun invoke(userAnswer: WordUserAnswerDomain): Boolean {
-        val isCorrect = checkIsWordCorrect(userAnswer)
-        repository.saveIntermediateResult(isCorrect = isCorrect)
+        val isCorrect = checkIsWordCorrectUseCase(userAnswer)
+        if (isCorrect) {
+            repository.removeFromRemaining()
+        } else {
+            repository.increaseNumberOfTries()
+        }
+        updateWordFlagsIfNeedUseCase(isCorrect)
         return isCorrect
     }
 }

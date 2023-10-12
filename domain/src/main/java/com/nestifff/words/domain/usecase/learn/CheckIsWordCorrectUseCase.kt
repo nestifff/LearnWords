@@ -10,12 +10,15 @@ class CheckIsWordCorrectUseCase @Inject constructor(
 ) {
 
     operator fun invoke(userAnswer: WordUserAnswerDomain): Boolean {
+
         val wayToLearn = learnRepository.getWayToLearn()
         val fullWord = learnRepository.getCurrentWord()
+
         val correctValue = when (wayToLearn) {
             WayToLearnDomain.RUS_TO_ENG -> fullWord.eng
             WayToLearnDomain.ENG_TO_RUS -> fullWord.rus
         }
+
         return compareIfCorrect(entered = userAnswer.enteredValue, correct = correctValue)
     }
 

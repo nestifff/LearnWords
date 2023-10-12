@@ -8,7 +8,7 @@ import com.nestifff.words.data.local.database.model.WordEntity
 
 @Database(
     entities = [WordEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {

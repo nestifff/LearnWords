@@ -9,6 +9,7 @@ data class WordEntity(
     @PrimaryKey val id: String,
     @ColumnInfo val rus: String,
     @ColumnInfo val eng: String,
+    @ColumnInfo val enteredOnFirstTry: Int,
     // 2^0 = isFavorite, 2^1 = isLearned
     // example : 00000010 = 2 (isFavorite = false, isLearned = true)
     @ColumnInfo val flags: Int,
