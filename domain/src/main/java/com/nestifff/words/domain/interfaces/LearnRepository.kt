@@ -18,11 +18,11 @@ interface LearnRepository {
 
     suspend fun getRemainingWords(): List<WordLearnProcessDomain>
 
-    fun setNewCurrentWord(word: WordLearnProcessDomain)
+    fun setNewCurrentWord(word: WordLearnProcessDomain?)
 
     fun getWayToLearn(): WayToLearnDomain
 
-    fun getCurrentWord(): WordLearnProcessDomain
+    fun getCurrentWord(): WordLearnProcessDomain?
 
     fun getCurrentWordTries(): Int
 }

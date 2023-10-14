@@ -66,7 +66,7 @@ internal fun ExpandedWordItem(
             modifier = Modifier.padding(top = 16.dp)
         ) {
             SaveChangedButton(
-                isEnabled = state.isSaveEnabled,
+                enabled = state.isSaveEnabled,
                 onClick = onSaveButtonClick,
             )
             if (state.isLoading) {

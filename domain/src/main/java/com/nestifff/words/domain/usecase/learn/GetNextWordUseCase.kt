@@ -13,6 +13,7 @@ class GetNextWordUseCase @Inject constructor(
 
         val word = repository.getRemainingWords().randomOrNull()
         val wayToLearn = repository.getWayToLearn()
+        repository.setNewCurrentWord(word)
 
         return if (word == null) {
             NextWordResultDomain.WordsEnded

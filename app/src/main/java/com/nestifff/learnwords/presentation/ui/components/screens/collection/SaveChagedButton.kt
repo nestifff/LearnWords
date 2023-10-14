@@ -17,13 +17,13 @@ import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 fun SaveChangedButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    isEnabled: Boolean = true,
+    enabled: Boolean = true,
 ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .then(
-                if (isEnabled) {
+                if (enabled) {
                     Modifier
                         .background(color = AppTheme.colors.primaryLight)
                         .clickable { onClick() }

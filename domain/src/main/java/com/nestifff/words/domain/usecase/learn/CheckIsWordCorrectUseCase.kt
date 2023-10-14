@@ -3,6 +3,7 @@ package com.nestifff.words.domain.usecase.learn
 import com.nestifff.words.domain.interfaces.LearnRepository
 import com.nestifff.words.domain.model.learn.WayToLearnDomain
 import com.nestifff.words.domain.model.learn.WordUserAnswerDomain
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class CheckIsWordCorrectUseCase @Inject constructor(
@@ -12,7 +13,7 @@ class CheckIsWordCorrectUseCase @Inject constructor(
     operator fun invoke(userAnswer: WordUserAnswerDomain): Boolean {
 
         val wayToLearn = learnRepository.getWayToLearn()
-        val fullWord = learnRepository.getCurrentWord()
+        val fullWord = learnRepository.getCurrentWord() ?: throw IllegalStateException()
 
         val correctValue = when (wayToLearn) {
             WayToLearnDomain.RUS_TO_ENG -> fullWord.eng

@@ -3,6 +3,7 @@ package com.nestifff.words.domain.usecase.learn
 import com.nestifff.words.domain.interfaces.LearnRepository
 import com.nestifff.words.domain.interfaces.WordsRepository
 import com.nestifff.words.domain.model.learn.WordLearnProcessDomain
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class UpdateWordFlagsIfNeedUseCase @Inject constructor(
@@ -11,7 +12,7 @@ class UpdateWordFlagsIfNeedUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(isCorrect: Boolean) {
-        val word = learnRepository.getCurrentWord()
+        val word = learnRepository.getCurrentWord() ?: throw IllegalStateException()
         if (word.isLearned) {
             updateForLearnedWord(word)
         } else {

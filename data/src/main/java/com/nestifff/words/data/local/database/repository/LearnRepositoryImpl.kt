@@ -14,7 +14,7 @@ class LearnRepositoryImpl @Inject constructor() : LearnRepository {
     private lateinit var wayToLearn: WayToLearnDomain
     private lateinit var collectionType: CollectionTypeDomain
 
-    private lateinit var currentWord: WordLearnProcessDomain
+    private var currentWord: WordLearnProcessDomain? = null
 
     override suspend fun setDataForLearning(
         wayToLearn: WayToLearnDomain,
@@ -37,7 +37,7 @@ class LearnRepositoryImpl @Inject constructor() : LearnRepository {
 
     override suspend fun getRemainingWords() = remainingWords
 
-    override fun setNewCurrentWord(word: WordLearnProcessDomain) {
+    override fun setNewCurrentWord(word: WordLearnProcessDomain?) {
         currentWord = word
     }
 

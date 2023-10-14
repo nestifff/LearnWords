@@ -65,8 +65,8 @@ class CollectionViewModel(
             getAllWordsFlowUseCase.execute().collect { dbWords ->
                 val words = dbWords.map { it.toWordCollectionScreen() }.toImmutableList()
                 wordsInProgress = words
-                wordsFavorites = words.subList(4, 10)
-                wordsLearned = words.subList(3, 5)
+                wordsFavorites = if (words.size > 10) words.subList(4, 10) else emptyImmutableList()
+                wordsLearned = if (words.size > 5) words.subList(3, 5) else emptyImmutableList()
                 produceState(
                     state.copy(
                         currWordsCollection = words,
@@ -200,7 +200,7 @@ class CollectionViewModel(
 
     private fun createLearnScreenArgument() =
         LearnScreenArgument(
-            wordsNum = 5,
+            wordsNum = 1,
             wayToLearn = WayToLearn.EngToRus,
             collectionType = CollectionType.InProcess
         )

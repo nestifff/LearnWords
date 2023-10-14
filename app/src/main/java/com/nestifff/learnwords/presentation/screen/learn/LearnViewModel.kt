@@ -80,11 +80,12 @@ class LearnViewModel @AssistedInject constructor(
                         LearnResultAnimationState.Right(false)
                     } else {
                         LearnResultAnimationState.Wrong(emptyString())
-                    }
+                    },
+                    isCorrect = isCorrect
                 )
             )
             delay(500)
-            produceState(currState.copy(resulAnimationState = null))
+            produceState(currState.copy(resulAnimationState = null, isCorrect = null))
         }
     }
 
@@ -115,5 +116,4 @@ class LearnViewModel @AssistedInject constructor(
             }
         }
     }
-
 }
