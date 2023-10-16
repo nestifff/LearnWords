@@ -41,15 +41,11 @@ class CollectionViewModel(
     private var wordsFavorites: ImmutableList<CollectionScreenWord> = emptyImmutableList()
 
     data class State(
-        val collectionTypes: ImmutableList<CollectionType> = immutableListOf(
-            CollectionType.InProcess,
-            CollectionType.Learned,
-            CollectionType.Favorite
-        ),
+        val collectionTypes: ImmutableList<CollectionType>,
         val currCollectionType: CollectionType,
         val currWordsCollection: ImmutableList<CollectionScreenWord>,
         val addWordDialogState: AddWordDialogState,
-        val expandedWordState: ExpandedWordState? = null,
+        val expandedWordState: ExpandedWordState?,
         val customLearnDialogState: CustomLearnDialogState,
     ) : UiState
 
@@ -63,10 +59,14 @@ class CollectionViewModel(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getAllWordsFlowUseCase.execute().collect { dbWords ->
-                val words = dbWords.map { it.toWordCollectionScreen() }.toImmutableList()
+                val words = dbWords.filter { !it.isLearned }
+                    .map { it.toWordCollectionScreen() }
+                    .toImmutableList()
                 wordsInProgress = words
                 wordsFavorites = if (words.size > 10) words.subList(4, 10) else emptyImmutableList()
-                wordsLearned = if (words.size > 5) words.subList(3, 5) else emptyImmutableList()
+                wordsLearned = dbWords.filter { it.isLearned }
+                    .map { it.toWordCollectionScreen() }
+                    .toImmutableList()
                 produceState(
                     state.copy(
                         currWordsCollection = words,
@@ -76,14 +76,6 @@ class CollectionViewModel(
             }
         }
     }
-
-    override fun createInitialState(): State = State(
-        currCollectionType = CollectionType.InProcess,
-        currWordsCollection = emptyImmutableList(),
-        addWordDialogState = AddWordDialogState.Hidden,
-        expandedWordState = null,
-        customLearnDialogState = CustomLearnDialogState.Hidden,
-    )
 
     fun onSettingsClicked() {
         produceEffect(Effect.NavigateToSettingsScreen)
@@ -198,9 +190,22 @@ class CollectionViewModel(
         }
     }
 
+    override fun createInitialState(): State = State(
+        collectionTypes = immutableListOf(
+            CollectionType.InProcess,
+            CollectionType.Learned,
+            CollectionType.Favorite
+        ),
+        currCollectionType = CollectionType.InProcess,
+        currWordsCollection = emptyImmutableList(),
+        addWordDialogState = AddWordDialogState.Hidden,
+        expandedWordState = null,
+        customLearnDialogState = CustomLearnDialogState.Hidden,
+    )
+
     private fun createLearnScreenArgument() =
         LearnScreenArgument(
-            wordsNum = 1,
+            wordsNum = 3,
             wayToLearn = WayToLearn.EngToRus,
             collectionType = CollectionType.InProcess
         )
