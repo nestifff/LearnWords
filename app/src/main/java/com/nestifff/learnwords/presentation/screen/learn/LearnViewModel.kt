@@ -5,8 +5,10 @@ import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
 import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
-import com.nestifff.learnwords.ext.emptyString
 import com.nestifff.learnwords.presentation.model.toDomain
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.Check
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.Next
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnProgressIndicatorState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnResultAnimationState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
@@ -31,8 +33,8 @@ class LearnViewModel @AssistedInject constructor(
     data class State(
         val isLoading: Boolean,
         val word: LearnScreenWordItem?,
+        val buttonState: LearnButtonState,
         val isTextFieldEnabled: Boolean,
-        val isNextEnabled: Boolean,
         val resulAnimationState: LearnResultAnimationState?,
         val progressState: LearnProgressIndicatorState,
     ) : UiState
@@ -57,59 +59,60 @@ class LearnViewModel @AssistedInject constructor(
         produceState(
             state.copy(
                 word = word.copy(enteredValue = value),
-                isNextEnabled = value.isNotEmpty()
+                buttonState = state.buttonState.copy(enabled = value.isNotBlank())
             )
         )
     }
 
-    fun onNextButtonClicked() {
-        val word = state.word ?: return
+    fun onButtonClicked() {
         viewModelScope.launch {
-            produceState(
-                state.copy(
-                    isLoading = true,
-                    isTextFieldEnabled = false,
-                    isNextEnabled = false
-                )
-            )
-            delay(500)
-            val isCorrect = processUserAnswerUseCase.invoke(
-                userAnswer = word.toDomain()
-            )
-            produceState(
-                state.copy(
-                    isLoading = false,
-                    resulAnimationState = if (isCorrect) {
-                        LearnResultAnimationState.Right(false)
-                    } else {
-                        LearnResultAnimationState.Wrong("Some right answer")
-                    },
-                    word = null,
-                )
-            )
-            delay(500)
-            produceState(
-                state.copy(
-                    resulAnimationState = null,
-                    progressState = state.progressState.increaseIfCondition(isCorrect)
-                )
-            )
-            showNextWord()
+            when (state.buttonState.type) {
+                Next -> showNextWord()
+                Check -> checkAnswer()
+            }
         }
     }
 
     override fun createInitialState(): State = State(
         isLoading = false,
         word = null,
+        buttonState = LearnButtonState(enabled = false, type = Check),
         isTextFieldEnabled = true,
-        isNextEnabled = false,
         resulAnimationState = null,
         progressState = LearnProgressIndicatorState(full = arg.wordsNum, done = 0),
     )
 
+    private suspend fun checkAnswer() {
+        val word = state.word ?: return
+        produceState(
+            state.copy(
+                isLoading = true,
+                isTextFieldEnabled = false,
+                buttonState = LearnButtonState(false, Next)
+            )
+        )
+        delay(500)
+        val isCorrect = processUserAnswerUseCase.invoke(
+            userAnswer = word.toDomain()
+        )
+        produceState(
+            state.copy(
+                isLoading = false,
+                resulAnimationState = if (isCorrect) {
+                    LearnResultAnimationState.Right(false)
+                } else {
+                    LearnResultAnimationState.Wrong("Some right answer")
+                },
+                word = null,
+                buttonState = LearnButtonState(true, Next),
+                progressState = state.progressState.increaseIfCondition(isCorrect)
+            )
+        )
+    }
+
     private suspend fun showNextWord() {
 
-        produceState(state.copy(isLoading = true, word = null))
+        produceState(state.copy(isLoading = true, word = null, resulAnimationState = null))
 
         when (val wordResult = getNextWordUseCase.invoke()) {
 

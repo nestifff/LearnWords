@@ -38,7 +38,7 @@ fun LearnScreen(
     LearnScreenContent(
         state = state,
         onEnteredValueChange = { viewModel.onEnteredValueChanged(it) },
-        onNextButtonClick = { viewModel.onNextButtonClicked() }
+        onNextButtonClick = { viewModel.onButtonClicked() }
     )
 }
 
@@ -86,9 +86,9 @@ fun LearnScreenContent(
         }
 
         LearnButton(
-            state = LearnButtonState(true, LearnNextButtonType.Next),
+            state = state.buttonState,
             onClick = onNextButtonClick,
-            modifier = Modifier.padding(bottom = 32.dp)
+            modifier = Modifier.padding(bottom = 32.dp),
         )
     }
 }
