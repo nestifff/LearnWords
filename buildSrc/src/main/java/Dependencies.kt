@@ -47,11 +47,13 @@ object Dependencies {
         object Core {
             const val corKtx = "androidx.core:core-ktx:1.9.0"
             const val activityCompose = "androidx.activity:activity-compose:1.6.0"
+            const val appCompat = "androidx.appcompat:appcompat:1.4.0"
         }
 
         object Compose {
             const val ui = "androidx.compose.ui:ui:${Versions.compose}"
             const val material = "androidx.compose.material:material:${Versions.compose}"
+            const val material3 = "androidx.compose.material3:material3:1.0.1"
             const val tooling = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
 
             const val navigation = "androidx.navigation:navigation-compose:2.7.4"

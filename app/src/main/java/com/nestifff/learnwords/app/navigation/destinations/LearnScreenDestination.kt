@@ -1,6 +1,5 @@
 package com.nestifff.learnwords.app.navigation.destinations
 
-import android.util.Log
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -53,7 +52,6 @@ fun NavGraphBuilder.learnScreenDestination(
     ) {
 
         val arg = LearnScreenDestination.getArgs(it)
-        Log.i("Lalala", "learnScreenDestination: $arg")
 
         val daggerComponent = getApplication().appComponent.learnScreenComponent().create()
         val viewModel: LearnViewModel = daggerViewModel {

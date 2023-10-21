@@ -1,8 +1,10 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +18,7 @@ import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.CustomLearnDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.WordsList
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun CollectionScreen(
@@ -53,7 +56,7 @@ fun CollectionScreen(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 private fun CollectionScreenContent(
     state: CollectionViewModel.State,
@@ -74,7 +77,12 @@ private fun CollectionScreenContent(
     onAddWordClick: () -> Unit,
 ) {
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = AppTheme.colors.background)
+            .statusBarsPadding()
+    ) {
         Scaffold(
             modifier = Modifier.imePadding(),
             topBar = {
@@ -91,7 +99,8 @@ private fun CollectionScreenContent(
                     onDismiss = { onCloseAddWordDialogClick() },
                     onOpenClick = { onOpenAddWordDialogClick() }
                 )
-            }
+            },
+            containerColor = AppTheme.colors.background,
         ) { scaffoldPadding ->
             Box(
                 modifier = Modifier

@@ -79,12 +79,14 @@ dependencies {
 
     implementation(Dependencies.App.Core.corKtx)
     implementation(Dependencies.App.Core.activityCompose)
+    implementation(Dependencies.App.Core.appCompat)
 
     implementation(Dependencies.App.Lifecycle.lifecycleKtx)
     implementation(Dependencies.App.Lifecycle.viewModelCompose)
 
     implementation(Dependencies.App.Compose.ui)
     implementation(Dependencies.App.Compose.tooling)
+    implementation(Dependencies.App.Compose.material3)
     implementation(Dependencies.App.Compose.material)
     implementation(Dependencies.App.Compose.navigation)
 
