@@ -24,5 +24,7 @@ interface LearnRepository {
 
     fun getCurrentWord(): WordLearnProcessDomain?
 
+    fun getCurrentWordNumberOfTries(): Int?
+
     fun getCurrentWordTries(): Int
 }

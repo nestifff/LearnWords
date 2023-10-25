@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
@@ -83,6 +84,7 @@ class LearnViewModel @AssistedInject constructor(
     )
 
     private suspend fun checkAnswer() {
+        Log.i("Lalala", "checkAnswer: state.word = ${state.word}")
         val word = state.word ?: return
         produceState(
             state.copy(
@@ -95,6 +97,7 @@ class LearnViewModel @AssistedInject constructor(
         val isCorrect = processUserAnswerUseCase.invoke(
             userAnswer = word.toDomain()
         )
+        Log.i("Lalala", "isCorrect = $isCorrect")
         produceState(
             state.copy(
                 isLoading = false,
@@ -111,10 +114,11 @@ class LearnViewModel @AssistedInject constructor(
     }
 
     private suspend fun showNextWord() {
-
+        Log.i("Lalala", "showNextWord: ")
         produceState(state.copy(isLoading = true, word = null, resulAnimationState = null))
-
-        when (val wordResult = getNextWordUseCase.invoke()) {
+        val wordResult = getNextWordUseCase.invoke()
+        Log.i("Lalala", "showNextWord: wordResult = $wordResult")
+        when (wordResult) {
 
             is NextWordResultDomain.WordsEnded ->
                 produceEffect(Effect.NavigateToWinScreen)
@@ -125,6 +129,7 @@ class LearnViewModel @AssistedInject constructor(
                         isLoading = false,
                         word = LearnScreenWordItem(wordResult.valueToShow),
                         isTextFieldEnabled = true,
+                        buttonState = LearnButtonState(false, Check),
                     )
                 )
         }

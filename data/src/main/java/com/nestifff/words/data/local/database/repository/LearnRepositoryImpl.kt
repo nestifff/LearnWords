@@ -45,5 +45,7 @@ class LearnRepositoryImpl @Inject constructor() : LearnRepository {
 
     override fun getCurrentWord() = currentWord
 
+    override fun getCurrentWordNumberOfTries(): Int? = wordsToTriesToAnswer[currentWord]
+
     override fun getCurrentWordTries() = wordsToTriesToAnswer[currentWord]!!
 }

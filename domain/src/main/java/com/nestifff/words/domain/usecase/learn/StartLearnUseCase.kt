@@ -1,5 +1,6 @@
 package com.nestifff.words.domain.usecase.learn
 
+import android.util.Log
 import com.nestifff.words.domain.interfaces.LearnRepository
 import com.nestifff.words.domain.interfaces.WordsRepository
 import com.nestifff.words.domain.model.CollectionTypeDomain
@@ -18,6 +19,9 @@ class StartLearnUseCase @Inject constructor(
     ) {
 
         val selectedToLearn = wordsRepository.getWordsLearnProcess()
+            .onEach {
+                Log.i("Lalala", "--- $it")
+            }
             .asSequence()
             .filter {
                 when (collectionType) {

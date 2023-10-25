@@ -1,6 +1,5 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -59,7 +58,8 @@ fun LearnScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        AnimatedVisibility(visible = state.word != null) {
+
+        if (state.word != null) {
 
             Column(
                 modifier = Modifier
