@@ -207,6 +207,6 @@ class CollectionViewModel(
         LearnScreenArgument(
             wordsNum = 3,
             wayToLearn = WayToLearn.EngToRus,
-            collectionType = CollectionType.InProcess
+            collectionType = state.currCollectionType
         )
 }

@@ -1,6 +1,5 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
@@ -11,11 +10,12 @@ import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.Check
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.Next
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnProgressIndicatorState
-import com.nestifff.learnwords.presentation.screen.learn.model.LearnResultAnimationState
+import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
 import com.nestifff.learnwords.presentation.screen.learn.model.increaseIfCondition
 import com.nestifff.learnwords.presentation.screen.learn.model.toDomain
 import com.nestifff.words.domain.model.learn.NextWordResultDomain
+import com.nestifff.words.domain.model.learn.UserAnswerFeedback.Correct
 import com.nestifff.words.domain.usecase.learn.GetNextWordUseCase
 import com.nestifff.words.domain.usecase.learn.ProcessUserAnswerUseCase
 import com.nestifff.words.domain.usecase.learn.StartLearnUseCase
@@ -36,7 +36,7 @@ class LearnViewModel @AssistedInject constructor(
         val word: LearnScreenWordItem?,
         val buttonState: LearnButtonState,
         val isTextFieldEnabled: Boolean,
-        val resulAnimationState: LearnResultAnimationState?,
+        val resulAnimationState: ResultAnimationState?,
         val progressState: LearnProgressIndicatorState,
     ) : UiState
 
@@ -84,7 +84,6 @@ class LearnViewModel @AssistedInject constructor(
     )
 
     private suspend fun checkAnswer() {
-        Log.i("Lalala", "checkAnswer: state.word = ${state.word}")
         val word = state.word ?: return
         produceState(
             state.copy(
@@ -94,31 +93,24 @@ class LearnViewModel @AssistedInject constructor(
             )
         )
         delay(500)
-        val isCorrect = processUserAnswerUseCase.invoke(
+        val feedback = processUserAnswerUseCase.invoke(
             userAnswer = word.toDomain()
         )
-        Log.i("Lalala", "isCorrect = $isCorrect")
         produceState(
             state.copy(
                 isLoading = false,
-                resulAnimationState = if (isCorrect) {
-                    LearnResultAnimationState.Right(false)
-                } else {
-                    LearnResultAnimationState.Wrong("Some right answer")
-                },
+                resulAnimationState = ResultAnimationState.fromFeedback(feedback),
                 word = null,
                 buttonState = LearnButtonState(true, Next),
-                progressState = state.progressState.increaseIfCondition(isCorrect)
+                progressState = state.progressState.increaseIfCondition(feedback is Correct)
             )
         )
     }
 
     private suspend fun showNextWord() {
-        Log.i("Lalala", "showNextWord: ")
         produceState(state.copy(isLoading = true, word = null, resulAnimationState = null))
-        val wordResult = getNextWordUseCase.invoke()
-        Log.i("Lalala", "showNextWord: wordResult = $wordResult")
-        when (wordResult) {
+
+        when (val wordResult = getNextWordUseCase.invoke()) {
 
             is NextWordResultDomain.WordsEnded ->
                 produceEffect(Effect.NavigateToWinScreen)

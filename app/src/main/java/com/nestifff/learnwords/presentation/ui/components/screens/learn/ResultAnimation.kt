@@ -10,14 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.screen.learn.model.LearnResultAnimationState
-import com.nestifff.learnwords.presentation.screen.learn.model.LearnResultAnimationState.Right
-import com.nestifff.learnwords.presentation.screen.learn.model.LearnResultAnimationState.Wrong
+import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationState
+import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationState.Right
+import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationState.Wrong
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun ResultAnimation(
-    state: LearnResultAnimationState,
+    state: ResultAnimationState,
     onAnimationFinish: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
