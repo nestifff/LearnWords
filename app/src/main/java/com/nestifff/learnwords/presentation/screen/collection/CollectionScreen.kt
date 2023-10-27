@@ -46,6 +46,7 @@ fun CollectionScreen(
         onCustomLeanDialogLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
         onCollectionTypeClick = { viewModel.onCollectionTypeClicked(it) },
         onWordItemClick = { viewModel.onWordItemClicked(it) },
+        onMakeFavoriteClick = { viewModel.onMakeFavoriteClicked(it) },
         onEditWordValuesChange = { rus, eng -> viewModel.onEditWordValuesChanged(rus, eng) },
         onWordUpdateClick = { viewModel.onWordUpdateClicked() },
         onDeleteWordClick = { viewModel.onWordDeleteClicked(it) },
@@ -68,6 +69,7 @@ private fun CollectionScreenContent(
     onCustomLeanDialogLearnClick: () -> Unit,
     onCollectionTypeClick: (CollectionType) -> Unit,
     onWordItemClick: (String) -> Unit,
+    onMakeFavoriteClick: (String) -> Unit,
     onEditWordValuesChange: (rus: String, eng: String) -> Unit,
     onWordUpdateClick: () -> Unit,
     onDeleteWordClick: (String) -> Unit,
@@ -116,6 +118,7 @@ private fun CollectionScreenContent(
                     onEditWordSaveClick = { onWordUpdateClick() },
                     onDeleteWordClick = { onDeleteWordClick(it) },
                     onWordClick = { onWordItemClick(it) },
+                    onMakeFavoriteClick = onMakeFavoriteClick,
                     onEditWordValuesChange = onEditWordValuesChange,
                 )
                 CollectionsSwitcher(

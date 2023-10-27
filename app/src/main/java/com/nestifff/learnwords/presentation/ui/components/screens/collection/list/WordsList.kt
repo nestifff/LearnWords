@@ -25,6 +25,7 @@ fun WordsList(
     expandedWordState: ExpandedWordState?,
     modifier: Modifier = Modifier,
     onWordClick: (id: String) -> Unit,
+    onMakeFavoriteClick: (id: String) -> Unit,
     onDeleteWordClick: (id: String) -> Unit,
     onEditWordValuesChange: (rus: String, eng: String) -> Unit,
     onEditWordSaveClick: () -> Unit,
@@ -68,6 +69,9 @@ fun WordsList(
                         word.id == expandedWordState?.word?.id
                     },
                     onEditWordValuesChange = onEditWordValuesChange,
+                    onMakeFavoriteClick = {
+                        onMakeFavoriteClick(word.id)
+                    },
                 )
             }
         }

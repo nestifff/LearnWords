@@ -20,6 +20,7 @@ import com.nestifff.learnwords.presentation.screen.collection.model.toWordCollec
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
 import com.nestifff.words.domain.model.WordDomain
 import com.nestifff.words.domain.usecase.word.AddWordUseCase
+import com.nestifff.words.domain.usecase.word.ChangeFavoritePropertyUseCase
 import com.nestifff.words.domain.usecase.word.DeleteWordUseCase
 import com.nestifff.words.domain.usecase.word.GetAllWordsFlowUseCase
 import com.nestifff.words.domain.usecase.word.UpdateWordUseCase
@@ -34,6 +35,7 @@ class CollectionViewModel(
     private val updateWordUseCase: UpdateWordUseCase,
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
+    private val changeFavoritePropertyUseCase: ChangeFavoritePropertyUseCase,
 ) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Effect>() {
 
     private var wordsInProgress: ImmutableList<CollectionScreenWord> = emptyImmutableList()
@@ -63,16 +65,18 @@ class CollectionViewModel(
                     .map { it.toWordCollectionScreen() }
                     .toImmutableList()
                 wordsInProgress = words
-                wordsFavorites = if (words.size > 10) words.subList(4, 10) else emptyImmutableList()
+                wordsFavorites = dbWords.filter { it.isFavorite }
+                    .map { it.toWordCollectionScreen() }
+                    .toImmutableList()
                 wordsLearned = dbWords.filter { it.isLearned }
                     .map { it.toWordCollectionScreen() }
                     .toImmutableList()
-                produceState(
-                    state.copy(
-                        currWordsCollection = words,
-                        currCollectionType = CollectionType.InProcess,
-                    )
-                )
+                val current = when (state.currCollectionType) {
+                    CollectionType.InProcess -> wordsInProgress
+                    CollectionType.Learned -> wordsLearned
+                    CollectionType.Favorite -> wordsFavorites
+                }
+                produceState(state.copy(currWordsCollection = current))
             }
         }
     }
@@ -122,6 +126,12 @@ class CollectionViewModel(
         val new = clickedWord.toExpandedState()
             .takeIf { state.expandedWordState?.word != clickedWord }
         produceState(state.copy(expandedWordState = new))
+    }
+
+    fun onMakeFavoriteClicked(id: String) {
+        viewModelScope.launch {
+            changeFavoritePropertyUseCase.run(id)
+        }
     }
 
     fun onEditWordValuesChanged(rus: String, eng: String) {

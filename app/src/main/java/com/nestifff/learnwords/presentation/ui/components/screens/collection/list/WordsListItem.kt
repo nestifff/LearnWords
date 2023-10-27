@@ -32,6 +32,7 @@ fun WordsListItem(
     onClick: () -> Unit,
     onEditWordValuesChange: (rus: String, eng: String) -> Unit,
     onEditWordSaveClick: () -> Unit,
+    onMakeFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier,
     expandedWordState: ExpandedWordState? = null,
 ) {
@@ -63,7 +64,10 @@ fun WordsListItem(
                         condition = expandedWordState != null,
                         modifier = Modifier.padding(top = 6.dp)
                     )
-                    .size(28.dp),
+                    .size(28.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onMakeFavoriteClick() }
+                ,
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {
