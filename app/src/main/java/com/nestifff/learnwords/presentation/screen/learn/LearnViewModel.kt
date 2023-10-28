@@ -14,11 +14,11 @@ import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationSt
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
 import com.nestifff.learnwords.presentation.screen.learn.model.increaseIfCondition
 import com.nestifff.learnwords.presentation.screen.learn.model.toDomain
-import com.nestifff.words.domain.model.learn.NextWordResultDomain
-import com.nestifff.words.domain.model.learn.UserAnswerFeedback.Correct
-import com.nestifff.words.domain.usecase.learn.GetNextWordUseCase
-import com.nestifff.words.domain.usecase.learn.ProcessUserAnswerUseCase
-import com.nestifff.words.domain.usecase.learn.StartLearnUseCase
+import com.nestifff.words.domain.learn.model.NextWordResultDomain
+import com.nestifff.words.domain.learn.model.UserAnswerFeedback.Correct
+import com.nestifff.words.domain.learn.usecase.GetNextWordUseCase
+import com.nestifff.words.domain.learn.usecase.ProcessUserAnswerUseCase
+import com.nestifff.words.domain.learn.usecase.StartLearnUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay

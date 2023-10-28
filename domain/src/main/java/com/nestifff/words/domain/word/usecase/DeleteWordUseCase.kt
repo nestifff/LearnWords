@@ -1,6 +1,6 @@
-package com.nestifff.words.domain.usecase.word
+package com.nestifff.words.domain.word.usecase
 
-import com.nestifff.words.domain.interfaces.WordsRepository
+import com.nestifff.words.domain.word.WordsRepository
 import javax.inject.Inject
 
 class DeleteWordUseCase @Inject constructor(

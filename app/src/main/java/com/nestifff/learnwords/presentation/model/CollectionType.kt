@@ -1,6 +1,6 @@
 package com.nestifff.learnwords.presentation.model
 
-import com.nestifff.words.domain.model.CollectionTypeDomain
+import com.nestifff.words.domain.collection.model.CollectionTypeDomain
 
 enum class CollectionType {
     InProcess, Learned, Favorite

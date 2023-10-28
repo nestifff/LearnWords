@@ -1,6 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.learn.model
 
-import com.nestifff.words.domain.model.learn.UserAnswerFeedback
+import com.nestifff.words.domain.learn.model.UserAnswerFeedback
 
 sealed class ResultAnimationState {
 

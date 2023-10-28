@@ -1,6 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.collection.model
 
-import com.nestifff.words.domain.model.WordDomain
+import com.nestifff.words.domain.word.model.WordDomain
 
 data class CollectionScreenWord(
     val id: String,

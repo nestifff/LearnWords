@@ -1,8 +1,8 @@
-package com.nestifff.words.domain.interfaces
+package com.nestifff.words.domain.learn
 
-import com.nestifff.words.domain.model.CollectionTypeDomain
-import com.nestifff.words.domain.model.learn.WayToLearnDomain
-import com.nestifff.words.domain.model.learn.WordLearnProcessDomain
+import com.nestifff.words.domain.collection.model.CollectionTypeDomain
+import com.nestifff.words.domain.learn.model.WayToLearnDomain
+import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
 
 interface LearnRepository {
 

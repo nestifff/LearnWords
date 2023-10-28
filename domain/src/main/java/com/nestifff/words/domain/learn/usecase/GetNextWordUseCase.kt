@@ -1,8 +1,8 @@
-package com.nestifff.words.domain.usecase.learn
+package com.nestifff.words.domain.learn.usecase
 
-import com.nestifff.words.domain.interfaces.LearnRepository
-import com.nestifff.words.domain.model.learn.NextWordResultDomain
-import com.nestifff.words.domain.model.learn.WayToLearnDomain.*
+import com.nestifff.words.domain.learn.LearnRepository
+import com.nestifff.words.domain.learn.model.NextWordResultDomain
+import com.nestifff.words.domain.learn.model.WayToLearnDomain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

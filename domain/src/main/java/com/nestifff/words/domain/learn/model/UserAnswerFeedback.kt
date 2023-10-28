@@ -1,4 +1,4 @@
-package com.nestifff.words.domain.model.learn
+package com.nestifff.words.domain.learn.model
 
 
 sealed class UserAnswerFeedback {

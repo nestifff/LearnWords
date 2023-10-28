@@ -1,7 +1,7 @@
 package com.nestifff.words.data.local.database.mapper
 
 import com.nestifff.words.data.local.database.model.WordEntity
-import com.nestifff.words.domain.model.WordDomain
+import com.nestifff.words.domain.word.model.WordDomain
 
 fun WordEntity.toWordDomain(): WordDomain =
     WordDomain(

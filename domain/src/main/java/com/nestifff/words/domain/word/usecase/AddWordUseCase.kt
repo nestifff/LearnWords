@@ -1,8 +1,8 @@
-package com.nestifff.words.domain.usecase.word
+package com.nestifff.words.domain.word.usecase
 
 import android.util.Log
-import com.nestifff.words.domain.interfaces.WordsRepository
-import com.nestifff.words.domain.model.WordDomain
+import com.nestifff.words.domain.word.WordsRepository
+import com.nestifff.words.domain.word.model.WordDomain
 import javax.inject.Inject
 
 class AddWordUseCase @Inject constructor(

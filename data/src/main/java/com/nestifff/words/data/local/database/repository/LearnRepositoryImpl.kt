@@ -1,9 +1,9 @@
 package com.nestifff.words.data.local.database.repository
 
-import com.nestifff.words.domain.interfaces.LearnRepository
-import com.nestifff.words.domain.model.CollectionTypeDomain
-import com.nestifff.words.domain.model.learn.WayToLearnDomain
-import com.nestifff.words.domain.model.learn.WordLearnProcessDomain
+import com.nestifff.words.domain.learn.LearnRepository
+import com.nestifff.words.domain.collection.model.CollectionTypeDomain
+import com.nestifff.words.domain.learn.model.WayToLearnDomain
+import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
 import javax.inject.Inject
 
 class LearnRepositoryImpl @Inject constructor() : LearnRepository {

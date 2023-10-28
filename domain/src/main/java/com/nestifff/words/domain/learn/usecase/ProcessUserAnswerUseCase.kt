@@ -1,9 +1,9 @@
-package com.nestifff.words.domain.usecase.learn
+package com.nestifff.words.domain.learn.usecase
 
-import com.nestifff.words.domain.interfaces.LearnRepository
-import com.nestifff.words.domain.interfaces.WordsRepository
-import com.nestifff.words.domain.model.learn.UserAnswerFeedback
-import com.nestifff.words.domain.model.learn.WordUserAnswerDomain
+import com.nestifff.words.domain.learn.LearnRepository
+import com.nestifff.words.domain.word.WordsRepository
+import com.nestifff.words.domain.learn.model.UserAnswerFeedback
+import com.nestifff.words.domain.learn.model.WordUserAnswerDomain
 import javax.inject.Inject
 
 class ProcessUserAnswerUseCase @Inject constructor(

@@ -4,9 +4,9 @@ import com.nestifff.words.data.local.database.dao.WordsDatabaseDao
 import com.nestifff.words.data.local.database.mapper.toWordDomain
 import com.nestifff.words.data.local.database.mapper.toWordEntity
 import com.nestifff.words.data.local.database.mapper.toWordLearnProcessDomain
-import com.nestifff.words.domain.interfaces.WordsRepository
-import com.nestifff.words.domain.model.WordDomain
-import com.nestifff.words.domain.model.learn.WordLearnProcessDomain
+import com.nestifff.words.domain.word.WordsRepository
+import com.nestifff.words.domain.word.model.WordDomain
+import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

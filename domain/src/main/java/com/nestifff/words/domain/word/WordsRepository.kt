@@ -1,7 +1,7 @@
-package com.nestifff.words.domain.interfaces
+package com.nestifff.words.domain.word
 
-import com.nestifff.words.domain.model.WordDomain
-import com.nestifff.words.domain.model.learn.WordLearnProcessDomain
+import com.nestifff.words.domain.word.model.WordDomain
+import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
 import kotlinx.coroutines.flow.Flow
 
 interface WordsRepository {

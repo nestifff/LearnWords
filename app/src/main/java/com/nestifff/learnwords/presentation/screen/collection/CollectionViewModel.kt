@@ -18,20 +18,24 @@ import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordCollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
-import com.nestifff.words.domain.model.WordDomain
-import com.nestifff.words.domain.usecase.word.AddWordUseCase
-import com.nestifff.words.domain.usecase.word.ChangeFavoritePropertyUseCase
-import com.nestifff.words.domain.usecase.word.DeleteWordUseCase
+import com.nestifff.words.domain.collection.model.CollectionTypeDomain
+import com.nestifff.words.domain.collection.model.CollectionTypeDomain.IN_PROCESS
+import com.nestifff.words.domain.collection.usecase.GetCollectionFlowUseCase
+import com.nestifff.words.domain.word.model.WordDomain
+import com.nestifff.words.domain.word.usecase.AddWordUseCase
+import com.nestifff.words.domain.word.usecase.ChangeFavoritePropertyUseCase
+import com.nestifff.words.domain.word.usecase.DeleteWordUseCase
 import com.nestifff.words.domain.usecase.word.GetAllWordsFlowUseCase
-import com.nestifff.words.domain.usecase.word.UpdateWordUseCase
+import com.nestifff.words.domain.word.usecase.UpdateWordUseCase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CollectionViewModel(
-    private val getAllWordsFlowUseCase: GetAllWordsFlowUseCase,
+    private val getCollectionFlowUseCase: GetCollectionFlowUseCase,
     private val updateWordUseCase: UpdateWordUseCase,
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
@@ -59,6 +63,15 @@ class CollectionViewModel(
     }
 
     init {
+        viewModelScope.launch {
+            getCollectionFlowUseCase.run(IN_PROCESS).collect { list ->
+                wordsInProgress = list.map { it.toWordCollectionScreen() }
+                    .toImmutableList()
+                if (state.currCollectionType == CollectionType.InProcess) {
+                    produceState(state.copy(currWordsCollection = wordsInProgress))
+                }
+            }
+        }
         viewModelScope.launch(Dispatchers.IO) {
             getAllWordsFlowUseCase.execute().collect { dbWords ->
                 val words = dbWords.filter { !it.isLearned }

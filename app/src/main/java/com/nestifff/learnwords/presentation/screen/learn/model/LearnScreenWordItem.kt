@@ -1,7 +1,7 @@
 package com.nestifff.learnwords.presentation.screen.learn.model
 
 import com.nestifff.learnwords.ext.emptyString
-import com.nestifff.words.domain.model.learn.WordUserAnswerDomain
+import com.nestifff.words.domain.learn.model.WordUserAnswerDomain
 
 data class LearnScreenWordItem(
     val shownValue: String,

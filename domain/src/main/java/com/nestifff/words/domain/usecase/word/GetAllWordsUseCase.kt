@@ -1,7 +1,7 @@
 package com.nestifff.words.domain.usecase.word
 
-import com.nestifff.words.domain.interfaces.WordsRepository
-import com.nestifff.words.domain.model.WordDomain
+import com.nestifff.words.domain.word.WordsRepository
+import com.nestifff.words.domain.word.model.WordDomain
 import javax.inject.Inject
 
 class GetAllWordsUseCase @Inject constructor(

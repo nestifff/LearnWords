@@ -1,6 +1,6 @@
-package com.nestifff.words.domain.usecase.learn
+package com.nestifff.words.domain.learn.usecase
 
-import com.nestifff.words.domain.model.learn.WordUserAnswerDomain
+import com.nestifff.words.domain.learn.model.WordUserAnswerDomain
 import javax.inject.Inject
 
 class CheckIsWordCorrectUseCase @Inject constructor(
