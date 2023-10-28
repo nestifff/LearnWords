@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.screen.collection.model
 
 import com.nestifff.words.domain.word.model.WordDomain
+import kotlinx.collections.immutable.toImmutableList
 
 data class CollectionScreenWord(
     val id: String,
@@ -23,6 +24,9 @@ fun CollectionScreenWord.toWordDomain(): WordDomain =
         rus = this.rus,
         eng = this.eng,
         isLearned = false,
-        isFavorite =  this.isFavorite
+        isFavorite = this.isFavorite
     )
+
+fun List<WordDomain>.toWordsCollection() =
+    this.map { it.toWordCollectionScreen() }.toImmutableList()
 

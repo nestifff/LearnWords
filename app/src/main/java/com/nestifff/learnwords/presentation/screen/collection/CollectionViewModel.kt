@@ -16,33 +16,28 @@ import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnD
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
-import com.nestifff.learnwords.presentation.screen.collection.model.toWordCollectionScreen
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
-import com.nestifff.words.domain.collection.model.CollectionTypeDomain
-import com.nestifff.words.domain.collection.model.CollectionTypeDomain.IN_PROCESS
-import com.nestifff.words.domain.collection.usecase.GetCollectionFlowUseCase
+import com.nestifff.learnwords.presentation.screen.collection.model.toWordsCollection
+import com.nestifff.words.domain.collection.usecase.GetAllCollectionsFlowUseCase
 import com.nestifff.words.domain.word.model.WordDomain
 import com.nestifff.words.domain.word.usecase.AddWordUseCase
 import com.nestifff.words.domain.word.usecase.ChangeFavoritePropertyUseCase
 import com.nestifff.words.domain.word.usecase.DeleteWordUseCase
-import com.nestifff.words.domain.usecase.word.GetAllWordsFlowUseCase
 import com.nestifff.words.domain.word.usecase.UpdateWordUseCase
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CollectionViewModel(
-    private val getCollectionFlowUseCase: GetCollectionFlowUseCase,
+    private val getAllCollectionsFlowUseCase: GetAllCollectionsFlowUseCase,
     private val updateWordUseCase: UpdateWordUseCase,
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
     private val changeFavoritePropertyUseCase: ChangeFavoritePropertyUseCase,
 ) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Effect>() {
 
-    private var wordsInProgress: ImmutableList<CollectionScreenWord> = emptyImmutableList()
+    private var wordsInProcess: ImmutableList<CollectionScreenWord> = emptyImmutableList()
     private var wordsLearned: ImmutableList<CollectionScreenWord> = emptyImmutableList()
     private var wordsFavorites: ImmutableList<CollectionScreenWord> = emptyImmutableList()
 
@@ -64,28 +59,12 @@ class CollectionViewModel(
 
     init {
         viewModelScope.launch {
-            getCollectionFlowUseCase.run(IN_PROCESS).collect { list ->
-                wordsInProgress = list.map { it.toWordCollectionScreen() }
-                    .toImmutableList()
-                if (state.currCollectionType == CollectionType.InProcess) {
-                    produceState(state.copy(currWordsCollection = wordsInProgress))
-                }
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            getAllWordsFlowUseCase.execute().collect { dbWords ->
-                val words = dbWords.filter { !it.isLearned }
-                    .map { it.toWordCollectionScreen() }
-                    .toImmutableList()
-                wordsInProgress = words
-                wordsFavorites = dbWords.filter { it.isFavorite }
-                    .map { it.toWordCollectionScreen() }
-                    .toImmutableList()
-                wordsLearned = dbWords.filter { it.isLearned }
-                    .map { it.toWordCollectionScreen() }
-                    .toImmutableList()
+            getAllCollectionsFlowUseCase.run().collect {
+                wordsInProcess = it.inProcess.toWordsCollection()
+                wordsFavorites = it.favorite.toWordsCollection()
+                wordsLearned = it.learned.toWordsCollection()
                 val current = when (state.currCollectionType) {
-                    CollectionType.InProcess -> wordsInProgress
+                    CollectionType.InProcess -> wordsInProcess
                     CollectionType.Learned -> wordsLearned
                     CollectionType.Favorite -> wordsFavorites
                 }
@@ -126,7 +105,7 @@ class CollectionViewModel(
         val newState = state.copy(
             currCollectionType = type,
             currWordsCollection = when (type) {
-                CollectionType.InProcess -> wordsInProgress
+                CollectionType.InProcess -> wordsInProcess
                 CollectionType.Learned -> wordsLearned
                 CollectionType.Favorite -> wordsFavorites
             }
