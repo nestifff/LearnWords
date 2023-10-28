@@ -10,6 +10,7 @@ import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.ext.immutableListOf
 import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.model.WayToLearn
+import com.nestifff.learnwords.presentation.model.toUI
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
@@ -19,6 +20,7 @@ import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedSt
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordsCollection
 import com.nestifff.words.domain.collection.usecase.GetAllCollectionsFlowUseCase
+import com.nestifff.words.domain.settings.usecase.GetLearnSettingsUseCase
 import com.nestifff.words.domain.word.model.WordDomain
 import com.nestifff.words.domain.word.usecase.AddWordUseCase
 import com.nestifff.words.domain.word.usecase.ChangeFavoritePropertyUseCase
@@ -35,6 +37,7 @@ class CollectionViewModel(
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
     private val changeFavoritePropertyUseCase: ChangeFavoritePropertyUseCase,
+    private val getLearnSettingsUseCase: GetLearnSettingsUseCase,
 ) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Effect>() {
 
     private var wordsInProcess: ImmutableList<CollectionScreenWord> = emptyImmutableList()
@@ -78,11 +81,30 @@ class CollectionViewModel(
     }
 
     fun onLearnButtonClicked() {
-        produceEffect(Effect.NavigateToLearnScreen(createLearnScreenArgument()))
+        viewModelScope.launch {
+            val settings = getLearnSettingsUseCase.run()
+            produceEffect(
+                Effect.NavigateToLearnScreen(
+                    LearnScreenArgument(
+                        wordsNum = settings.numberToLearn,
+                        wayToLearn = settings.wayToLearn.toUI(),
+                        collectionType = state.currCollectionType
+                    )
+                )
+            )
+        }
     }
 
     fun onLearnButtonLongClicked() {
-        produceState(state.copy(customLearnDialogState = CustomLearnDialogState.Expanded(20)))
+        // todo cache last entered value
+        produceState(
+            state.copy(
+                customLearnDialogState = CustomLearnDialogState.Expanded(
+                    numberToLearn = 20,
+                    wayToLearn = WayToLearn.EngToRus
+                )
+            )
+        )
     }
 
     fun onCustomLeanDialogDismissed() {
@@ -98,7 +120,17 @@ class CollectionViewModel(
     }
 
     fun onCustomLeanDialogLearnClicked() {
-        produceEffect(Effect.NavigateToLearnScreen(createLearnScreenArgument()))
+        val customLearn = state.customLearnDialogState as? CustomLearnDialogState.Expanded ?: return
+        produceState(state.copy(customLearnDialogState = CustomLearnDialogState.Hidden))
+        produceEffect(
+            Effect.NavigateToLearnScreen(
+                LearnScreenArgument(
+                    wordsNum = customLearn.numberToLearn,
+                    wayToLearn = customLearn.wayToLearn,
+                    collectionType = state.currCollectionType
+                )
+            )
+        )
     }
 
     fun onCollectionTypeClicked(type: CollectionType) {
@@ -204,11 +236,4 @@ class CollectionViewModel(
         expandedWordState = null,
         customLearnDialogState = CustomLearnDialogState.Hidden,
     )
-
-    private fun createLearnScreenArgument() =
-        LearnScreenArgument(
-            wordsNum = 3,
-            wayToLearn = WayToLearn.EngToRus,
-            collectionType = state.currCollectionType
-        )
 }

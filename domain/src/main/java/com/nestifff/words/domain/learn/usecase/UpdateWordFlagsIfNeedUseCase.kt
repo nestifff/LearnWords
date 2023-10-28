@@ -3,11 +3,13 @@ package com.nestifff.words.domain.learn.usecase
 import com.nestifff.words.domain.learn.LearnRepository
 import com.nestifff.words.domain.word.WordsRepository
 import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
+import com.nestifff.words.domain.settings.SettingsRepository
 import javax.inject.Inject
 
 class UpdateWordFlagsIfNeedUseCase @Inject constructor(
     private val learnRepository: LearnRepository,
     private val wordsRepository: WordsRepository,
+    private val settingsRepository: SettingsRepository,
 ) {
 
     suspend operator fun invoke(isCorrect: Boolean, isOnFirstTry: Boolean) {
@@ -38,7 +40,7 @@ class UpdateWordFlagsIfNeedUseCase @Inject constructor(
             return
         }
 
-        if (word.enteredOnFirstTry >= NUMBER_OF_SUCCESS_ON_FIRST_TRY_TO_MAKE_LEARNED) {
+        if (word.enteredOnFirstTry >= settingsRepository.getNumberOnFirstTryToMoveInLearned()) {
             wordsRepository.updateWord(
                 word.copy(isLearned = true, enteredOnFirstTry = 0)
             )
@@ -49,9 +51,4 @@ class UpdateWordFlagsIfNeedUseCase @Inject constructor(
         }
     }
 
-    companion object {
-        // todo move to sp
-        // todo connect to settings
-        private const val NUMBER_OF_SUCCESS_ON_FIRST_TRY_TO_MAKE_LEARNED = 2
-    }
 }
