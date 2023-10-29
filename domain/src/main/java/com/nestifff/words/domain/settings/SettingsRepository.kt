@@ -17,8 +17,8 @@ interface SettingsRepository {
     suspend fun updateNumberOnFirstTryToMoveInLearned(number: Int)
 
     companion object {
-        const val DEFAULT_NUMBER_TO_LEARN = 10
+        const val DEFAULT_NUMBER_TO_LEARN = 1
         val DEFAULT_WAY_TO_LEARN = WayToLearnDomain.ENG_TO_RUS
-        const val DEFAULT_NUMBER_ON_FIRST_TRY_TO_MOVE_TO_LEARNED = 3
+        const val DEFAULT_NUMBER_ON_FIRST_TRY_TO_MOVE_TO_LEARNED = 1
     }
 }

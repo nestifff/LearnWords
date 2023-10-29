@@ -1,9 +1,9 @@
 package com.nestifff.words.domain.learn.usecase
 
 import com.nestifff.words.domain.learn.LearnRepository
-import com.nestifff.words.domain.word.WordsRepository
 import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
 import com.nestifff.words.domain.settings.SettingsRepository
+import com.nestifff.words.domain.word.WordsRepository
 import javax.inject.Inject
 
 class UpdateWordFlagsIfNeedUseCase @Inject constructor(
@@ -40,7 +40,8 @@ class UpdateWordFlagsIfNeedUseCase @Inject constructor(
             return
         }
 
-        if (word.enteredOnFirstTry >= settingsRepository.getNumberOnFirstTryToMoveInLearned()) {
+        val requiredOnFirstTry = settingsRepository.getNumberOnFirstTryToMoveInLearned()
+        if (isOnFirstTry && word.enteredOnFirstTry + 1 >= requiredOnFirstTry) {
             wordsRepository.updateWord(
                 word.copy(isLearned = true, enteredOnFirstTry = 0)
             )

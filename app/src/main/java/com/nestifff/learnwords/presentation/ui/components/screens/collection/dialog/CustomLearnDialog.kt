@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.text.isDigitsOnly
+import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
@@ -103,7 +104,10 @@ fun CustomLearnDialog(
 private fun CustomLearnDialogPreview() {
     ThemeProvider {
         CustomLearnDialog(
-            state = CustomLearnDialogState.Expanded(20),
+            state = CustomLearnDialogState.Expanded(
+                numberToLearn = 0,
+                wayToLearn = WayToLearn.EngToRus
+            ),
             onNumberToLearnChange = {},
             onLearnClick = {},
             onDismiss = {},
