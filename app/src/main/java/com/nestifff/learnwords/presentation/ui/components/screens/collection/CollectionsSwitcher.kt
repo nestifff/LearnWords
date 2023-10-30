@@ -17,13 +17,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.model.CollectionType
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionItem
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun CollectionsSwitcher(
-    types: List<CollectionType>,
-    selectedType: CollectionType,
-    onCollectionTypeClick: (CollectionType) -> Unit,
+    collections: List<CollectionItem>,
+    selectedTypeIndex: Int,
+    onCollectionTypeClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -51,12 +52,12 @@ fun CollectionsSwitcher(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            for (type in types) {
+            collections.forEachIndexed { index, collection ->
                 SwitcherItem(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    collection = type.text(),
-                    isActive = type == selectedType,
-                    onClick = { onCollectionTypeClick(type) }
+                    collection = collection.type.text(),
+                    isActive = index == selectedTypeIndex,
+                    onClick = { onCollectionTypeClick(index) }
                 )
             }
         }

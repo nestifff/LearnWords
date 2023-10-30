@@ -22,13 +22,13 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.thenIfCondition
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionWordItem
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun WordsListItem(
-    word: CollectionScreenWord,
+    word: CollectionWordItem,
     onClick: () -> Unit,
     onEditWordValuesChange: (rus: String, eng: String) -> Unit,
     onEditWordSaveClick: () -> Unit,

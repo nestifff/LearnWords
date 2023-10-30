@@ -1,23 +1,30 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.onEffect
-import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToLearnScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToSettingsScreen
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.*
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionLearnButton
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionTopBar
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionsSwitcher
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.CustomLearnDialog
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.WordsList
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.CollectionsPager
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
@@ -44,7 +51,7 @@ fun CollectionScreen(
         onCustomLeanDialogDismiss = { viewModel.onCustomLeanDialogDismissed() },
         onCustomLeanDialogNumberChange = { viewModel.onCustomLeanDialogNumberChanged(it) },
         onCustomLeanDialogLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
-        onCollectionTypeClick = { viewModel.onCollectionTypeClicked(it) },
+        onNewCollectionTypeSelect = { viewModel.onNewCollectionTypeSelected(it) },
         onWordItemClick = { viewModel.onWordItemClicked(it) },
         onMakeFavoriteClick = { viewModel.onMakeFavoriteClicked(it) },
         onEditWordValuesChange = { rus, eng -> viewModel.onEditWordValuesChanged(rus, eng) },
@@ -67,7 +74,7 @@ private fun CollectionScreenContent(
     onCustomLeanDialogDismiss: () -> Unit,
     onCustomLeanDialogNumberChange: (Int) -> Unit,
     onCustomLeanDialogLearnClick: () -> Unit,
-    onCollectionTypeClick: (CollectionType) -> Unit,
+    onNewCollectionTypeSelect: (Int) -> Unit,
     onWordItemClick: (String) -> Unit,
     onMakeFavoriteClick: (String) -> Unit,
     onEditWordValuesChange: (rus: String, eng: String) -> Unit,
@@ -109,38 +116,43 @@ private fun CollectionScreenContent(
                     .fillMaxSize()
                     .padding(scaffoldPadding)
             ) {
-                WordsList(
-                    expandedWordState = state.expandedWordState,
-                    words = state.currWordsCollection,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp),
-                    onEditWordSaveClick = { onWordUpdateClick() },
-                    onDeleteWordClick = { onDeleteWordClick(it) },
-                    onWordClick = { onWordItemClick(it) },
-                    onMakeFavoriteClick = onMakeFavoriteClick,
-                    onEditWordValuesChange = onEditWordValuesChange,
-                )
-                CollectionsSwitcher(
-                    types = state.collectionTypes,
-                    selectedType = state.currCollectionType,
-                    onCollectionTypeClick = onCollectionTypeClick,
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                )
-                CollectionLearnButton(
-                    onClick = onLearnButtonClick,
-                    onLongClick = onLearnButtonLongClick,
-                    modifier = Modifier
-                        .padding(bottom = 24.dp, end = 10.dp)
-                        .align(Alignment.BottomEnd),
-                )
+                if (state.collections.isNotEmpty()) {
 
-                CustomLearnDialog(
-                    state = state.customLearnDialogState,
-                    onNumberToLearnChange = onCustomLeanDialogNumberChange,
-                    onLearnClick = onCustomLeanDialogLearnClick,
-                    onDismiss = onCustomLeanDialogDismiss
-                )
+                    CollectionsPager(
+                        expandedWordState = state.expandedWordState,
+                        collections = state.collections,
+                        currCollectionInd = state.currCollectionInd,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        onNewPageSelect = onNewCollectionTypeSelect,
+                        onEditWordSaveClick = { onWordUpdateClick() },
+                        onDeleteWordClick = { onDeleteWordClick(it) },
+                        onWordClick = { onWordItemClick(it) },
+                        onMakeFavoriteClick = onMakeFavoriteClick,
+                        onEditWordValuesChange = onEditWordValuesChange,
+                    )
+                    CollectionsSwitcher(
+                        collections = state.collections,
+                        selectedTypeIndex = state.currCollectionInd,
+                        onCollectionTypeClick = onNewCollectionTypeSelect,
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                    )
+                    CollectionLearnButton(
+                        onClick = onLearnButtonClick,
+                        onLongClick = onLearnButtonLongClick,
+                        modifier = Modifier
+                            .padding(bottom = 24.dp, end = 10.dp)
+                            .align(Alignment.BottomEnd),
+                    )
+
+                    CustomLearnDialog(
+                        state = state.customLearnDialogState,
+                        onNumberToLearnChange = onCustomLeanDialogNumberChange,
+                        onLearnClick = onCustomLeanDialogLearnClick,
+                        onDismiss = onCustomLeanDialogDismiss
+                    )
+                }
             }
         }
     }

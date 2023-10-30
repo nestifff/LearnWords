@@ -11,13 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionWordItem
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 internal fun NotSelectedItemContent(
     modifier: Modifier = Modifier,
-    word: CollectionScreenWord,
+    word: CollectionWordItem,
 ) {
     Row(
         modifier = modifier,

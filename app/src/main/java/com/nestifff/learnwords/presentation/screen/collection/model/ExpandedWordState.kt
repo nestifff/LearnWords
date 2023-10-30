@@ -1,13 +1,13 @@
 package com.nestifff.learnwords.presentation.screen.collection.model
 
 data class ExpandedWordState(
-    val word: CollectionScreenWord,
-    val oldWord: CollectionScreenWord,
+    val word: CollectionWordItem,
+    val oldWord: CollectionWordItem,
     val isLoading: Boolean = false,
     val isSaveEnabled: Boolean = false,
 )
 
-fun CollectionScreenWord.toExpandedState(): ExpandedWordState {
+fun CollectionWordItem.toExpandedState(): ExpandedWordState {
     return ExpandedWordState(word = this.copy(), oldWord = this)
 }
 

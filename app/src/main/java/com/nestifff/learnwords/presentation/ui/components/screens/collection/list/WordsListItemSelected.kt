@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionWordItem
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
@@ -88,7 +88,7 @@ internal fun ExpandedWordItem(
 private fun SelectedItemContentPreview() {
     ThemeProvider {
         ExpandedWordItem(
-            state = CollectionScreenWord(
+            state = CollectionWordItem(
                 id = "",
                 eng = "English",
                 rus = "Russian",

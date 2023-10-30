@@ -7,18 +7,16 @@ import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.emptyImmutableList
 import com.nestifff.learnwords.ext.generateUUID
-import com.nestifff.learnwords.ext.immutableListOf
-import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.model.toUI
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
-import com.nestifff.learnwords.presentation.screen.collection.model.CollectionScreenWord
+import com.nestifff.learnwords.presentation.screen.collection.model.CollectionItem
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
+import com.nestifff.learnwords.presentation.screen.collection.model.toUI
 import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
-import com.nestifff.learnwords.presentation.screen.collection.model.toWordsCollection
 import com.nestifff.words.domain.collection.usecase.GetAllCollectionsFlowUseCase
 import com.nestifff.words.domain.settings.usecase.GetLearnSettingsUseCase
 import com.nestifff.words.domain.word.model.WordDomain
@@ -27,6 +25,7 @@ import com.nestifff.words.domain.word.usecase.ChangeFavoritePropertyUseCase
 import com.nestifff.words.domain.word.usecase.DeleteWordUseCase
 import com.nestifff.words.domain.word.usecase.UpdateWordUseCase
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,14 +39,9 @@ class CollectionViewModel(
     private val getLearnSettingsUseCase: GetLearnSettingsUseCase,
 ) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Effect>() {
 
-    private var wordsInProcess: ImmutableList<CollectionScreenWord> = emptyImmutableList()
-    private var wordsLearned: ImmutableList<CollectionScreenWord> = emptyImmutableList()
-    private var wordsFavorites: ImmutableList<CollectionScreenWord> = emptyImmutableList()
-
     data class State(
-        val collectionTypes: ImmutableList<CollectionType>,
-        val currCollectionType: CollectionType,
-        val currWordsCollection: ImmutableList<CollectionScreenWord>,
+        val collections: ImmutableList<CollectionItem>,
+        val currCollectionInd: Int,
         val addWordDialogState: AddWordDialogState,
         val expandedWordState: ExpandedWordState?,
         val customLearnDialogState: CustomLearnDialogState,
@@ -62,16 +56,9 @@ class CollectionViewModel(
 
     init {
         viewModelScope.launch {
-            getAllCollectionsFlowUseCase.run().collect {
-                wordsInProcess = it.inProcess.toWordsCollection()
-                wordsFavorites = it.favorite.toWordsCollection()
-                wordsLearned = it.learned.toWordsCollection()
-                val current = when (state.currCollectionType) {
-                    CollectionType.InProcess -> wordsInProcess
-                    CollectionType.Learned -> wordsLearned
-                    CollectionType.Favorite -> wordsFavorites
-                }
-                produceState(state.copy(currWordsCollection = current))
+            getAllCollectionsFlowUseCase.run().collect { list ->
+                val collections = list.map { it.toUI() }.toImmutableList()
+                produceState(state.copy(collections = collections))
             }
         }
     }
@@ -88,7 +75,7 @@ class CollectionViewModel(
                     LearnScreenArgument(
                         wordsNum = settings.numberToLearn,
                         wayToLearn = settings.wayToLearn.toUI(),
-                        collectionType = state.currCollectionType
+                        collectionType = state.getCurrentCollectionType()
                     )
                 )
             )
@@ -127,26 +114,18 @@ class CollectionViewModel(
                 LearnScreenArgument(
                     wordsNum = customLearn.numberToLearn,
                     wayToLearn = customLearn.wayToLearn,
-                    collectionType = state.currCollectionType
+                    collectionType = state.getCurrentCollectionType()
                 )
             )
         )
     }
 
-    fun onCollectionTypeClicked(type: CollectionType) {
-        val newState = state.copy(
-            currCollectionType = type,
-            currWordsCollection = when (type) {
-                CollectionType.InProcess -> wordsInProcess
-                CollectionType.Learned -> wordsLearned
-                CollectionType.Favorite -> wordsFavorites
-            }
-        )
-        produceState(newState)
+    fun onNewCollectionTypeSelected(index: Int) {
+        produceState(state.copy(currCollectionInd = index))
     }
 
     fun onWordItemClicked(id: String) {
-        val clickedWord = state.currWordsCollection.find { id == it.id } ?: return
+        val clickedWord = state.getCurrentCollectionList().find { id == it.id } ?: return
         val new = clickedWord.toExpandedState()
             .takeIf { state.expandedWordState?.word != clickedWord }
         produceState(state.copy(expandedWordState = new))
@@ -225,15 +204,16 @@ class CollectionViewModel(
     }
 
     override fun createInitialState(): State = State(
-        collectionTypes = immutableListOf(
-            CollectionType.InProcess,
-            CollectionType.Learned,
-            CollectionType.Favorite
-        ),
-        currCollectionType = CollectionType.InProcess,
-        currWordsCollection = emptyImmutableList(),
+        collections = emptyImmutableList(),
+        currCollectionInd = 0,
         addWordDialogState = AddWordDialogState.Hidden,
         expandedWordState = null,
         customLearnDialogState = CustomLearnDialogState.Hidden,
     )
+
+    private fun State.getCurrentCollectionType() =
+        this.collections[this.currCollectionInd].type
+
+    private fun State.getCurrentCollectionList() =
+        this.collections[this.currCollectionInd].list
 }

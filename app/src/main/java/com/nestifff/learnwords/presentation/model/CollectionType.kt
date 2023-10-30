@@ -13,3 +13,11 @@ fun CollectionType.toDomain(): CollectionTypeDomain {
         CollectionType.Favorite -> CollectionTypeDomain.FAVORITE
     }
 }
+
+fun CollectionTypeDomain.toUI(): CollectionType {
+    return when (this) {
+        CollectionTypeDomain.IN_PROCESS -> CollectionType.InProcess
+        CollectionTypeDomain.LEARNED -> CollectionType.Learned
+        CollectionTypeDomain.FAVORITE -> CollectionType.Favorite
+    }
+}
