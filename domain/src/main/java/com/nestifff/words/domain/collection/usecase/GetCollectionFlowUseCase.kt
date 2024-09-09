@@ -2,7 +2,7 @@ package com.nestifff.words.domain.collection.usecase
 
 import com.nestifff.words.domain.collection.model.CollectionTypeDomain
 import com.nestifff.words.domain.collection.model.CollectionTypeDomain.FAVORITE
-import com.nestifff.words.domain.collection.model.CollectionTypeDomain.IN_PROCESS
+import com.nestifff.words.domain.collection.model.CollectionTypeDomain.IN_PROGRESS
 import com.nestifff.words.domain.collection.model.CollectionTypeDomain.LEARNED
 import com.nestifff.words.domain.word.WordsRepository
 import com.nestifff.words.domain.word.model.WordDomain
@@ -19,7 +19,7 @@ class GetCollectionFlowUseCase @Inject constructor(
         repository.getWordsFlow().map { list ->
             list.filter {
                 when (collectionType) {
-                    IN_PROCESS -> !it.isLearned
+                    IN_PROGRESS -> !it.isLearned
                     LEARNED -> it.isLearned
                     FAVORITE -> it.isFavorite
                 }

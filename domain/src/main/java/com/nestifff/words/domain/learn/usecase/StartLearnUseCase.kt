@@ -21,7 +21,7 @@ class StartLearnUseCase @Inject constructor(
             .asSequence()
             .filter {
                 when (collectionType) {
-                    CollectionTypeDomain.IN_PROCESS -> !it.isLearned
+                    CollectionTypeDomain.IN_PROGRESS -> !it.isLearned
                     CollectionTypeDomain.LEARNED -> it.isLearned
                     CollectionTypeDomain.FAVORITE ->
                         throw IllegalArgumentException("Learning Favorite collection isn't supported yet")

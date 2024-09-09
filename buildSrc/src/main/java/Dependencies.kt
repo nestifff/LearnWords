@@ -46,7 +46,7 @@ object Dependencies {
 
         object Core {
             const val corKtx = "androidx.core:core-ktx:1.9.0"
-            const val activityCompose = "androidx.activity:activity-compose:1.6.0"
+            const val activityCompose = "androidx.activity:activity-compose:1.9.2"
             const val appCompat = "androidx.appcompat:appcompat:1.4.0"
         }
 

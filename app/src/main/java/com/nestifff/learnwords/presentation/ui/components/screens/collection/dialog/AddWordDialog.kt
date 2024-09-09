@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -68,29 +70,31 @@ fun AddWordDialog(
             )
             .noRippleClickable { }
             .background(color = AppTheme.colors.primaryLight)
+            .navigationBarsPadding()
+            .imePadding()
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = 0.4f,
                     stiffness = 1000f
                 )
             )
-            .padding(bottom = 6.dp)
+            .padding(bottom = 16.dp)
     ) {
         if (!isExpanded) {
             Text(
                 modifier = Modifier
-                    .padding(top = 6.dp, start = 24.dp)
+                    .padding(top = 8.dp, start = 24.dp)
                     .clip(RoundedCornerShape(24.dp))
                     .border(
                         width = 2.dp,
-                        color = AppTheme.colors.textLight,
+                        color = AppTheme.colors.contentLight,
                         shape = RoundedCornerShape(24.dp)
                     )
                     .clickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
                 style = AppTheme.typography.h1MediumTextStyle,
-                color = AppTheme.colors.textLight
+                color = AppTheme.colors.contentLight
             )
         } else {
             Icon(
@@ -149,7 +153,7 @@ fun AddWordDialog(
                             .padding(2.dp),
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
-                        tint = AppTheme.colors.icons
+                        tint = AppTheme.colors.content
                     )
                 }
             }
@@ -173,7 +177,7 @@ private fun OneValueEnterRow(
         Text(
             text = text,
             style = AppTheme.typography.h2RegularTextStyle,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.content,
         )
         Spacer(modifier = Modifier.width(12.dp))
         WordsTextField(

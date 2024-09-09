@@ -27,19 +27,19 @@ internal fun NotSelectedItemContent(
             modifier = Modifier.padding(end = 6.dp),
             text = word.eng,
             style = AppTheme.typography.h1RegularTextStyle,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.content,
         )
         Icon(
             modifier = Modifier.offset(y = 3.dp),
             imageVector = Icons.Default.ArrowForward,
             contentDescription = null,
-            tint = AppTheme.colors.text
+            tint = AppTheme.colors.content
         )
         Text(
             modifier = Modifier.padding(start = 6.dp),
             text = word.rus,
             style = AppTheme.typography.h1RegularTextStyle,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.content,
         )
     }
 }

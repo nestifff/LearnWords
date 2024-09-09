@@ -27,6 +27,7 @@ import com.nestifff.learnwords.presentation.ui.components.screens.collection.dia
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.CollectionsPager
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun CollectionScreen(
     viewModel: CollectionViewModel,
@@ -43,116 +44,66 @@ fun CollectionScreen(
         }
     }
 
-    CollectionScreenContent(
-        state = state,
-        onSettingsClick = { viewModel.onSettingsClicked() },
-        onLearnButtonClick = { viewModel.onLearnButtonClicked() },
-        onLearnButtonLongClick = { viewModel.onLearnButtonLongClicked() },
-        onCustomLeanDialogDismiss = { viewModel.onCustomLeanDialogDismissed() },
-        onCustomLeanDialogNumberChange = { viewModel.onCustomLeanDialogNumberChanged(it) },
-        onCustomLeanDialogLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
-        onNewCollectionTypeSelect = { viewModel.onNewCollectionTypeSelected(it) },
-        onWordItemClick = { viewModel.onWordItemClicked(it) },
-        onMakeFavoriteClick = { viewModel.onMakeFavoriteClicked(it) },
-        onEditWordValuesChange = { rus, eng -> viewModel.onEditWordValuesChanged(rus, eng) },
-        onWordUpdateClick = { viewModel.onWordUpdateClicked() },
-        onDeleteWordClick = { viewModel.onWordDeleteClicked(it) },
-        onOpenAddWordDialogClick = { viewModel.onOpenAddWordDialogClicked() },
-        onCloseAddWordDialogClick = { viewModel.onCloseAddWordDialogClicked() },
-        onAddWordValuesChange = { rus, eng -> viewModel.onAddWordValuesChanged(rus, eng) },
-        onAddWordClick = { viewModel.onAddWordClicked() },
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
-@Composable
-private fun CollectionScreenContent(
-    state: CollectionViewModel.State,
-    onSettingsClick: () -> Unit,
-    onLearnButtonClick: () -> Unit,
-    onLearnButtonLongClick: () -> Unit,
-    onCustomLeanDialogDismiss: () -> Unit,
-    onCustomLeanDialogNumberChange: (Int) -> Unit,
-    onCustomLeanDialogLearnClick: () -> Unit,
-    onNewCollectionTypeSelect: (Int) -> Unit,
-    onWordItemClick: (String) -> Unit,
-    onMakeFavoriteClick: (String) -> Unit,
-    onEditWordValuesChange: (rus: String, eng: String) -> Unit,
-    onWordUpdateClick: () -> Unit,
-    onDeleteWordClick: (String) -> Unit,
-    onOpenAddWordDialogClick: () -> Unit,
-    onCloseAddWordDialogClick: () -> Unit,
-    onAddWordValuesChange: (rus: String, eng: String) -> Unit,
-    onAddWordClick: () -> Unit,
-) {
-
-    Box(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(color = AppTheme.colors.background)
-            .statusBarsPadding()
-    ) {
-        Scaffold(
-            modifier = Modifier.imePadding(),
-            topBar = {
-                CollectionTopBar(
-                    modifier = Modifier.padding(top = 4.dp, end = 4.dp),
-                    onSettingsButtonClick = onSettingsClick
-                )
-            },
-            bottomBar = {
-                AddWordDialog(
-                    state = state.addWordDialogState,
-                    onValuesChange = { rus, eng -> onAddWordValuesChange(rus, eng) },
-                    onAddWordClick = { onAddWordClick() },
-                    onDismiss = { onCloseAddWordDialogClick() },
-                    onOpenClick = { onOpenAddWordDialogClick() }
-                )
-            },
-            containerColor = AppTheme.colors.background,
-        ) { scaffoldPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(scaffoldPadding)
-            ) {
-                if (state.collections.isNotEmpty()) {
+            .statusBarsPadding(),
+        topBar = {
+            CollectionTopBar(
+                modifier = Modifier.padding(top = 4.dp, end = 4.dp),
+                onSettingsButtonClick = { viewModel.onSettingsClicked() }
+            )
+        },
+        bottomBar = {
+            AddWordDialog(
+                state = state.addWordDialogState,
+                onValuesChange = { rus, eng -> viewModel.onAddWordValuesChanged(rus, eng) },
+                onAddWordClick = { viewModel.onAddWordClicked() },
+                onDismiss = { viewModel.onCloseAddWordDialogClicked() },
+                onOpenClick = { viewModel.onOpenAddWordDialogClicked() }
+            )
+        },
+    ) { scaffoldPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffoldPadding)
+        ) {
+            if (state.collections.isNotEmpty()) {
 
-                    CollectionsPager(
-                        expandedWordState = state.expandedWordState,
-                        collections = state.collections,
-                        currCollectionInd = state.currCollectionInd,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp),
-                        onNewPageSelect = onNewCollectionTypeSelect,
-                        onEditWordSaveClick = { onWordUpdateClick() },
-                        onDeleteWordClick = { onDeleteWordClick(it) },
-                        onWordClick = { onWordItemClick(it) },
-                        onMakeFavoriteClick = onMakeFavoriteClick,
-                        onEditWordValuesChange = onEditWordValuesChange,
-                    )
-                    CollectionsSwitcher(
-                        collections = state.collections,
-                        selectedTypeIndex = state.currCollectionInd,
-                        onCollectionTypeClick = onNewCollectionTypeSelect,
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                    )
-                    CollectionLearnButton(
-                        onClick = onLearnButtonClick,
-                        onLongClick = onLearnButtonLongClick,
-                        modifier = Modifier
-                            .padding(bottom = 24.dp, end = 10.dp)
-                            .align(Alignment.BottomEnd),
-                    )
+                CollectionsPager(
+                    expandedWordState = state.expandedWordState,
+                    collections = state.collections,
+                    currCollectionType = state.currCollectionType,
+                    modifier = Modifier.fillMaxSize(),
+                    onNewPageSelect = { viewModel.onNewCollectionTypeSelected(it) },
+                    onEditWordSaveClick = { viewModel.onWordUpdateClicked() },
+                    onDeleteWordClick = { viewModel.onWordDeleteClicked(it) },
+                    onWordClick = { viewModel.onWordItemClicked(it) },
+                    onMakeFavoriteClick = { viewModel.onMakeFavoriteClicked(it) },
+                    onEditWordValuesChange = { rus, eng -> viewModel.onEditWordValuesChanged(rus, eng) },
+                )
+                CollectionsSwitcher(
+                    collections = state.collections,
+                    selectedType = state.currCollectionType,
+                    onCollectionTypeClick = { viewModel.onNewCollectionTypeSelected(it) },
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                )
+                CollectionLearnButton(
+                    onClick = { viewModel.onLearnButtonClicked() },
+                    onLongClick = { viewModel.onLearnButtonLongClicked() },
+                    modifier = Modifier
+                        .padding(bottom = 24.dp, end = 10.dp)
+                        .align(Alignment.BottomEnd),
+                )
 
-                    CustomLearnDialog(
-                        state = state.customLearnDialogState,
-                        onNumberToLearnChange = onCustomLeanDialogNumberChange,
-                        onLearnClick = onCustomLeanDialogLearnClick,
-                        onDismiss = onCustomLeanDialogDismiss
-                    )
-                }
+                CustomLearnDialog(
+                    state = state.customLearnDialogState,
+                    onNumberToLearnChange = { viewModel.onCustomLeanDialogNumberChanged(it) },
+                    onLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
+                    onDismiss = { viewModel.onCustomLeanDialogDismissed() }
+                )
             }
         }
     }

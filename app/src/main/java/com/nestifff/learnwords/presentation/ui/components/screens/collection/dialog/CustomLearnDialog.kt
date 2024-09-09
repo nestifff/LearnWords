@@ -54,7 +54,7 @@ fun CustomLearnDialog(
                     Text(
                         text = "Number:",
                         style = AppTheme.typography.h2MediumTextStyle,
-                        color = AppTheme.colors.text,
+                        color = AppTheme.colors.content,
                     )
                     WordsTextField(
                         value = state.numberToLearn.toString(),
@@ -77,7 +77,7 @@ fun CustomLearnDialog(
                     Text(
                         text = "Way to learn: todo",
                         style = AppTheme.typography.h2MediumTextStyle,
-                        color = AppTheme.colors.text,
+                        color = AppTheme.colors.content,
                     )
                 }
 
@@ -91,7 +91,7 @@ fun CustomLearnDialog(
                     Text(
                         text = "Learn",
                         style = AppTheme.typography.h2MediumTextStyle,
-                        color = AppTheme.colors.text,
+                        color = AppTheme.colors.content,
                     )
                 }
             }

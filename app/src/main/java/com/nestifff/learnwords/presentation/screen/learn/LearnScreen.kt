@@ -68,7 +68,7 @@ fun LearnScreenContent(
                 Text(
                     text = state.word?.shownValue ?: emptyString(),
                     style = AppTheme.typography.h1MediumTextStyle,
-                    color = AppTheme.colors.text,
+                    color = AppTheme.colors.content,
                 )
                 WordsTextField(
                     value = state.word?.enteredValue ?: emptyString(),

@@ -39,7 +39,7 @@ fun SaveChangedButton(
         Text(
             text = "Save",
             style = AppTheme.typography.h2MediumTextStyle,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.content,
         )
     }
 }

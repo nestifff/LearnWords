@@ -45,7 +45,7 @@ fun LearnButton(
         Text(
             text = state.getText(),
             style = AppTheme.typography.h2MediumTextStyle,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.content,
         )
     }
 }

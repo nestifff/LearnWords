@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,16 +18,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.model.CollectionType
+import com.nestifff.learnwords.presentation.model.fromCollectionIndex
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionItem
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun CollectionsSwitcher(
-    collections: List<CollectionItem>,
-    selectedTypeIndex: Int,
+    collections: ImmutableList<CollectionItem>,
+    selectedType: CollectionType,
     onCollectionTypeClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Log.i("Lalala", "CollectionsSwitcher: selectedType = $selectedType")
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -56,7 +60,7 @@ fun CollectionsSwitcher(
                 SwitcherItem(
                     modifier = Modifier.padding(horizontal = 4.dp),
                     collection = collection.type.text(),
-                    isActive = index == selectedTypeIndex,
+                    isActive = CollectionType.fromCollectionIndex(index) == selectedType,
                     onClick = { onCollectionTypeClick(index) }
                 )
             }
@@ -87,14 +91,14 @@ private fun SwitcherItem(
         Text(
             text = collection,
             style = AppTheme.typography.h2MediumTextStyle,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.content,
         )
     }
 }
 
 private fun CollectionType.text(): String {
     return when (this) {
-        CollectionType.InProcess -> "In progress"
+        CollectionType.InProgress -> "In progress"
         CollectionType.Learned -> "Learned"
         CollectionType.Favorite -> "Favorite"
     }

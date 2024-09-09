@@ -42,7 +42,7 @@ fun ResultAnimation(
             Text(
                 text = text,
                 style = AppTheme.typography.h2MediumTextStyle,
-                color = AppTheme.colors.text
+                color = AppTheme.colors.content
             )
         }
     }

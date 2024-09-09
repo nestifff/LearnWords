@@ -1,5 +1,7 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
+import android.util.Log
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
 import com.nestifff.learnwords.app.core.UiEffect
@@ -7,7 +9,10 @@ import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.emptyImmutableList
 import com.nestifff.learnwords.ext.generateUUID
+import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.model.WayToLearn
+import com.nestifff.learnwords.presentation.model.fromCollectionIndex
+import com.nestifff.learnwords.presentation.model.toIndex
 import com.nestifff.learnwords.presentation.model.toUI
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionItem
@@ -30,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Stable
 class CollectionViewModel(
     private val getAllCollectionsFlowUseCase: GetAllCollectionsFlowUseCase,
     private val updateWordUseCase: UpdateWordUseCase,
@@ -41,10 +47,10 @@ class CollectionViewModel(
 
     data class State(
         val collections: ImmutableList<CollectionItem>,
-        val currCollectionInd: Int,
+        val currCollectionType: CollectionType,
         val addWordDialogState: AddWordDialogState,
         val expandedWordState: ExpandedWordState?,
-        val customLearnDialogState: CustomLearnDialogState,
+        val customLearnDialogState: CustomLearnDialogState
     ) : UiState
 
     sealed class Effect : UiEffect {
@@ -121,7 +127,10 @@ class CollectionViewModel(
     }
 
     fun onNewCollectionTypeSelected(index: Int) {
-        produceState(state.copy(currCollectionInd = index))
+        Log.i("Lalala", "onNewCollectionTypeSelected: index = $index")
+        if (index != state.currCollectionType.toIndex()) {
+            produceState(state.copy(currCollectionType = CollectionType.fromCollectionIndex(index)))
+        }
     }
 
     fun onWordItemClicked(id: String) {
@@ -205,15 +214,15 @@ class CollectionViewModel(
 
     override fun createInitialState(): State = State(
         collections = emptyImmutableList(),
-        currCollectionInd = 0,
+        currCollectionType = CollectionType.InProgress,
         addWordDialogState = AddWordDialogState.Hidden,
         expandedWordState = null,
         customLearnDialogState = CustomLearnDialogState.Hidden,
     )
 
     private fun State.getCurrentCollectionType() =
-        this.collections[this.currCollectionInd].type
+        this.collections[this.currCollectionType.toIndex()].type
 
     private fun State.getCurrentCollectionList() =
-        this.collections[this.currCollectionInd].list
+        this.collections[this.currCollectionType.toIndex()].list
 }
