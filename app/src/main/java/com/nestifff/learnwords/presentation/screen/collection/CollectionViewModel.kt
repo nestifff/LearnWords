@@ -48,6 +48,7 @@ class CollectionViewModel(
     data class State(
         val collections: ImmutableList<CollectionItem>,
         val currCollectionType: CollectionType,
+        val isLearnButtonVisible: Boolean,
         val addWordDialogState: AddWordDialogState,
         val expandedWordState: ExpandedWordState?,
         val customLearnDialogState: CustomLearnDialogState
@@ -58,19 +59,31 @@ class CollectionViewModel(
         data class NavigateToLearnScreen(
             val data: LearnScreenArgument
         ) : Effect()
+        data object NotAvailableYetMessage: Effect()
+        data object ErrorCreatingWordEmptyValue: Effect()
     }
 
     init {
         viewModelScope.launch {
             getAllCollectionsFlowUseCase.run().collect { list ->
                 val collections = list.map { it.toUI() }.toImmutableList()
-                produceState(state.copy(collections = collections))
+                val currentCollection = collections[state.currCollectionType.toIndex()]
+                produceState(
+                    state.copy(
+                        collections = collections,
+                        isLearnButtonVisible = currentCollection.list.isNotEmpty()
+                    )
+                )
             }
         }
     }
 
     fun onSettingsClicked() {
         produceEffect(Effect.NavigateToSettingsScreen)
+    }
+
+    fun onMenuClicked() {
+        produceEffect(Effect.NotAvailableYetMessage)
     }
 
     fun onLearnButtonClicked() {
@@ -127,9 +140,13 @@ class CollectionViewModel(
     }
 
     fun onNewCollectionTypeSelected(index: Int) {
-        Log.i("Lalala", "onNewCollectionTypeSelected: index = $index")
         if (index != state.currCollectionType.toIndex()) {
-            produceState(state.copy(currCollectionType = CollectionType.fromCollectionIndex(index)))
+            produceState(
+                state.copy(
+                    currCollectionType = CollectionType.fromCollectionIndex(index),
+                    isLearnButtonVisible = state.collections[index].list.isNotEmpty()
+                )
+            )
         }
     }
 
@@ -194,8 +211,9 @@ class CollectionViewModel(
     }
 
     fun onAddWordClicked() {
-        val dialogState = state.addWordDialogState
-        if (dialogState !is AddWordDialogState.Expanded) {
+        val dialogState = state.addWordDialogState as? AddWordDialogState.Expanded ?: return
+        if (dialogState.eng.isBlank() || dialogState.rus.isBlank()) {
+            produceEffect(Effect.ErrorCreatingWordEmptyValue)
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -215,6 +233,7 @@ class CollectionViewModel(
     override fun createInitialState(): State = State(
         collections = emptyImmutableList(),
         currCollectionType = CollectionType.InProgress,
+        isLearnButtonVisible = false,
         addWordDialogState = AddWordDialogState.Hidden,
         expandedWordState = null,
         customLearnDialogState = CustomLearnDialogState.Hidden,

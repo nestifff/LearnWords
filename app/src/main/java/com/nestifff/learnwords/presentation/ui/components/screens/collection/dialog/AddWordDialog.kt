@@ -99,10 +99,11 @@ fun AddWordDialog(
         } else {
             Icon(
                 modifier = Modifier
-                    .padding(top = 6.dp, start = 6.dp)
-                    .size(32.dp)
+                    .padding(top = 4.dp, start = 4.dp)
+                    .size(36.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable { onDismiss() },
+                    .clickable { onDismiss() }
+                    .padding(4.dp),
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
             )
@@ -149,8 +150,8 @@ fun AddWordDialog(
                             .align(Alignment.CenterVertically)
                             .clip(RoundedCornerShape(12.dp))
                             .clickable { onAddWordClick() }
-                            .size(32.dp)
-                            .padding(2.dp),
+                            .size(52.dp)
+                            .padding(10.dp),
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
                         tint = AppTheme.colors.content

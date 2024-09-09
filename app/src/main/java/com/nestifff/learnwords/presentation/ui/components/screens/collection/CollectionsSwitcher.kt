@@ -30,7 +30,6 @@ fun CollectionsSwitcher(
     onCollectionTypeClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Log.i("Lalala", "CollectionsSwitcher: selectedType = $selectedType")
     Box(
         modifier = modifier
             .fillMaxWidth()

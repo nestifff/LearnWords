@@ -1,11 +1,12 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.list
 
-import android.util.Log
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
@@ -18,26 +19,30 @@ import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.rememberDismissState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.model.CollectionType
-import com.nestifff.learnwords.presentation.model.CollectionType.*
+import com.nestifff.learnwords.presentation.model.CollectionType.Favorite
+import com.nestifff.learnwords.presentation.model.CollectionType.InProgress
+import com.nestifff.learnwords.presentation.model.CollectionType.Learned
 import com.nestifff.learnwords.presentation.model.fromCollectionIndex
 import com.nestifff.learnwords.presentation.model.toIndex
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionItem
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionWordItem
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
-import com.nestifff.words.domain.collection.model.CollectionTypeDomain
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -58,7 +63,6 @@ fun CollectionsPager(
     onEditWordSaveClick: () -> Unit,
 ) {
 
-    Log.i("lalala", "CollectionsPager: currCollectionType = $currCollectionType")
     val pagerState = rememberPagerState(
         pageCount = { collections.size }, initialPage = currCollectionType.toIndex()
     )
@@ -81,7 +85,6 @@ fun CollectionsPager(
                 collectionType = CollectionType.fromCollectionIndex(page)
             )
         }
-//        Log.i("Lalala", "CollectionsPager: page = $page")
     }
 
     LaunchedEffect(pagerState, currCollectionType) {
@@ -115,7 +118,9 @@ private fun ItemsList(
 ) {
     val haptic = LocalHapticFeedback.current
     LazyColumn(
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         contentPadding = PaddingValues(top = 64.dp, bottom = 64.dp)
     ) {
         itemsIndexed(
