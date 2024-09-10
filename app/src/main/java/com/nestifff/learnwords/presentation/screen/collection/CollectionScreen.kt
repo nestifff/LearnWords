@@ -8,28 +8,30 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
-import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.ErrorCreatingWordEmptyValue
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToLearnScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToSettingsScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NotAvailableYetMessage
-import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionLearnButton
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionTopBar
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionsSwitcher
@@ -60,6 +62,7 @@ fun CollectionScreen(
         }
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +72,8 @@ fun CollectionScreen(
             CollectionTopBar(
                 modifier = Modifier.padding(top = 4.dp, end = 4.dp),
                 onSettingsButtonClick = { viewModel.onSettingsClicked() },
-                onMenuButtonClick = { viewModel.onMenuClicked() }
+                onMenuButtonClick = { viewModel.onMenuClicked() },
+                onDebugOptionAddWordsClicked = { viewModel.onDebugOptionAddWordsClicked() }
             )
         },
         bottomBar = {
@@ -92,7 +96,17 @@ fun CollectionScreen(
                     onLongClick = { viewModel.onLearnButtonLongClicked() },
                 )
             }
-        }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) {
+                Snackbar(
+                    snackbarData = it,
+                    actionColor = AppTheme.colors.primaryLight,
+                    containerColor = AppTheme.colors.content,
+                    contentColor = AppTheme.colors.backgroundLight
+                )
+            }
+        },
     ) { scaffoldPadding ->
         Box(
             modifier = Modifier
@@ -114,10 +128,7 @@ fun CollectionScreen(
                 onWordClick = { viewModel.onWordItemClicked(it) },
                 onMakeFavoriteClick = { viewModel.onMakeFavoriteClicked(it) },
                 onEditWordValuesChange = { rus, eng ->
-                    viewModel.onEditWordValuesChanged(
-                        rus,
-                        eng
-                    )
+                    viewModel.onEditWordValuesChanged(rus, eng)
                 },
             )
             CollectionsSwitcher(
@@ -133,6 +144,20 @@ fun CollectionScreen(
                 onLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
                 onDismiss = { viewModel.onCustomLeanDialogDismissed() }
             )
+        }
+    }
+
+    LaunchedEffect(state.isUndoRemoveWordVisible) {
+        if (state.isUndoRemoveWordVisible) {
+            val result = snackbarHostState.showSnackbar(
+                message = "Word deleted",
+                actionLabel = "UNDO",
+                duration = SnackbarDuration.Short
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> viewModel.onUndoDeleteClicked()
+                SnackbarResult.Dismissed -> viewModel.undoDeleteWordShownWithoutUndoing()
+            }
         }
     }
 }

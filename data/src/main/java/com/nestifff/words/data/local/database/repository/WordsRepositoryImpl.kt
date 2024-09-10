@@ -4,6 +4,7 @@ import com.nestifff.words.data.local.database.dao.WordsDatabaseDao
 import com.nestifff.words.data.local.database.mapper.toWordDomain
 import com.nestifff.words.data.local.database.mapper.toWordEntity
 import com.nestifff.words.data.local.database.mapper.toWordLearnProcessDomain
+import com.nestifff.words.data.local.database.model.WordEntity
 import com.nestifff.words.domain.word.WordsRepository
 import com.nestifff.words.domain.word.model.WordDomain
 import com.nestifff.words.domain.learn.model.WordLearnProcessDomain
@@ -14,6 +15,8 @@ import javax.inject.Inject
 class WordsRepositoryImpl @Inject constructor(
     private val wordsDatabaseDao: WordsDatabaseDao
 ) : WordsRepository {
+
+    private var wordWithDeletingCanBeUndo: WordEntity? = null
 
     override suspend fun getWords(): List<WordDomain> {
         return wordsDatabaseDao.getWords().map { it.toWordDomain() }
@@ -48,6 +51,17 @@ class WordsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteWord(id: String) {
+        val wordEntity = wordsDatabaseDao.getWordById(id)
         wordsDatabaseDao.deleteWord(id)
+        wordWithDeletingCanBeUndo = wordEntity
+    }
+
+    override suspend fun undoDeleteWord() {
+        wordsDatabaseDao.insertWord(wordWithDeletingCanBeUndo!!)
+        wordWithDeletingCanBeUndo = null
+    }
+
+    override suspend fun confirmDeleteWord() {
+        wordWithDeletingCanBeUndo = null
     }
 }

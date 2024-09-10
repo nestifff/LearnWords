@@ -28,13 +28,13 @@ import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun CustomLearnDialog(
-    state: CustomLearnDialogState,
+    state: CustomLearnDialogState?,
     onNumberToLearnChange: (Int) -> Unit,
     onLearnClick: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (state is CustomLearnDialogState.Expanded) {
+    if (state != null) {
         Dialog(
             onDismissRequest = onDismiss,
             properties = DialogProperties(
@@ -104,7 +104,7 @@ fun CustomLearnDialog(
 private fun CustomLearnDialogPreview() {
     ThemeProvider {
         CustomLearnDialog(
-            state = CustomLearnDialogState.Expanded(
+            state = CustomLearnDialogState(
                 numberToLearn = 0,
                 wayToLearn = WayToLearn.EngToRus
             ),

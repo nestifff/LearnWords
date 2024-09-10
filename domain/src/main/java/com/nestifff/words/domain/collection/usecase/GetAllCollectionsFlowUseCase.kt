@@ -12,7 +12,7 @@ class GetAllCollectionsFlowUseCase @Inject constructor(
     private val getCollectionFlowUseCase: GetCollectionFlowUseCase,
 ) {
 
-    suspend fun run(): Flow<List<CollectionDomain>> =
+    suspend fun execute(): Flow<List<CollectionDomain>> =
 
         combine(
             flow = getCollectionFlowUseCase.run(IN_PROGRESS),

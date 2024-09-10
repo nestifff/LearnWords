@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
+import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
@@ -34,6 +35,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 @Stable
 class CollectionViewModel(
@@ -49,9 +51,9 @@ class CollectionViewModel(
         val collections: ImmutableList<CollectionItem> = emptyImmutableList(),
         val currCollectionType: CollectionType = CollectionType.InProgress,
         val isLearnButtonVisible: Boolean = false,
-        val addWordDialogState: AddWordDialogState? = null,
+        val addWordDialogState: AddWordDialogState = AddWordDialogState.Collapsed,
         val removeWordState: UndoRemoveWordState? = null,
-        val showUndoRemoveWord: Boolean = false,
+        val isUndoRemoveWordVisible: Boolean = false,
         val expandedWordState: ExpandedWordState? = null,
         val customLearnDialogState: CustomLearnDialogState? = null
     ) : UiState
@@ -67,7 +69,7 @@ class CollectionViewModel(
 
     init {
         viewModelScope.launch {
-            getAllCollectionsFlowUseCase.run().collect { list ->
+            getAllCollectionsFlowUseCase.execute().collect { list ->
                 val collections = list.map { it.toUI() }.toImmutableList()
                 val currentCollection = collections[state.currCollectionType.toIndex()]
                 produceState(
@@ -188,32 +190,44 @@ class CollectionViewModel(
     }
 
     fun onWordDeleteClicked(id: String) {
+        Log.i("lalala", "onWordDeleteClicked: ")
         viewModelScope.launch {
-            deleteWordUseCase.execute(id)
+            deleteWordUseCase.delete(id)
+            produceState(state.copy(isUndoRemoveWordVisible = true))
         }
     }
 
     fun onUndoDeleteClicked() {
+        Log.i("lalala", "onUndoDeleteClicked: ")
         viewModelScope.launch {
+            deleteWordUseCase.undo()
+            produceState(state.copy(isUndoRemoveWordVisible = false))
+        }
+    }
 
+    fun undoDeleteWordShownWithoutUndoing() {
+        Log.i("lalala", "undoDeleteWordShownWithoutUndoing: ")
+        viewModelScope.launch {
+            deleteWordUseCase.confirmDelete()
+            produceState(state.copy(isUndoRemoveWordVisible = false))
         }
     }
 
     fun onOpenAddWordDialogClicked() {
-        produceState(state.copy(addWordDialogState = AddWordDialogState()))
+        produceState(state.copy(addWordDialogState = AddWordDialogState.Expanded()))
     }
 
     fun onCloseAddWordDialogClicked() {
-        produceState(state.copy(addWordDialogState = null))
+        produceState(state.copy(addWordDialogState = AddWordDialogState.Collapsed))
     }
 
     fun onAddWordValuesChanged(rus: String, eng: String) {
-        val dialogState = state.addWordDialogState ?: return
+        val dialogState = state.addWordDialogState as? AddWordDialogState.Expanded ?: return
         produceState(state.copy(addWordDialogState = dialogState.copy(rus = rus, eng = eng)))
     }
 
     fun onAddWordClicked() {
-        val dialogState = state.addWordDialogState ?: return
+        val dialogState = state.addWordDialogState as? AddWordDialogState.Expanded ?: return
         if (dialogState.eng.isBlank() || dialogState.rus.isBlank()) {
             produceEffect(Effect.ErrorCreatingWordEmptyValue)
             return
@@ -228,7 +242,7 @@ class CollectionViewModel(
                     isFavorite = false
                 )
             )
-            produceState(state.copy(addWordDialogState = null))
+            produceState(state.copy(addWordDialogState = AddWordDialogState.Collapsed))
         }
     }
 
@@ -239,4 +253,22 @@ class CollectionViewModel(
 
     private fun State.getCurrentCollectionList() =
         this.collections[this.currCollectionType.toIndex()].list
+
+    fun onDebugOptionAddWordsClicked() {
+        viewModelScope.launch {
+            for (i in 0..10) {
+                val randomValue = Random.nextInt(0, 1000)
+                addWordUseCase.execute(
+                    newWord = WordDomain(
+                        id = generateUUID(),
+                        rus = "rus_$i $randomValue",
+                        eng = "eng$i $randomValue",
+                        // todo move this logic to domain
+                        isLearned = false,
+                        isFavorite = false
+                    )
+                )
+            }
+        }
+    }
 }

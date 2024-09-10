@@ -69,9 +69,10 @@ fun WordsListItem(
                         condition = expandedWordState != null,
                         modifier = Modifier.padding(top = 6.dp)
                     )
-                    .size(28.dp)
+                    .size(36.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable { onMakeFavoriteClick() },
+                    .clickable { onMakeFavoriteClick() }
+                    .padding(4.dp),
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {

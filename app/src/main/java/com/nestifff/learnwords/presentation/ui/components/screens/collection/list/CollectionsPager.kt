@@ -120,7 +120,7 @@ private fun ItemsList(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(top = 64.dp, bottom = 64.dp)
+        contentPadding = PaddingValues(top = 64.dp, bottom = 128.dp)
     ) {
         itemsIndexed(
             items = list,
@@ -139,7 +139,9 @@ private fun ItemsList(
             )
             SwipeToDismiss(
                 state = removeDismissState,
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .animateItemPlacement(),
                 background = { WordListItemDeleteBackground(removeDismissState) },
                 directions = setOf(DismissDirection.EndToStart),
                 dismissThresholds = {
@@ -150,7 +152,6 @@ private fun ItemsList(
                     word = word,
                     onEditWordSaveClick = { onEditWordSaveClick() },
                     onClick = { onWordClick(word.id) },
-                    modifier = Modifier.padding(vertical = 4.dp),
                     expandedWordState = expandedWordState.takeIf {
                         word.id == expandedWordState?.word?.id
                     },

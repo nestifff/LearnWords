@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import com.nestifff.learnwords.BuildConfig
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +27,7 @@ fun CollectionTopBar(
     modifier: Modifier = Modifier,
     onSettingsButtonClick: () -> Unit,
     onMenuButtonClick: () -> Unit,
+    onDebugOptionAddWordsClicked: () -> Unit,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -42,6 +45,20 @@ fun CollectionTopBar(
             contentDescription = null,
             tint = AppTheme.colors.content
         )
+
+        if (BuildConfig.DEBUG) {
+            Icon(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onDebugOptionAddWordsClicked() }
+                    .padding(4.dp)
+                    .size(28.dp),
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
+                tint = AppTheme.colors.content
+            )
+        }
 
         Icon(
             modifier = Modifier
@@ -61,6 +78,9 @@ fun CollectionTopBar(
 @Preview
 private fun CollectionTopBarPreview() {
     ThemeProvider {
-        CollectionTopBar(onSettingsButtonClick = {}, onMenuButtonClick = {})
+        CollectionTopBar(
+            onSettingsButtonClick = {},
+            onMenuButtonClick = {},
+            onDebugOptionAddWordsClicked = {})
     }
 }

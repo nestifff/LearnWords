@@ -198,7 +198,7 @@ private fun OneValueEnterRow(
 private fun AddWordComponentPreview() {
     ThemeProvider {
         AddWordDialog(
-            state = AddWordDialogState.Hidden,
+            state = AddWordDialogState.Collapsed,
             onValuesChange = { s: String, s1: String -> },
             onAddWordClick = {},
             onDismiss = {},

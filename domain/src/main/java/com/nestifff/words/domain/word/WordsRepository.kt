@@ -22,4 +22,7 @@ interface WordsRepository {
 
     suspend fun deleteWord(id: String)
 
+    suspend fun undoDeleteWord()
+
+    suspend fun confirmDeleteWord()
 }
