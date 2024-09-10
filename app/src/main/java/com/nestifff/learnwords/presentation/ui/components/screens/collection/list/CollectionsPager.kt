@@ -116,7 +116,6 @@ private fun ItemsList(
     onEditWordSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val haptic = LocalHapticFeedback.current
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -129,25 +128,22 @@ private fun ItemsList(
         ) { _, word ->
 
             val currentItem by rememberUpdatedState(word)
-
             val removeDismissState = rememberDismissState(
                 confirmStateChange = {
                     val needDelete = it == DismissValue.DismissedToStart
                     if (needDelete) {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onDeleteWordClick(currentItem.id)
                     }
                     needDelete
                 }
             )
-
             SwipeToDismiss(
                 state = removeDismissState,
                 modifier = Modifier.animateItemPlacement(),
                 background = { WordListItemDeleteBackground(removeDismissState) },
                 directions = setOf(DismissDirection.EndToStart),
                 dismissThresholds = {
-                    FractionalThreshold(0.1f)
+                    FractionalThreshold(0.2f)
                 },
             ) {
                 WordsListItem(
@@ -163,6 +159,14 @@ private fun ItemsList(
                         onMakeFavoriteClick(word.id)
                     },
                 )
+
+                val haptic = LocalHapticFeedback.current
+                LaunchedEffect(removeDismissState.targetValue) {
+                    // in this state if user stops touch word will be removed
+                    if (removeDismissState.targetValue != DismissValue.Default) {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    }
+                }
             }
         }
     }

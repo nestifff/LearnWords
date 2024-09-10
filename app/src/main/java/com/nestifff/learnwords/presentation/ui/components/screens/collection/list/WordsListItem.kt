@@ -46,7 +46,12 @@ fun WordsListItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = if (expandedWordState == null) {
+                Alignment.CenterVertically
+            } else {
+                Alignment.Top // default
+            }
         ) {
             if (expandedWordState == null) {
                 NotSelectedItemContent(word = word)
@@ -66,8 +71,7 @@ fun WordsListItem(
                     )
                     .size(28.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable { onMakeFavoriteClick() }
-                ,
+                    .clickable { onMakeFavoriteClick() },
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {
@@ -85,11 +89,8 @@ fun WordsListItem(
 @Composable
 fun WordListItemDeleteBackground(dismissState: DismissState) {
     val color by animateColorAsState(
-        targetValue = when (dismissState.targetValue) {
-            Default -> Color.White
-            else -> Color.Red
-        },
-        animationSpec = tween(durationMillis = 1000),
+        targetValue = Color.Red,
+        animationSpec = tween(durationMillis = 500),
         label = ""
     )
     val alignment = Alignment.CenterEnd

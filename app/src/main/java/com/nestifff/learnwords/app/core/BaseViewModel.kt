@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel<State : UiState, Effect : UiEffect> :
     AutoObserverViewModel() {
 
+        // todo: try get rid of createInitialState
     private val mutableUiState: MutableStateFlow<State> by lazy {
         MutableStateFlow(createInitialState())
     }

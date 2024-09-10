@@ -81,6 +81,18 @@ fun CollectionScreen(
                 onOpenClick = { viewModel.onOpenAddWordDialogClicked() }
             )
         },
+        floatingActionButton = {
+            AnimatedVisibility(
+                visible = state.isLearnButtonVisible,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut(),
+            ) {
+                CollectionLearnButton(
+                    onClick = { viewModel.onLearnButtonClicked() },
+                    onLongClick = { viewModel.onLearnButtonLongClicked() },
+                )
+            }
+        }
     ) { scaffoldPadding ->
         Box(
             modifier = Modifier
@@ -114,19 +126,6 @@ fun CollectionScreen(
                 onCollectionTypeClick = { viewModel.onNewCollectionTypeSelected(it) },
                 modifier = Modifier.padding(horizontal = 10.dp),
             )
-            AnimatedVisibility(
-                visible = state.isLearnButtonVisible,
-                modifier = Modifier
-                    .padding(bottom = 24.dp, end = 10.dp)
-                    .align(Alignment.BottomEnd),
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut(),
-            ) {
-                CollectionLearnButton(
-                    onClick = { viewModel.onLearnButtonClicked() },
-                    onLongClick = { viewModel.onLearnButtonLongClicked() },
-                )
-            }
 
             CustomLearnDialog(
                 state = state.customLearnDialogState,
