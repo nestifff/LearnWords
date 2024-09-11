@@ -9,14 +9,15 @@ fun WordEntity.toWordDomain(): WordDomain =
         rus = this.rus,
         eng = this.eng,
         isLearned = this.flags.flagsGetIsLearned(),
-        isFavorite = this.flags.flagsGetIsFavorite()
+        isFavorite = this.flags.flagsGetIsFavorite(),
+        enteredOnFirstTry = this.enteredOnFirstTry
     )
 
-fun WordDomain.toWordEntity(enteredOnFirstTry: Int): WordEntity =
+fun WordDomain.toWordEntity(): WordEntity =
     WordEntity(
         id = this.id,
         rus = this.rus,
         eng = this.eng,
         flags = createFlags(isFavorite = isFavorite, isLearned = isLearned),
-        enteredOnFirstTry = enteredOnFirstTry,
+        enteredOnFirstTry = this.enteredOnFirstTry,
     )

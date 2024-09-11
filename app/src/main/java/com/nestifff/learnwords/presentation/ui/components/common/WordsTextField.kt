@@ -17,9 +17,10 @@ import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WordsTextField(
-    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     backgroundColor: Color = AppTheme.colors.backgroundLight,
     textStyle: TextStyle = AppTheme.typography.h2RegularTextStyle,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -28,6 +29,7 @@ fun WordsTextField(
     TextField(
         modifier = modifier,
         value = value,
+        enabled = isEnabled,
         onValueChange = onValueChange,
         shape = RoundedCornerShape(8.dp),
         textStyle = textStyle,

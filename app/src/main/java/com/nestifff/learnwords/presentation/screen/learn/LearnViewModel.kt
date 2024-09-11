@@ -7,8 +7,8 @@ import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.presentation.model.toDomain
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
-import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.Check
-import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.Next
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.CheckAnswer
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.GoToNextWord
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnProgressIndicatorState
 import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
@@ -32,12 +32,11 @@ class LearnViewModel @AssistedInject constructor(
 ) : BaseViewModel<LearnViewModel.State, LearnViewModel.Effect>() {
 
     data class State(
-        val isLoading: Boolean,
-        val word: LearnScreenWordItem?,
-        val buttonState: LearnButtonState,
-        val isTextFieldEnabled: Boolean,
-        val resulAnimationState: ResultAnimationState?,
+        val word: LearnScreenWordItem? = null,
+        val isEnteringWordEnabled: Boolean = false,
         val progressState: LearnProgressIndicatorState,
+        val buttonState: LearnButtonState,
+        val resulAnimationState: ResultAnimationState? = null,
     ) : UiState
 
     sealed class Effect : UiEffect {
@@ -46,7 +45,7 @@ class LearnViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            startLearnUseCase.invoke(
+            startLearnUseCase.execute(
                 wordsNumber = arg.wordsNum,
                 wayToLearn = arg.wayToLearn.toDomain(),
                 collectionType = arg.collectionType.toDomain()
@@ -60,7 +59,7 @@ class LearnViewModel @AssistedInject constructor(
         produceState(
             state.copy(
                 word = word.copy(enteredValue = value),
-                buttonState = state.buttonState.copy(enabled = value.isNotBlank())
+                buttonState = state.buttonState.copy(isEnabled = value.isNotBlank())
             )
         )
     }
@@ -68,28 +67,23 @@ class LearnViewModel @AssistedInject constructor(
     fun onButtonClicked() {
         viewModelScope.launch {
             when (state.buttonState.type) {
-                Next -> showNextWord()
-                Check -> checkAnswer()
+                GoToNextWord -> showNextWord()
+                CheckAnswer -> checkAnswer()
             }
         }
     }
 
     override fun createInitialState(): State = State(
-        isLoading = false,
-        word = null,
-        buttonState = LearnButtonState(enabled = false, type = Check),
-        isTextFieldEnabled = true,
-        resulAnimationState = null,
         progressState = LearnProgressIndicatorState(full = arg.wordsNum, done = 0),
+        buttonState = LearnButtonState(isEnabled = false, isLoading = true, type = CheckAnswer)
     )
 
     private suspend fun checkAnswer() {
         val word = state.word ?: return
         produceState(
             state.copy(
-                isLoading = true,
-                isTextFieldEnabled = false,
-                buttonState = LearnButtonState(false, Next)
+                isEnteringWordEnabled = false,
+                buttonState = LearnButtonState(isEnabled = false, isLoading = true, GoToNextWord)
             )
         )
         delay(500)
@@ -98,17 +92,22 @@ class LearnViewModel @AssistedInject constructor(
         )
         produceState(
             state.copy(
-                isLoading = false,
                 resulAnimationState = ResultAnimationState.fromFeedback(feedback),
-                word = null,
-                buttonState = LearnButtonState(true, Next),
+                buttonState = LearnButtonState(isEnabled = true, isLoading = false, GoToNextWord),
                 progressState = state.progressState.increaseIfCondition(feedback is Correct)
             )
         )
     }
 
     private suspend fun showNextWord() {
-        produceState(state.copy(isLoading = true, word = null, resulAnimationState = null))
+        produceState(
+            state.copy(
+                word = null,
+                isEnteringWordEnabled = false,
+                buttonState = state.buttonState.copy(isEnabled = false, isLoading = true),
+                resulAnimationState = null,
+            )
+        )
 
         when (val wordResult = getNextWordUseCase.invoke()) {
 
@@ -118,10 +117,13 @@ class LearnViewModel @AssistedInject constructor(
             is NextWordResultDomain.Word ->
                 produceState(
                     state.copy(
-                        isLoading = false,
                         word = LearnScreenWordItem(wordResult.valueToShow),
-                        isTextFieldEnabled = true,
-                        buttonState = LearnButtonState(false, Check),
+                        isEnteringWordEnabled = true,
+                        buttonState = LearnButtonState(
+                            isEnabled = false,
+                            isLoading = false,
+                            type = CheckAnswer
+                        ),
                     )
                 )
         }

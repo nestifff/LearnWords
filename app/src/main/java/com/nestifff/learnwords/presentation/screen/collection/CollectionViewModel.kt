@@ -1,6 +1,5 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
-import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
 import com.nestifff.learnwords.app.core.BaseViewModel
@@ -8,7 +7,6 @@ import com.nestifff.learnwords.app.core.UiEffect
 import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.emptyImmutableList
-import com.nestifff.learnwords.ext.generateUUID
 import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.model.fromCollectionIndex
@@ -22,10 +20,9 @@ import com.nestifff.learnwords.presentation.screen.collection.model.UndoRemoveWo
 import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.screen.collection.model.toUI
-import com.nestifff.learnwords.presentation.screen.collection.model.toWordDomain
 import com.nestifff.words.domain.collection.usecase.GetAllCollectionsFlowUseCase
 import com.nestifff.words.domain.settings.usecase.GetLearnSettingsUseCase
-import com.nestifff.words.domain.word.model.WordDomain
+import com.nestifff.words.domain.word.model.NewWordToAddDomain
 import com.nestifff.words.domain.word.usecase.AddWordUseCase
 import com.nestifff.words.domain.word.usecase.ChangeFavoritePropertyUseCase
 import com.nestifff.words.domain.word.usecase.DeleteWordUseCase
@@ -63,8 +60,9 @@ class CollectionViewModel(
         data class NavigateToLearnScreen(
             val data: LearnScreenArgument
         ) : Effect()
-        data object NotAvailableYetMessage: Effect()
-        data object ErrorCreatingWordEmptyValue: Effect()
+
+        data object NotAvailableYetMessage : Effect()
+        data object ErrorCreatingWordEmptyValue : Effect()
     }
 
     init {
@@ -92,7 +90,7 @@ class CollectionViewModel(
 
     fun onLearnButtonClicked() {
         viewModelScope.launch {
-            val settings = getLearnSettingsUseCase.run()
+            val settings = getLearnSettingsUseCase.execute()
             produceEffect(
                 Effect.NavigateToLearnScreen(
                     LearnScreenArgument(
@@ -183,14 +181,17 @@ class CollectionViewModel(
                     )
                 )
             )
-            updateWordUseCase.execute(wordState.word.toWordDomain())
+            updateWordUseCase.execute(
+                id = wordState.word.id,
+                newRus = wordState.word.rus,
+                newEng = wordState.word.eng
+            )
             delay(600)
             produceState(state.copy(expandedWordState = null))
         }
     }
 
     fun onWordDeleteClicked(id: String) {
-        Log.i("lalala", "onWordDeleteClicked: ")
         viewModelScope.launch {
             deleteWordUseCase.delete(id)
             produceState(state.copy(isUndoRemoveWordVisible = true))
@@ -198,7 +199,6 @@ class CollectionViewModel(
     }
 
     fun onUndoDeleteClicked() {
-        Log.i("lalala", "onUndoDeleteClicked: ")
         viewModelScope.launch {
             deleteWordUseCase.undo()
             produceState(state.copy(isUndoRemoveWordVisible = false))
@@ -206,7 +206,6 @@ class CollectionViewModel(
     }
 
     fun undoDeleteWordShownWithoutUndoing() {
-        Log.i("lalala", "undoDeleteWordShownWithoutUndoing: ")
         viewModelScope.launch {
             deleteWordUseCase.confirmDelete()
             produceState(state.copy(isUndoRemoveWordVisible = false))
@@ -234,13 +233,7 @@ class CollectionViewModel(
         }
         viewModelScope.launch(Dispatchers.IO) {
             addWordUseCase.execute(
-                WordDomain(
-                    id = generateUUID(),
-                    rus = dialogState.rus,
-                    eng = dialogState.eng,
-                    isLearned = false,
-                    isFavorite = false
-                )
+                NewWordToAddDomain(rus = dialogState.rus, eng = dialogState.eng)
             )
             produceState(state.copy(addWordDialogState = AddWordDialogState.Collapsed))
         }
@@ -259,13 +252,9 @@ class CollectionViewModel(
             for (i in 0..10) {
                 val randomValue = Random.nextInt(0, 1000)
                 addWordUseCase.execute(
-                    newWord = WordDomain(
-                        id = generateUUID(),
+                    newWord = NewWordToAddDomain(
                         rus = "rus_$i $randomValue",
-                        eng = "eng$i $randomValue",
-                        // todo move this logic to domain
-                        isLearned = false,
-                        isFavorite = false
+                        eng = "eng$i $randomValue"
                     )
                 )
             }

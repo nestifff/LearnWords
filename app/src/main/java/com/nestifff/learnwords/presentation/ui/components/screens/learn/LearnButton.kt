@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,9 +32,9 @@ fun LearnButton(
             .height(54.dp)
             .clip(RoundedCornerShape(12.dp))
             .then(
-                if (state.enabled) {
+                if (state.isEnabled) {
                     Modifier
-                        .background(color = AppTheme.colors.secondary)
+                        .background(color = AppTheme.colors.primaryLight)
                         .clickable { onClick() }
                 } else {
                     Modifier.background(color = AppTheme.colors.backgroundMedium)
@@ -47,13 +48,16 @@ fun LearnButton(
             style = AppTheme.typography.h2MediumTextStyle,
             color = AppTheme.colors.content,
         )
+        if (state.isLoading) {
+            CircularProgressIndicator(color = AppTheme.colors.primary)
+        }
     }
 }
 
 private fun LearnButtonState.getText(): String {
     return when (this.type) {
-        LearnNextButtonType.Next -> "Next"
-        LearnNextButtonType.Check -> "Check"
+        LearnNextButtonType.GoToNextWord -> "Next"
+        LearnNextButtonType.CheckAnswer -> "Check"
     }
 }
 
@@ -63,7 +67,7 @@ private fun LearnButtonState.getText(): String {
 private fun LearnButtonCheckPreview() {
     ThemeProvider {
         LearnButton(
-            state = LearnButtonState(true, LearnNextButtonType.Check),
+            state = LearnButtonState(true, false, LearnNextButtonType.CheckAnswer),
             onClick = {}
         )
     }
@@ -74,7 +78,7 @@ private fun LearnButtonCheckPreview() {
 private fun LearnButtonNextPreview() {
     ThemeProvider {
         LearnButton(
-            state = LearnButtonState(true, LearnNextButtonType.Next),
+            state = LearnButtonState(true, false, LearnNextButtonType.GoToNextWord),
             onClick = {}
         )
     }
@@ -82,10 +86,10 @@ private fun LearnButtonNextPreview() {
 
 @Preview
 @Composable
-private fun LearnButtonNextDisabledPreview() {
+private fun LearnButtonNextDisabledLoadingPreview() {
     ThemeProvider {
         LearnButton(
-            state = LearnButtonState(false, LearnNextButtonType.Next),
+            state = LearnButtonState(false, true, LearnNextButtonType.GoToNextWord),
             onClick = {}
         )
     }

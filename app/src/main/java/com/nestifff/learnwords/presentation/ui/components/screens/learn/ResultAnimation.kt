@@ -17,18 +17,19 @@ import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @Composable
 fun ResultAnimation(
-    state: ResultAnimationState,
+    state: ResultAnimationState?,
     onAnimationFinish: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(128.dp)
+            .height(64.dp)
             .background(
                 color = when (state) {
                     is Right -> Color.Green
                     is Wrong -> Color.Red
+                    null -> Color.Transparent
                 }
             ),
         contentAlignment = Alignment.Center,

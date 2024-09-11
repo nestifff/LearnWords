@@ -14,5 +14,5 @@ data class ColorCommon(
     val primary: Color,
     val primaryLight: Color,
     val secondary: Color,
-    val expandedDialogBackground: Color,
+    val expandedDialogBackground: Color
 )

@@ -8,7 +8,7 @@ class GetLearnSettingsUseCase @Inject constructor(
     private val repository: SettingsRepository
 ) {
 
-    suspend fun run(): SettingsDomain {
+    suspend fun execute(): SettingsDomain {
         return SettingsDomain(
             numberToLearn = repository.getNumberToLearn(),
             wayToLearn = repository.getWayToLearn(),

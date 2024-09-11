@@ -1,10 +1,11 @@
 package com.nestifff.learnwords.presentation.screen.learn.model
 
 data class LearnButtonState(
-    val enabled: Boolean,
+    val isEnabled: Boolean,
+    val isLoading: Boolean,
     val type: LearnNextButtonType,
 )
 
 enum class LearnNextButtonType {
-    Next, Check
+    GoToNextWord, CheckAnswer
 }

@@ -17,11 +17,11 @@ class ProcessUserAnswerUseCase @Inject constructor(
     suspend operator fun invoke(userAnswer: WordUserAnswerDomain): UserAnswerFeedback {
 
         val isCorrect = checkIsWordCorrectUseCase.invoke(userAnswer)
-        val isOnFirstTry = isCorrect && learnRepo.getCurrentWordNumberOfTries() == 0
+        val isOnFirstTry = isCorrect && learnRepo.getWordNumberOfPerformedTries() == 0
         if (isCorrect) {
-            learnRepo.removeFromRemaining()
+            learnRepo.removeWordFromRemaining()
         } else {
-            learnRepo.increaseNumberOfTries()
+            learnRepo.addOnePerformedTryToWord()
         }
 
         updateWordFlagsIfNeedUseCase.invoke(isCorrect, isOnFirstTry)

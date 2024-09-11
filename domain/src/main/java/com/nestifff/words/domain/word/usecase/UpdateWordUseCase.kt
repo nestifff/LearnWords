@@ -8,7 +8,8 @@ class UpdateWordUseCase @Inject constructor(
     private val wordsRepository: WordsRepository
 ) {
 
-    suspend fun execute(updatedWord: WordDomain) {
-        return wordsRepository.updateWord(updatedWord)
+    suspend fun execute(id: String, newRus: String, newEng: String) {
+        val oldWord = wordsRepository.getWordById(id)!!
+        return wordsRepository.updateWord(oldWord.copy(rus = newRus, eng = newEng))
     }
 }

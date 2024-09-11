@@ -11,13 +11,12 @@ class StartLearnUseCase @Inject constructor(
     private val wordsRepository: WordsRepository,
 ) {
 
-    suspend operator fun invoke(
+    suspend fun execute(
         wordsNumber: Int,
         wayToLearn: WayToLearnDomain,
         collectionType: CollectionTypeDomain
     ) {
-
-        val selectedToLearn = wordsRepository.getWordsLearnProcess()
+        val selectedToLearn = wordsRepository.getWords()
             .asSequence()
             .filter {
                 when (collectionType) {
