@@ -12,7 +12,7 @@ class StartLearnUseCase @Inject constructor(
 ) {
 
     suspend fun execute(
-        wordsNumber: Int,
+        wordsCount: Int,
         wayToLearn: WayToLearnDomain,
         collectionType: CollectionTypeDomain
     ) {
@@ -27,7 +27,7 @@ class StartLearnUseCase @Inject constructor(
                 }
             }
             .shuffled()
-            .take(wordsNumber)
+            .take(wordsCount)
             .toList()
 
         learnRepository.setDataForLearning(

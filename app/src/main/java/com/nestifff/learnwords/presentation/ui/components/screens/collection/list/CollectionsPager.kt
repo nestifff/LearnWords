@@ -140,7 +140,7 @@ private fun ItemsList(
             SwipeToDismiss(
                 state = removeDismissState,
                 modifier = Modifier
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = 5.dp)
                     .animateItemPlacement(),
                 background = { WordListItemDeleteBackground(removeDismissState) },
                 directions = setOf(DismissDirection.EndToStart),

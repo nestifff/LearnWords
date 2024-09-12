@@ -82,18 +82,13 @@ fun CustomLearnDialog(
                 }
 
                 PrimaryButton(
+                    text = "Learn",
                     onClick = onLearnClick,
                     modifier = Modifier
                         .padding(top = 24.dp)
                         .align(Alignment.End)
                         .width(120.dp)
-                ) {
-                    Text(
-                        text = "Learn",
-                        style = AppTheme.typography.h2MediumTextStyle,
-                        color = AppTheme.colors.content,
-                    )
-                }
+                )
             }
         }
     }

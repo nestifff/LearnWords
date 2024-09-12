@@ -2,7 +2,6 @@ package com.nestifff.learnwords.presentation.screen.learn.di
 
 import dagger.Subcomponent
 
-
 @LearnScreenScope
 @Subcomponent
 interface LearnScreenComponent {

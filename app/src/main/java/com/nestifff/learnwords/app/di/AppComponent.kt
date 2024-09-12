@@ -4,6 +4,7 @@ import android.app.Application
 import com.nestifff.learnwords.app.App
 import com.nestifff.learnwords.presentation.screen.collection.di.CollectionScreenComponent
 import com.nestifff.learnwords.presentation.screen.learn.di.LearnScreenComponent
+import com.nestifff.learnwords.presentation.screen.result.di.ResultScreenComponent
 import com.nestifff.learnwords.presentation.screen.root.MainActivity
 import com.nestifff.learnwords.presentation.screen.root.MainActivityModule
 import com.nestifff.words.data.di.DatabaseModule
@@ -40,4 +41,6 @@ interface AppComponent {
     fun collectionScreenComponent(): CollectionScreenComponent.Factory
 
     fun learnScreenComponent(): LearnScreenComponent.Factory
+
+    fun resultScreenComponent(): ResultScreenComponent.Factory
 }

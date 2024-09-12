@@ -40,13 +40,13 @@ class LearnViewModel @AssistedInject constructor(
     ) : UiState
 
     sealed class Effect : UiEffect {
-        data object NavigateToWinScreen : Effect()
+        data object NavigateToResultScreen : Effect()
     }
 
     init {
         viewModelScope.launch {
             startLearnUseCase.execute(
-                wordsNumber = arg.wordsNum,
+                wordsCount = arg.wordsCount,
                 wayToLearn = arg.wayToLearn.toDomain(),
                 collectionType = arg.collectionType.toDomain()
             )
@@ -74,7 +74,7 @@ class LearnViewModel @AssistedInject constructor(
     }
 
     override fun createInitialState(): State = State(
-        progressState = LearnProgressIndicatorState(full = arg.wordsNum, done = 0),
+        progressState = LearnProgressIndicatorState(full = arg.wordsCount, done = 0),
         buttonState = LearnButtonState(isEnabled = false, isLoading = true, type = CheckAnswer)
     )
 
@@ -87,7 +87,7 @@ class LearnViewModel @AssistedInject constructor(
             )
         )
         delay(500)
-        val feedback = processUserAnswerUseCase.invoke(
+        val feedback = processUserAnswerUseCase.execute(
             userAnswer = word.toDomain()
         )
         produceState(
@@ -112,7 +112,7 @@ class LearnViewModel @AssistedInject constructor(
         when (val wordResult = getNextWordUseCase.invoke()) {
 
             is NextWordResultDomain.WordsEnded ->
-                produceEffect(Effect.NavigateToWinScreen)
+                produceEffect(Effect.NavigateToResultScreen)
 
             is NextWordResultDomain.Word ->
                 produceState(

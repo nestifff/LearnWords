@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor() : SettingsRepository {
 
-    override suspend fun getNumberToLearn(): Int {
+    override suspend fun getCountToLearn(): Int {
         return SettingsRepository.DEFAULT_NUMBER_TO_LEARN
     }
 

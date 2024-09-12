@@ -10,7 +10,7 @@ class GetLearnSettingsUseCase @Inject constructor(
 
     suspend fun execute(): SettingsDomain {
         return SettingsDomain(
-            numberToLearn = repository.getNumberToLearn(),
+            numberToLearn = repository.getCountToLearn(),
             wayToLearn = repository.getWayToLearn(),
             numberOnFirstTryToMoveInLearned = repository.getNumberOnFirstTryToMoveInLearned()
         )

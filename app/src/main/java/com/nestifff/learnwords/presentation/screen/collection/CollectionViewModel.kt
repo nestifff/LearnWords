@@ -94,7 +94,7 @@ class CollectionViewModel(
             produceEffect(
                 Effect.NavigateToLearnScreen(
                     LearnScreenArgument(
-                        wordsNum = settings.numberToLearn,
+                        wordsCount = settings.numberToLearn,
                         wayToLearn = settings.wayToLearn.toUI(),
                         collectionType = state.getCurrentCollectionType()
                     )
@@ -130,7 +130,7 @@ class CollectionViewModel(
         produceEffect(
             Effect.NavigateToLearnScreen(
                 LearnScreenArgument(
-                    wordsNum = customLearn.numberToLearn,
+                    wordsCount = customLearn.numberToLearn,
                     wayToLearn = customLearn.wayToLearn,
                     collectionType = state.getCurrentCollectionType()
                 )
@@ -253,7 +253,7 @@ class CollectionViewModel(
                 val randomValue = Random.nextInt(0, 1000)
                 addWordUseCase.execute(
                     newWord = NewWordToAddDomain(
-                        rus = "rus_$i $randomValue",
+                        rus = "rus$i $randomValue",
                         eng = "eng$i $randomValue"
                     )
                 )

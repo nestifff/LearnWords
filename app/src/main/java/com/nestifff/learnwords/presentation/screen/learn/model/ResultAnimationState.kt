@@ -16,7 +16,7 @@ sealed class ResultAnimationState {
 
         fun fromFeedback(feedback: UserAnswerFeedback) =
             when (feedback) {
-                is UserAnswerFeedback.Correct -> Right(feedback.movedToLearned)
+                is UserAnswerFeedback.Correct -> Right(feedback.wasMovedToLearned)
                 is UserAnswerFeedback.Wrong -> Wrong(feedback.correctAnswer)
             }
     }

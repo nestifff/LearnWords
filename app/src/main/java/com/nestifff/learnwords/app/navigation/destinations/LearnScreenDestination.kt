@@ -58,13 +58,18 @@ fun NavGraphBuilder.learnScreenDestination(
             learnViewModelFactory(daggerComponent.viewModelFactory, arg).create(LearnViewModel::class.java)
         }
 
-        LearnScreen(viewModel = viewModel)
+        LearnScreen(
+            viewModel = viewModel,
+            navigateToResultScreen = {
+                navController.navigate(ResultScreenDestination.prepareRoute(Unit))
+            }
+        )
     }
 }
 
 @Serializable
 data class LearnScreenArgument(
-    val wordsNum: Int,
+    val wordsCount: Int,
     val wayToLearn: WayToLearn,
     val collectionType: CollectionType
 )

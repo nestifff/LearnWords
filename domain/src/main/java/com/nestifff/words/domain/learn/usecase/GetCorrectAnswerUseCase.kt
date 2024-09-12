@@ -8,7 +8,7 @@ class GetCorrectAnswerUseCase @Inject constructor(
     private val learnRepository: LearnRepository,
 ) {
 
-    operator fun invoke(): String {
+    fun execute(): String {
 
         val wayToLearn = learnRepository.getWayToLearn()
         val fullWord = learnRepository.getCurrentWord() ?: throw IllegalStateException()

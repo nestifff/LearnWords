@@ -7,6 +7,7 @@ import com.nestifff.learnwords.app.navigation.core.NavGraphRoot
 import com.nestifff.learnwords.app.navigation.destinations.CollectionScreenDestination
 import com.nestifff.learnwords.app.navigation.destinations.collectionScreenDestination
 import com.nestifff.learnwords.app.navigation.destinations.learnScreenDestination
+import com.nestifff.learnwords.app.navigation.destinations.resultScreenDestination
 
 object MainNavGraph : NavGraphRoot<Unit> {
     override val route: String = "main"
@@ -22,5 +23,6 @@ fun NavGraphBuilder.mainGraph(
     ) {
         collectionScreenDestination(navController)
         learnScreenDestination(navController)
+        resultScreenDestination(navController)
     }
 }

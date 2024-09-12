@@ -7,8 +7,8 @@ class CheckIsWordCorrectUseCase @Inject constructor(
     private val getCorrectAnswerUseCase: GetCorrectAnswerUseCase,
 ) {
 
-    operator fun invoke(userAnswer: WordUserAnswerDomain): Boolean {
-        val correctValue = getCorrectAnswerUseCase.invoke()
+    fun execute(userAnswer: WordUserAnswerDomain): Boolean {
+        val correctValue = getCorrectAnswerUseCase.execute()
         return compareIfCorrect(entered = userAnswer.enteredValue, correct = correctValue)
     }
 

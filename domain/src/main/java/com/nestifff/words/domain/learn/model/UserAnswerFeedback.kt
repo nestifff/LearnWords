@@ -4,7 +4,7 @@ package com.nestifff.words.domain.learn.model
 sealed class UserAnswerFeedback {
 
     data class Correct(
-        val movedToLearned: Boolean,
+        val wasMovedToLearned: Boolean,
     ) : UserAnswerFeedback()
 
     data class Wrong(

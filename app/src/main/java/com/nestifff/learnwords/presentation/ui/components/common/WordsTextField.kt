@@ -3,10 +3,13 @@ package com.nestifff.learnwords.presentation.ui.components.common
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -33,13 +36,28 @@ fun WordsTextField(
         onValueChange = onValueChange,
         shape = RoundedCornerShape(8.dp),
         textStyle = textStyle,
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = backgroundColor,
-            cursorColor = AppTheme.colors.primary,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
+        colors = getTextFieldColors(backgroundColor),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun getTextFieldColors(
+    backgroundColor: Color = AppTheme.colors.backgroundLight,
+    cursorColor: Color = AppTheme.colors.primary,
+    selectionColors: TextSelectionColors = TextSelectionColors(
+        handleColor = AppTheme.colors.primary,
+        backgroundColor = AppTheme.colors.primaryLight
+    )
+): TextFieldColors {
+    return TextFieldDefaults.textFieldColors(
+        containerColor = backgroundColor,
+        cursorColor = cursorColor,
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        selectionColors = selectionColors
     )
 }

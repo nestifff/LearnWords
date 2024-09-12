@@ -4,7 +4,7 @@ import com.nestifff.words.domain.learn.model.WayToLearnDomain
 
 interface SettingsRepository {
 
-    suspend fun getNumberToLearn(): Int
+    suspend fun getCountToLearn(): Int
 
     suspend fun updateNumberToLearn(number: Int)
 
