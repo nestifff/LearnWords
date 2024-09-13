@@ -1,5 +1,9 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,17 +27,15 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nestifff.learnwords.ext.emptyString
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel.Effect.NavigateToResultScreen
-import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel.State
-import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
+import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultState.Correct
+import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultState.Wrong
 import com.nestifff.learnwords.presentation.ui.components.common.getTextFieldColors
 import com.nestifff.learnwords.presentation.ui.components.screens.learn.LearnButton
 import com.nestifff.learnwords.presentation.ui.components.screens.learn.LearnProgressTopBar
-import com.nestifff.learnwords.presentation.ui.components.screens.learn.ResultAnimation
+import com.nestifff.learnwords.presentation.ui.components.screens.learn.AnswerResultComponent
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 
@@ -82,11 +83,7 @@ fun LearnScreen(
                 focusRequester = focusRequester
             )
 
-            ResultAnimation(
-                state = state.resulAnimationState,
-                onAnimationFinish = {},
-                modifier = Modifier.padding(top = 16.dp)
-            )
+            AnswerResultComponent(state = state.resulAnimationState)
 
             LaunchedEffect(key1 = state.word) {
                 if (state.word != null) {
@@ -123,7 +120,7 @@ private fun LearnTextField(
             }
         },
         modifier = Modifier
-            .padding(top = 24.dp)
+            .padding(top = 16.dp)
             .fillMaxWidth()
             .focusRequester(focusRequester),
         textStyle = if (isEnabled) {

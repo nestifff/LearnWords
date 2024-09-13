@@ -10,7 +10,7 @@ import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.CheckAnswer
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType.GoToNextWord
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnProgressIndicatorState
-import com.nestifff.learnwords.presentation.screen.learn.model.ResultAnimationState
+import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
 import com.nestifff.learnwords.presentation.screen.learn.model.increaseIfCondition
 import com.nestifff.learnwords.presentation.screen.learn.model.toDomain
@@ -36,7 +36,7 @@ class LearnViewModel @AssistedInject constructor(
         val isEnteringWordEnabled: Boolean = false,
         val progressState: LearnProgressIndicatorState,
         val buttonState: LearnButtonState,
-        val resulAnimationState: ResultAnimationState? = null,
+        val resulAnimationState: UserAnswerResultState? = null,
     ) : UiState
 
     sealed class Effect : UiEffect {
@@ -86,13 +86,13 @@ class LearnViewModel @AssistedInject constructor(
                 buttonState = LearnButtonState(isEnabled = false, isLoading = true, GoToNextWord)
             )
         )
-        delay(500)
+        delay(300)
         val feedback = processUserAnswerUseCase.execute(
             userAnswer = word.toDomain()
         )
         produceState(
             state.copy(
-                resulAnimationState = ResultAnimationState.fromFeedback(feedback),
+                resulAnimationState = UserAnswerResultState.fromFeedback(feedback),
                 buttonState = LearnButtonState(isEnabled = true, isLoading = false, GoToNextWord),
                 progressState = state.progressState.increaseIfCondition(feedback is Correct)
             )

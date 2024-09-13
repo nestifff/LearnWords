@@ -43,7 +43,6 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isDebuggable = true
-            applicationIdSuffix = ".debug"
         }
         getByName("release") {
             isMinifyEnabled = false
@@ -91,6 +90,7 @@ dependencies {
     implementation(Dependencies.App.Compose.material3)
     implementation(Dependencies.App.Compose.material)
     implementation(Dependencies.App.Compose.navigation)
+    implementation(Dependencies.App.Compose.lottieAnimation)
 
     implementation(Dependencies.App.Accompanist.uiController)
 

@@ -2,21 +2,21 @@ package com.nestifff.learnwords.presentation.screen.learn.model
 
 import com.nestifff.words.domain.learn.model.UserAnswerFeedback
 
-sealed class ResultAnimationState {
+sealed class UserAnswerResultState {
 
     data class Wrong(
-        val rightAnswer: String
-    ) : ResultAnimationState()
+        val correctAnswer: String
+    ) : UserAnswerResultState()
 
-    data class Right(
+    data class Correct(
         val wasMovedToLearned: Boolean
-    ) : ResultAnimationState()
+    ) : UserAnswerResultState()
 
     companion object {
 
         fun fromFeedback(feedback: UserAnswerFeedback) =
             when (feedback) {
-                is UserAnswerFeedback.Correct -> Right(feedback.wasMovedToLearned)
+                is UserAnswerFeedback.Correct -> Correct(feedback.wasMovedToLearned)
                 is UserAnswerFeedback.Wrong -> Wrong(feedback.correctAnswer)
             }
     }

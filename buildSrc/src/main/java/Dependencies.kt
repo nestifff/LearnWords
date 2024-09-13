@@ -58,6 +58,8 @@ object Dependencies {
 
             const val navigation = "androidx.navigation:navigation-compose:2.7.4"
 
+            const val lottieAnimation = "com.airbnb.android:lottie-compose:6.0.0"
+
             const val toolingTest = "androidx.compose.ui:ui-tooling:${Versions.compose}"
             const val manifestTest = "androidx.compose.ui:ui-test-manifest:${Versions.compose}"
             const val uiTest = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
