@@ -29,23 +29,30 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
+import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState.Expanded
 import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
+import kotlinx.coroutines.delay
 
 @Composable
-fun AddWordDialog(
+fun AddWordBottomBar(
     state: AddWordDialogState,
     modifier: Modifier = Modifier,
     onValuesChange: (rus: String, eng: String) -> Unit,
@@ -53,9 +60,8 @@ fun AddWordDialog(
     onDismiss: () -> Unit,
     onOpenClick: () -> Unit,
 ) {
-    val isExpanded = state is AddWordDialogState.Expanded
     val cornerRadiusDp by animateDpAsState(
-        targetValue = if (isExpanded) 24.dp else 0.dp,
+        targetValue = if (state is Expanded) 24.dp else 0.dp,
         animationSpec = tween(300),
         label = ""
     )
@@ -80,7 +86,7 @@ fun AddWordDialog(
             )
             .padding(bottom = 16.dp)
     ) {
-        if (!isExpanded) {
+        if (state !is Expanded) {
             Text(
                 modifier = Modifier
                     .padding(top = 8.dp, start = 24.dp)
@@ -109,54 +115,60 @@ fun AddWordDialog(
             )
         }
 
-        if (state is AddWordDialogState.Expanded) {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+        if (state !is Expanded) {
+            return
+        }
 
-                val focusManager = LocalFocusManager.current
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp, horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        OneValueEnterRow(
-                            text = "Rus",
-                            value = state.rus,
-                            onValueChange = { onValuesChange(it, state.eng) },
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                            keyboardActions = KeyboardActions(
-                                onNext = {
-                                    focusManager.moveFocus(FocusDirection.Down)
-                                }
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        OneValueEnterRow(
-                            text = "Eng",
-                            value = state.eng,
-                            onValueChange = { onValuesChange(state.rus, it) },
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                            keyboardActions = KeyboardActions(
-                                onDone = { onAddWordClick() }
-                            )
-                        )
-                    }
-                    Icon(
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .clip(RoundedCornerShape(12.dp))
-                            .clickable { onAddWordClick() }
-                            .size(52.dp)
-                            .padding(10.dp),
-                        imageVector = Icons.Default.ArrowForward,
-                        contentDescription = null,
-                        tint = AppTheme.colors.content
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val focusRequester = remember { FocusRequester() }
+            val keyboard = LocalSoftwareKeyboardController.current
+            val focusManager = LocalFocusManager.current
+            Column {
+                OneValueEnterRow(
+                    text = "Rus",
+                    value = state.rus,
+                    onValueChange = { onValuesChange(it, state.eng) },
+                    modifier = Modifier.focusRequester(focusRequester),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
                     )
-                }
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OneValueEnterRow(
+                    text = "Eng",
+                    value = state.eng,
+                    onValueChange = { onValuesChange(state.rus, it) },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { onAddWordClick() }
+                    )
+                )
+            }
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { onAddWordClick() }
+                    .size(52.dp)
+                    .padding(10.dp),
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = null,
+                tint = AppTheme.colors.content
+            )
+            // open keyboard when in expanded state
+            LaunchedEffect(Unit) {
+                delay(500)
+                focusRequester.requestFocus()
+                delay(100)
+                keyboard?.show()
             }
         }
     }
@@ -195,10 +207,24 @@ private fun OneValueEnterRow(
 
 @Preview
 @Composable
-private fun AddWordComponentPreview() {
+private fun AddWordBottomBar_Collapsed_Preview() {
     ThemeProvider {
-        AddWordDialog(
+        AddWordBottomBar(
             state = AddWordDialogState.Collapsed,
+            onValuesChange = { s: String, s1: String -> },
+            onAddWordClick = {},
+            onDismiss = {},
+            onOpenClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun AddWordBottomBar_Expanded_Preview() {
+    ThemeProvider {
+        AddWordBottomBar(
+            state = Expanded(),
             onValuesChange = { s: String, s1: String -> },
             onAddWordClick = {},
             onDismiss = {},

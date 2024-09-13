@@ -140,7 +140,7 @@ private fun LearnTextField(
                     backgroundColor = Color.Transparent,
                 )
             )
-        },
+        }
     )
 }
 

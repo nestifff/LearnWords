@@ -35,7 +35,7 @@ import com.nestifff.learnwords.presentation.screen.collection.CollectionViewMode
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionLearnButton
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionTopBar
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionsSwitcher
-import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordDialog
+import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.AddWordBottomBar
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.CustomLearnDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.CollectionsPager
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
@@ -77,7 +77,7 @@ fun CollectionScreen(
             )
         },
         bottomBar = {
-            AddWordDialog(
+            AddWordBottomBar(
                 state = state.addWordDialogState,
                 onValuesChange = { rus, eng -> viewModel.onAddWordValuesChanged(rus, eng) },
                 onAddWordClick = { viewModel.onAddWordClicked() },
