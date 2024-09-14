@@ -66,17 +66,31 @@ fun ResultScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 32.dp, vertical = 32.dp),
+                        .padding(vertical = 32.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    ResultDataComponent(
-                        data = currState.data,
-                        modifier = Modifier.weight(weight = 1f, fill = false)
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp)
+                            .weight(1f)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        Text(
+                            text = "Results",
+                            style = AppTheme.typography.h0MediumTextStyle,
+                            modifier = Modifier.padding(bottom = 32.dp)
+                        )
+                        ResultDataComponent(
+                            data = currState.data,
+                            modifier = Modifier.weight(weight = 1f, fill = false)
+                        )
+                    }
                     PrimaryButton(
                         text = "Return to main ->",
                         onClick = { viewModel.onReturnToMainClicked() },
                         modifier = Modifier
+                            .padding(end = 16.dp)
                             .fillMaxWidth(0.6f)
                             .align(Alignment.End)
                     )
@@ -103,7 +117,7 @@ private fun ResultDataComponent(
                 title = "On first try:",
                 content = data.wordsAnsweredOnFirstTry.size.toString() + " words"
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(8.dp))
             ResultItemRow(
                 title = "Average amount of tries:",
                 content = data.averageTriesCountToAnswerWord.toFloat().toString(),
@@ -156,12 +170,12 @@ private fun ResultDataComponent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(start = 24.dp)
+                    .padding(start = 16.dp)
             ) {
                 if (data.mostDifficultWordsWithTriesCount.isNotEmpty()) {
                     ResultItemColumn(
                         title = "The most difficult words with amount of tries:",
-                        content = data.mostDifficultWordsWithTriesCount.joinToString("\n") { it.first.eng + " - " + it.second },
+                        content = data.mostDifficultWordsWithTriesCount.joinToString("\n") { it.first.eng + "  -  " + it.second },
                         modifier = Modifier.padding(top = 16.dp)
                     )
                 }

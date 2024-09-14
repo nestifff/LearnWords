@@ -5,6 +5,7 @@ import androidx.compose.ui.text.TextStyle
 
 @Immutable
 data class TypographyCommon(
+    val h0MediumTextStyle: TextStyle,
     val h1RegularTextStyle: TextStyle,
     val h1MediumTextStyle: TextStyle,
     val h1BoldTextStyle: TextStyle,

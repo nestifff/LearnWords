@@ -17,6 +17,11 @@ val robotoFontFamily = FontFamily(
 )
 
 val wordsTypography = TypographyCommon(
+    h0MediumTextStyle = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Medium
+    ),
     h1RegularTextStyle = TextStyle(
         fontFamily = robotoFontFamily,
         fontSize = 20.sp,
