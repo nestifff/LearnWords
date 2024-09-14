@@ -51,6 +51,8 @@ dependencies {
     kapt(Dependencies.Data.Room.compiler)
     implementation(Dependencies.Data.Room.ktx)
 
+    implementation(Dependencies.Data.DataStore.preferencesStore)
+
     implementation(Dependencies.Common.Dagger.dagger)
     kapt(Dependencies.Common.Dagger.compiler)
 

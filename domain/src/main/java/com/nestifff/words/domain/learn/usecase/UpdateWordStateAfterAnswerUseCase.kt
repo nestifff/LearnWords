@@ -38,14 +38,11 @@ class UpdateWordStateAfterAnswerUseCase @Inject constructor(
         isCorrect: Boolean,
         isOnFirstTry: Boolean
     ) {
-        Log.i("Lalala", "updateForWordInProcess: isCorrect = $isCorrect, isOnFirstTry = $isOnFirstTry, word = $word")
         if (!isCorrect || learnRepository.getWordNumberOfPerformedTries()!! > 1) {
             return
         }
 
-        val requiredOnFirstTry = settingsRepository.getNumberOnFirstTryToMoveInLearned()
-        Log.i("Lalala", "updateForWordInProcess: requiredOnFirstTry = $requiredOnFirstTry")
-        Log.i("Lalala", "updateForWordInProcess: word.enteredOnFirstTry = ${word.enteredOnFirstTry}")
+        val requiredOnFirstTry = settingsRepository.getSettings().countOnFirstTryToMoveToLearned
         if (isOnFirstTry && word.enteredOnFirstTry + 1 >= requiredOnFirstTry) {
             wordsRepository.updateWord(
                 word.copy(isLearned = true, enteredOnFirstTry = 0)

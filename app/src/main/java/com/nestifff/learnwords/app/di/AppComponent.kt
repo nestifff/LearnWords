@@ -7,7 +7,8 @@ import com.nestifff.learnwords.presentation.screen.learn.di.LearnScreenComponent
 import com.nestifff.learnwords.presentation.screen.result.di.ResultScreenComponent
 import com.nestifff.learnwords.presentation.screen.root.MainActivity
 import com.nestifff.learnwords.presentation.screen.root.MainActivityModule
-import com.nestifff.words.data.di.DatabaseModule
+import com.nestifff.learnwords.presentation.screen.settings.di.SettingsScreenComponent
+import com.nestifff.words.data.di.DataModule
 import com.nestifff.words.data.di.DomainBindsModule
 import dagger.BindsInstance
 import dagger.Component
@@ -18,7 +19,7 @@ import javax.inject.Singleton
     modules = [
         SubcomponentsModule::class,
         MainActivityModule::class,
-        DatabaseModule::class,
+        DataModule::class,
         DomainBindsModule::class
     ]
 )
@@ -43,4 +44,6 @@ interface AppComponent {
     fun learnScreenComponent(): LearnScreenComponent.Factory
 
     fun resultScreenComponent(): ResultScreenComponent.Factory
+
+    fun settingsScreenComponent(): SettingsScreenComponent.Factory
 }

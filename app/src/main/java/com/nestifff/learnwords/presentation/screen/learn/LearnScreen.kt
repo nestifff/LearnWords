@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -30,10 +31,10 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel.Effect.NavigateToResultScreen
-import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultState.Correct
-import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultState.Wrong
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
+import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
 import com.nestifff.learnwords.presentation.ui.components.common.getTextFieldColors
-import com.nestifff.learnwords.presentation.ui.components.screens.learn.LearnButton
 import com.nestifff.learnwords.presentation.ui.components.screens.learn.LearnProgressTopBar
 import com.nestifff.learnwords.presentation.ui.components.screens.learn.AnswerResultComponent
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
@@ -94,10 +95,15 @@ fun LearnScreen(
             }
         }
 
-        LearnButton(
-            state = state.buttonState,
+        PrimaryButton(
+            text = state.buttonState.getText(),
             onClick = { viewModel.onButtonClicked() },
-            modifier = Modifier.padding(bottom = 32.dp),
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .fillMaxWidth()
+                .height(54.dp),
+            isEnabled = state.buttonState.isEnabled,
+            isLoading = state.buttonState.isLoading
         )
     }
 }
@@ -142,5 +148,12 @@ private fun LearnTextField(
             )
         }
     )
+}
+
+private fun LearnButtonState.getText(): String {
+    return when (this.type) {
+        LearnNextButtonType.GoToNextWord -> "Next"
+        LearnNextButtonType.CheckAnswer -> "Check"
+    }
 }
 

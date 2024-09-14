@@ -1,5 +1,6 @@
 package com.nestifff.words.data.di
 
+import android.app.Application
 import com.nestifff.words.data.local.database.repository.LearnRepositoryImpl
 import com.nestifff.words.data.local.database.repository.WordsRepositoryImpl
 import com.nestifff.words.data.local.settings.SettingsRepositoryImpl
@@ -8,6 +9,7 @@ import com.nestifff.words.domain.settings.SettingsRepository
 import com.nestifff.words.domain.word.WordsRepository
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
 @Module
@@ -23,5 +25,4 @@ abstract class DomainBindsModule {
     @Binds
     @Singleton
     abstract fun getSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
-
 }

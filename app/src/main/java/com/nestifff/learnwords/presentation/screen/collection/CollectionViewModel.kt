@@ -21,7 +21,7 @@ import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.screen.collection.model.toUI
 import com.nestifff.words.domain.collection.usecase.GetAllCollectionsFlowUseCase
-import com.nestifff.words.domain.settings.usecase.GetLearnSettingsUseCase
+import com.nestifff.words.domain.settings.usecase.GetSettingsUseCase
 import com.nestifff.words.domain.word.model.NewWordToAddDomain
 import com.nestifff.words.domain.word.usecase.AddWordUseCase
 import com.nestifff.words.domain.word.usecase.ChangeFavoritePropertyUseCase
@@ -41,7 +41,7 @@ class CollectionViewModel(
     private val addWordUseCase: AddWordUseCase,
     private val deleteWordUseCase: DeleteWordUseCase,
     private val changeFavoritePropertyUseCase: ChangeFavoritePropertyUseCase,
-    private val getLearnSettingsUseCase: GetLearnSettingsUseCase,
+    private val getSettingsUseCase: GetSettingsUseCase,
 ) : BaseViewModel<CollectionViewModel.State, CollectionViewModel.Effect>() {
 
     data class State(
@@ -90,12 +90,12 @@ class CollectionViewModel(
 
     fun onLearnButtonClicked() {
         viewModelScope.launch {
-            val settings = getLearnSettingsUseCase.execute()
+            val settings = getSettingsUseCase.execute()
             produceEffect(
                 Effect.NavigateToLearnScreen(
                     LearnScreenArgument(
-                        wordsCount = settings.numberToLearn,
-                        wayToLearn = settings.wayToLearn.toUI(),
+                        wordsCount = settings.defaultNumberToLearn,
+                        wayToLearn = settings.defaultWayToLearn.toUI(),
                         collectionType = state.getCurrentCollectionType()
                     )
                 )

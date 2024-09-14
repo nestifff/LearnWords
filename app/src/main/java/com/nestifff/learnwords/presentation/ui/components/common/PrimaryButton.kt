@@ -1,11 +1,12 @@
-package com.nestifff.learnwords.presentation.ui.components.screens.learn
+package com.nestifff.learnwords.presentation.ui.components.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -15,82 +16,83 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 
 @Composable
-fun LearnButton(
-    state: LearnButtonState,
+fun PrimaryButton(
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
+    isLoading: Boolean = false
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .height(54.dp)
             .clip(RoundedCornerShape(12.dp))
             .then(
-                if (state.isEnabled) {
+                if (isEnabled) {
                     Modifier
                         .background(color = AppTheme.colors.primaryLight)
                         .clickable { onClick() }
                 } else {
-                    Modifier.background(color = AppTheme.colors.backgroundMedium)
+                    Modifier
+                        .background(color = AppTheme.colors.backgroundMedium)
+                        .noRippleClickable {}
                 }
             )
-            .padding(vertical = 12.dp, horizontal = 24.dp),
-        contentAlignment = Alignment.Center,
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        contentAlignment = Alignment.Center
     ) {
         Text(
-            text = state.getText(),
+            text = text,
             style = AppTheme.typography.h2MediumTextStyle,
             color = AppTheme.colors.content,
         )
-        if (state.isLoading) {
+        if (isLoading) {
             CircularProgressIndicator(color = AppTheme.colors.primary)
         }
     }
 }
 
-private fun LearnButtonState.getText(): String {
-    return when (this.type) {
-        LearnNextButtonType.GoToNextWord -> "Next"
-        LearnNextButtonType.CheckAnswer -> "Check"
-    }
-}
-
-
 @Preview
 @Composable
-private fun LearnButtonCheckPreview() {
+private fun PrimaryButton_Enabled_Preview() {
     ThemeProvider {
-        LearnButton(
-            state = LearnButtonState(true, false, LearnNextButtonType.CheckAnswer),
-            onClick = {}
+        PrimaryButton(
+            text = "I'm a button",
+            onClick = {},
+            modifier = Modifier.width(260.dp)
         )
     }
 }
 
 @Preview
 @Composable
-private fun LearnButtonNextPreview() {
+private fun PrimaryButton_Disabled_Preview() {
     ThemeProvider {
-        LearnButton(
-            state = LearnButtonState(true, false, LearnNextButtonType.GoToNextWord),
-            onClick = {}
+        PrimaryButton(
+            text = "I'm a button",
+            onClick = {},
+            isEnabled = false,
+            modifier = Modifier.width(260.dp)
         )
     }
 }
 
 @Preview
 @Composable
-private fun LearnButtonNextDisabledLoadingPreview() {
+private fun PrimaryButton_Disabled_Loading_Preview() {
     ThemeProvider {
-        LearnButton(
-            state = LearnButtonState(false, true, LearnNextButtonType.GoToNextWord),
-            onClick = {}
+        PrimaryButton(
+            text = "I'm a button",
+            onClick = {},
+            isEnabled = false,
+            isLoading = true,
+            modifier = Modifier.width(260.dp)
         )
     }
 }

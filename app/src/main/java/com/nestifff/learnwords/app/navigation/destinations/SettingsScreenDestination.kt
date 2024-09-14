@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 import com.nestifff.learnwords.app.di.utils.daggerViewModel
 import com.nestifff.learnwords.app.navigation.core.NoArgsDestination
 import com.nestifff.learnwords.app.navigation.graphs.SettingsNavGraph
+import com.nestifff.learnwords.ext.getApplication
 import com.nestifff.learnwords.presentation.screen.settings.SettingsScreen
 import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel
-import com.nestifff.learnwords.presentation.screen.settings.di.DaggerSettingsComponent
 
 object SettingsScreenDestination : NoArgsDestination {
 
@@ -21,9 +21,12 @@ fun NavGraphBuilder.settingsScreenDestination(navController: NavHostController) 
     composable(
         route = SettingsScreenDestination.route,
     ) {
-        val daggerComponent = DaggerSettingsComponent.builder().build()
+        val daggerComponent = getApplication().appComponent.settingsScreenComponent().create()
         val viewModel: SettingsViewModel = daggerViewModel { daggerComponent.getViewModel() }
 
-        SettingsScreen(navController = navController, viewModel = viewModel)
+        SettingsScreen(
+            viewModel = viewModel,
+            navigateBack = { navController.popBackStack() }
+        )
     }
 }

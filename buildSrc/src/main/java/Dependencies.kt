@@ -79,19 +79,10 @@ object Dependencies {
                 "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
         }
 
-        object Material {
-            private const val material3Version = "1.0.1"
-
-            const val material3 = "androidx.compose.material3:material3:$material3Version"
-            const val materialWindowSize =
-                "androidx.compose.material3:material3-window-size-class:$material3Version"
-        }
-
         object Collections {
             const val immutableCollections =
                 "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
         }
-
     }
 
     object Data {
@@ -101,7 +92,7 @@ object Dependencies {
         }
 
         object DataStore {
-            const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
+            const val preferencesStore = "androidx.datastore:datastore-preferences:1.1.0"
         }
 
         object Retrofit {
