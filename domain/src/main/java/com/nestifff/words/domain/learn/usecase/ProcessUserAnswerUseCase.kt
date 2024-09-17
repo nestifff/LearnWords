@@ -14,7 +14,7 @@ class ProcessUserAnswerUseCase @Inject constructor(
 
     suspend fun execute(userAnswer: WordUserAnswerDomain): UserAnswerFeedback {
 
-        val isCorrect = checkIsWordCorrectUseCase.execute(userAnswer)
+        val isCorrect = checkIsWordCorrectUseCase.getIsCorrect(userAnswer)
         val isOnFirstTry = isCorrect && learnRepo.getWordNumberOfPerformedTries() == 0
         learnRepo.addOnePerformedTryToWord()
         if (isCorrect) {
@@ -25,11 +25,16 @@ class ProcessUserAnswerUseCase @Inject constructor(
         updateWordStateAfterAnswerUseCase.execute(isCorrect, isOnFirstTry)
         val isNowInLearned = learnRepo.getCurrentWord()?.isLearned == true
 
+        val correctAnswer = getCorrectAnswerUseCase.execute()
         return if (isCorrect) {
             val wasMovedToLearned = !wasInLearnedPreviously && isNowInLearned
-            UserAnswerFeedback.Correct(wasMovedToLearned)
+            val isContainsTypo = checkIsWordCorrectUseCase.getIsContainsTypos(userAnswer)
+            if (isContainsTypo) {
+                UserAnswerFeedback.CorrectWithTypo(wasMovedToLearned, correctAnswer)
+            } else {
+                UserAnswerFeedback.Correct(wasMovedToLearned)
+            }
         } else {
-            val correctAnswer = getCorrectAnswerUseCase.execute()
             UserAnswerFeedback.Wrong(correctAnswer)
         }
     }

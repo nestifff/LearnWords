@@ -34,8 +34,8 @@ class LearnViewModel @AssistedInject constructor(
     data class State(
         val word: LearnScreenWordItem? = null,
         val isEnteringWordEnabled: Boolean = false,
-        val progressState: LearnProgressIndicatorState,
-        val buttonState: LearnButtonState,
+        val progressState: LearnProgressIndicatorState = LearnProgressIndicatorState(),
+        val buttonState: LearnButtonState = LearnButtonState(CheckAnswer, isEnabled = false),
         val resulAnimationState: UserAnswerResultState? = null,
     ) : UiState
 
@@ -45,10 +45,18 @@ class LearnViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            startLearnUseCase.execute(
+            val learnProcessData = startLearnUseCase.execute(
                 wordsCount = arg.wordsCount,
                 wayToLearn = arg.wayToLearn.toDomain(),
                 collectionType = arg.collectionType.toDomain()
+            )
+            produceState(
+                state.copy(
+                    progressState = LearnProgressIndicatorState(
+                        allWordsCount = learnProcessData.allWordsInSetCount,
+                        doneWordsCount = 0
+                    )
+                )
             )
             showNextWord()
         }
@@ -73,17 +81,12 @@ class LearnViewModel @AssistedInject constructor(
         }
     }
 
-    override fun createInitialState(): State = State(
-        progressState = LearnProgressIndicatorState(full = arg.wordsCount, done = 0),
-        buttonState = LearnButtonState(isEnabled = false, isLoading = true, type = CheckAnswer)
-    )
-
     private suspend fun checkAnswer() {
         val word = state.word ?: return
         produceState(
             state.copy(
                 isEnteringWordEnabled = false,
-                buttonState = LearnButtonState(isEnabled = false, isLoading = true, GoToNextWord)
+                buttonState = LearnButtonState(GoToNextWord, isEnabled = false, isLoading = true)
             )
         )
         delay(300)
@@ -93,7 +96,7 @@ class LearnViewModel @AssistedInject constructor(
         produceState(
             state.copy(
                 resulAnimationState = UserAnswerResultState.fromFeedback(feedback),
-                buttonState = LearnButtonState(isEnabled = true, isLoading = false, GoToNextWord),
+                buttonState = LearnButtonState(GoToNextWord, isEnabled = true, isLoading = false),
                 progressState = state.progressState.increaseIfCondition(feedback is Correct)
             )
         )
@@ -128,4 +131,6 @@ class LearnViewModel @AssistedInject constructor(
                 )
         }
     }
+
+    override fun createInitialState(): State = State()
 }

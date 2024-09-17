@@ -7,6 +7,11 @@ sealed class UserAnswerFeedback {
         val wasMovedToLearned: Boolean,
     ) : UserAnswerFeedback()
 
+    data class CorrectWithTypo(
+        val wasMovedToLearned: Boolean,
+        val correctAnswer: String,
+    ) : UserAnswerFeedback()
+
     data class Wrong(
         val correctAnswer: String,
     ) : UserAnswerFeedback()

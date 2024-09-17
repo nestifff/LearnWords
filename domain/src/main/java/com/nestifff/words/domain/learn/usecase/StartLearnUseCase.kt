@@ -3,6 +3,7 @@ package com.nestifff.words.domain.learn.usecase
 import com.nestifff.words.domain.learn.LearnRepository
 import com.nestifff.words.domain.word.WordsRepository
 import com.nestifff.words.domain.collection.model.CollectionTypeDomain
+import com.nestifff.words.domain.learn.model.LearnProcessStartedData
 import com.nestifff.words.domain.learn.model.WayToLearnDomain
 import javax.inject.Inject
 
@@ -15,7 +16,7 @@ class StartLearnUseCase @Inject constructor(
         wordsCount: Int,
         wayToLearn: WayToLearnDomain,
         collectionType: CollectionTypeDomain
-    ) {
+    ): LearnProcessStartedData {
         val selectedToLearn = wordsRepository.getWords()
             .asSequence()
             .filter {
@@ -35,5 +36,7 @@ class StartLearnUseCase @Inject constructor(
             collectionType = collectionType,
             wordsList = selectedToLearn
         )
+
+        return LearnProcessStartedData(allWordsInSetCount = selectedToLearn.size)
     }
 }

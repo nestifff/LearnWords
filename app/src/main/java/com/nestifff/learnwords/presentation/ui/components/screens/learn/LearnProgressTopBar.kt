@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnProgressIndicatorState
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
+import kotlin.math.max
 
 @Composable
 fun LearnProgressTopBar(
@@ -35,7 +36,10 @@ fun LearnProgressTopBar(
                 .clip(RoundedCornerShape(10.dp))
                 .background(AppTheme.colors.backgroundMedium.copy(alpha = 0.3f))
         ) {
-            val finishedPart = animateFloatAsState(targetValue = state.done.toFloat() / state.full)
+            // max() is used to prevent dividing by zero when data is not loaded
+            val finishedPart = animateFloatAsState(
+                targetValue = state.doneWordsCount.toFloat() / (max(1, state.allWordsCount))
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth(finishedPart.value)
@@ -46,7 +50,7 @@ fun LearnProgressTopBar(
         }
 
         Text(
-            text = "Words left: ${state.full - state.done}",
+            text = "Words left: ${state.allWordsCount - state.doneWordsCount}",
             modifier = Modifier.padding(top = 8.dp),
             style = AppTheme.typography.h2MediumTextStyle.copy(
                 color = AppTheme.colors.content
@@ -61,8 +65,8 @@ private fun LearnProgressIndicator_Preview() {
     ThemeProvider {
         LearnProgressTopBar(
             state = LearnProgressIndicatorState(
-                full = 10,
-                done = 4
+                allWordsCount = 10,
+                doneWordsCount = 4
             )
         )
     }
