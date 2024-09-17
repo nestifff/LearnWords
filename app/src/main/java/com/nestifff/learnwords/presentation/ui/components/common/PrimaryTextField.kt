@@ -83,7 +83,6 @@ private fun PrimaryTextField_Preview() {
             value = "test text",
             onValueChange = {},
             modifier = Modifier.padding(16.dp),
-            isIndicatorVisible = false
         )
     }
 }

@@ -186,10 +186,8 @@ fun CollectionScreen(
     }
 
     val isKeyboardVisible by keyboardAsState()
-    BackHandler {
-        if (state.addWordDialogState is AddWordDialogState.Expanded && !isKeyboardVisible) {
-            vm.onCloseAddWordDialogClicked()
-        }
+    if (state.addWordDialogState is AddWordDialogState.Expanded && !isKeyboardVisible) {
+        BackHandler { vm.onCloseAddWordDialogClicked() }
     }
 }
 
