@@ -22,7 +22,7 @@ import androidx.core.text.isDigitsOnly
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
-import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
@@ -56,7 +56,7 @@ fun CustomLearnDialog(
                         style = AppTheme.typography.h2MediumTextStyle,
                         color = AppTheme.colors.content,
                     )
-                    WordsTextField(
+                    PrimaryTextField(
                         value = state.numberToLearn.toString(),
                         onValueChange = {
                             if (it.isDigitsOnly()) {

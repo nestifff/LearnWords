@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -68,6 +68,7 @@ fun CollectionScreen(
             .fillMaxSize()
             .background(color = AppTheme.colors.background)
             .statusBarsPadding(),
+        containerColor = AppTheme.colors.background,
         topBar = {
             CollectionTopBar(
                 modifier = Modifier.padding(top = 4.dp, end = 4.dp),

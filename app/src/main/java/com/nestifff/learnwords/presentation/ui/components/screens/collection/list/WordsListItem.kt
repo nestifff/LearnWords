@@ -18,13 +18,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.thenIfCondition
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionWordItem
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 
 @Composable
 fun WordsListItem(
@@ -47,17 +51,15 @@ fun WordsListItem(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = if (expandedWordState == null) {
-                Alignment.CenterVertically
-            } else {
-                Alignment.Top // default
-            }
         ) {
             if (expandedWordState == null) {
-                NotSelectedItemContent(word = word)
+                NotSelectedItemContent(
+                    word = word,
+                    modifier = Modifier.weight(1f)
+                )
             } else {
                 ExpandedWordItem(
-                    modifier = Modifier.fillMaxWidth(0.8f),
+                    modifier = Modifier.weight(1f),
                     state = expandedWordState,
                     onEditWordValuesChange = onEditWordValuesChange,
                     onSaveButtonClick = onEditWordSaveClick,
@@ -65,14 +67,11 @@ fun WordsListItem(
             }
             Icon(
                 modifier = Modifier
-                    .thenIfCondition(
-                        condition = expandedWordState != null,
-                        modifier = Modifier.padding(top = 6.dp)
-                    )
-                    .size(36.dp)
+                    .padding(start = 8.dp)
+                    .size(30.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .clickable { onMakeFavoriteClick() }
-                    .padding(4.dp),
+                    .padding(2.dp),
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = if (word.isFavorite) {
@@ -98,7 +97,7 @@ fun WordListItemDeleteBackground(dismissState: DismissState) {
     val icon = Icons.Default.Delete
 
     val scale by animateFloatAsState(
-        targetValue = if (dismissState.targetValue == Default) 0.75f else 1f,
+        targetValue = if (dismissState.targetValue == Default) 0.6f else 1f,
         label = ""
     )
 
@@ -107,7 +106,7 @@ fun WordListItemDeleteBackground(dismissState: DismissState) {
             .fillMaxSize()
             .padding(vertical = 4.dp)
             .clip(RoundedCornerShape(8.dp))
-            .size(32.dp)
+            .size(36.dp)
             .background(color)
             .padding(end = 12.dp),
         contentAlignment = alignment
@@ -116,6 +115,52 @@ fun WordListItemDeleteBackground(dismissState: DismissState) {
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.scale(scale)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WordsListItem_Preview() {
+    ThemeProvider {
+        WordsListItem(
+            word = CollectionWordItem(
+                id = "11",
+                rus = "lfjgkldfj mdfgnkjfdgjk  dfgjdfkj  d,fjgjkfdjg",
+                eng = "gfdlkjg mfdkjgh kdfkghfd dkghfkd dkkdgkfdhg fdjgh",
+                isFavorite = false
+            ),
+            onClick = {},
+            onEditWordValuesChange = { s: String, s1: String -> },
+            onEditWordSaveClick = {},
+            onMakeFavoriteClick = {},
+            expandedWordState = null
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WordsListItem_Expanded_Preview() {
+    ThemeProvider {
+        val word = remember {
+            CollectionWordItem(
+                id = "11",
+                rus = "lfjgkldfj mdfgnkjfdgjk  dfgjdfkj  d,fjgjkfdjg",
+                eng = "gfdlkjg mfdkjgh kdfkghfd dkghfkd dkkdgkfdhg fdjgh",
+                isFavorite = false
+            )
+        }
+        WordsListItem(
+            word = word,
+            onClick = {},
+            onEditWordValuesChange = { s: String, s1: String -> },
+            onEditWordSaveClick = {},
+            onMakeFavoriteClick = {},
+            expandedWordState = ExpandedWordState(
+                word = word,
+                oldWord = word
+            )
         )
     }
 }

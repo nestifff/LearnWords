@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -46,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState.Expanded
-import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTextField
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import kotlinx.coroutines.delay
@@ -193,7 +192,7 @@ private fun OneValueEnterRow(
             color = AppTheme.colors.content,
         )
         Spacer(modifier = Modifier.width(12.dp))
-        WordsTextField(
+        PrimaryTextField(
             modifier = Modifier.fillMaxWidth(0.75f),
             value = value,
             onValueChange = onValueChange,

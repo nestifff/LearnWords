@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,29 +29,19 @@ fun NotSelectedItemContent(
     modifier: Modifier = Modifier,
     word: CollectionWordItem,
 ) {
-    Row(
-        modifier = modifier.height(IntrinsicSize.Min),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = modifier
     ) {
         Text(
-            modifier = Modifier.padding(end = 6.dp),
             text = word.eng,
-            style = AppTheme.typography.h1RegularTextStyle,
+            style = AppTheme.typography.h1MediumTextStyle,
             color = AppTheme.colors.content,
-        )
-        Divider(
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .width(2.dp)
-                .fillMaxHeight(),
-            color = AppTheme.colors.backgroundMedium
         )
         Text(
-            modifier = Modifier.padding(start = 6.dp),
+            modifier = Modifier.padding(top = 4.dp),
             text = word.rus,
-            style = AppTheme.typography.h1RegularTextStyle,
-            color = AppTheme.colors.content,
+            style = AppTheme.typography.h2RegularTextStyle,
+            color = AppTheme.colors.contentLight,
         )
     }
 }

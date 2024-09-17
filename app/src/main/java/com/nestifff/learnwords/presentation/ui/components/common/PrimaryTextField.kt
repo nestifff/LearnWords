@@ -1,5 +1,8 @@
 package com.nestifff.learnwords.presentation.ui.components.common
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -9,23 +12,25 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
+import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WordsTextField(
+fun PrimaryTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     backgroundColor: Color = AppTheme.colors.backgroundLight,
     textStyle: TextStyle = AppTheme.typography.h2RegularTextStyle,
+    isIndicatorVisible: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     keyboardActions: KeyboardActions = KeyboardActions()
 ) {
@@ -34,7 +39,11 @@ fun WordsTextField(
         value = value,
         enabled = isEnabled,
         onValueChange = onValueChange,
-        shape = RoundedCornerShape(8.dp),
+        shape = if (isIndicatorVisible) {
+            RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+        } else {
+            RoundedCornerShape(8.dp)
+        },
         textStyle = textStyle,
         colors = getTextFieldColors(backgroundColor),
         keyboardOptions = keyboardOptions,
@@ -55,9 +64,21 @@ fun getTextFieldColors(
     return TextFieldDefaults.textFieldColors(
         containerColor = backgroundColor,
         cursorColor = cursorColor,
-        focusedIndicatorColor = Color.Transparent,
-        unfocusedIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent,
-        selectionColors = selectionColors
+        focusedIndicatorColor = AppTheme.colors.contentLight.copy(alpha = 0.8f),
+        unfocusedIndicatorColor = AppTheme.colors.contentLight.copy(alpha = 0.8f),
+        disabledIndicatorColor = AppTheme.colors.contentLight.copy(alpha = 0.8f),
+        selectionColors = selectionColors,
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PrimaryTextField_Preview() {
+    ThemeProvider {
+        PrimaryTextField(
+            value = "test text",
+            onValueChange = {},
+            modifier = Modifier.padding(16.dp)
+        )
+    }
 }

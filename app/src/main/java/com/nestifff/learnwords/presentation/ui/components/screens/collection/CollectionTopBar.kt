@@ -75,7 +75,7 @@ fun CollectionTopBar(
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 private fun CollectionTopBarPreview() {
     ThemeProvider {
         CollectionTopBar(

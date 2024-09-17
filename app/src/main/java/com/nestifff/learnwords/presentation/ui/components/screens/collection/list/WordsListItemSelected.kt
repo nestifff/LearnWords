@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.collection.model.CollectionWordItem
 import com.nestifff.learnwords.presentation.screen.collection.model.ExpandedWordState
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
-import com.nestifff.learnwords.presentation.ui.components.common.WordsTextField
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTextField
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.SaveChangedButton
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
@@ -36,7 +36,7 @@ internal fun ExpandedWordItem(
     Column(
         modifier = modifier.padding(vertical = 12.dp)
     ) {
-        WordsTextField(
+        PrimaryTextField(
             value = state.word.eng,
             onValueChange = {
                 onEditWordValuesChange(state.word.rus, it)
@@ -49,7 +49,7 @@ internal fun ExpandedWordItem(
                 }
             )
         )
-        WordsTextField(
+        PrimaryTextField(
             modifier = Modifier.padding(top = 6.dp),
             value = state.word.rus,
             onValueChange = {
