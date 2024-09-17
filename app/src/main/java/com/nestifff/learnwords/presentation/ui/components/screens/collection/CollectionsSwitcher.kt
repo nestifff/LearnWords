@@ -33,15 +33,6 @@ fun CollectionsSwitcher(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        AppTheme.colors.background,
-                        Color.Transparent
-                    )
-                )
-            )
-            .padding(top = 4.dp)
             .border(
                 width = 2.dp,
                 color = AppTheme.colors.backgroundMedium,

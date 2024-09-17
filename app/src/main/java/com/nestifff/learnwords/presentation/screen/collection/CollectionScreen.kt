@@ -11,6 +11,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -28,6 +29,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
@@ -75,17 +78,8 @@ fun CollectionScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
-            .statusBarsPadding(),
+            .background(color = AppTheme.colors.background),
         containerColor = AppTheme.colors.background,
-        topBar = {
-            CollectionTopBar(
-                modifier = Modifier.padding(top = 4.dp, end = 4.dp),
-                onSettingsButtonClick = { vm.onSettingsClicked() },
-                onMenuButtonClick = { vm.onMenuClicked() },
-                onDebugOptionAddWordsClicked = { vm.onDebugOptionAddWordsClicked() }
-            )
-        },
         bottomBar = {
             AnimatedVisibility(
                 visible = state.currCollectionType == CollectionType.InProgress,
@@ -147,12 +141,22 @@ fun CollectionScreen(
                     vm.onEditWordValuesChanged(rus, eng)
                 },
             )
-            CollectionsSwitcher(
-                collections = state.collections,
-                selectedType = state.currCollectionType,
-                onCollectionTypeClick = { vm.onNewCollectionTypeSelected(it) },
-                modifier = Modifier.padding(horizontal = 10.dp),
-            )
+            Column(
+                modifier = Modifier.transparentGradientBackground()
+            ) {
+                CollectionTopBar(
+                    modifier = Modifier,
+                    onSettingsButtonClick = { vm.onSettingsClicked() },
+                    onMenuButtonClick = { vm.onMenuClicked() },
+                    onDebugOptionAddWordsClicked = { vm.onDebugOptionAddWordsClicked() }
+                )
+                CollectionsSwitcher(
+                    collections = state.collections,
+                    selectedType = state.currCollectionType,
+                    onCollectionTypeClick = { vm.onNewCollectionTypeSelected(it) },
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                )
+            }
 
             state.customLearnDialogState?.let {
                 CustomLearnDialog(
@@ -189,3 +193,16 @@ fun CollectionScreen(
         }
     }
 }
+
+@Composable
+private fun Modifier.transparentGradientBackground() =
+    this.then(
+        Modifier.background(
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    AppTheme.colors.background,
+                    Color.Transparent
+                )
+            )
+        )
+    )

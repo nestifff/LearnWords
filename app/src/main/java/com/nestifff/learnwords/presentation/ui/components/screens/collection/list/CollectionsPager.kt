@@ -126,7 +126,7 @@ private fun ItemsList(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(top = 64.dp, bottom = 128.dp)
+        contentPadding = PaddingValues(top = 104.dp, bottom = 128.dp)
     ) {
         itemsIndexed(
             items = list,
@@ -185,7 +185,7 @@ fun EmptyListScreen(collectionType: CollectionType, modifier: Modifier = Modifie
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp)
-            .padding(top = 128.dp, bottom = 64.dp)
+            .padding(top = 148.dp, bottom = 64.dp)
             .clip(RoundedCornerShape(32.dp))
             .border(2.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(32.dp))
             .padding(24.dp),

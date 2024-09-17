@@ -71,7 +71,9 @@ private fun SettingsScreenContent(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             // top bar
             Row(
                 modifier = Modifier.padding(bottom = 32.dp, top = 16.dp),
