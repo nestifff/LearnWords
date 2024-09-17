@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel
 import com.nestifff.learnwords.presentation.ui.components.common.EditableWayToLearn
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryNumbersTextField
 import com.nestifff.learnwords.presentation.ui.components.common.PrimarySwitch
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTextField
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
@@ -67,7 +68,7 @@ fun SettingsDataComponent(
                 SettingItemTitle(
                     text = "Default number of words to learn"
                 )
-                SettingItemNumberTextField(
+                PrimaryNumbersTextField(
                     value = numberToLearn,
                     onValueChange = onNumberToLearnChange
                 )
@@ -110,7 +111,7 @@ fun SettingsDataComponent(
                 SettingItemTitle(
                     text = "Count to enter on 1st try"
                 )
-                SettingItemNumberTextField(
+                PrimaryNumbersTextField(
                     value = countOnFirstTry,
                     onValueChange = onCountOnFirstTryChange
                 )
@@ -174,31 +175,6 @@ private fun RowScope.SettingItemTitle(
             .padding(end = 16.dp)
     )
 }
-
-@Composable
-fun SettingItemNumberTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val pattern = remember { Regex("^\\d+\$") }
-    PrimaryTextField(
-        value = value,
-        onValueChange = {
-            if (it.isEmpty() || it.matches(pattern)) {
-                onValueChange(it)
-            }
-        },
-        modifier = modifier
-            .width(64.dp)
-            .heightIn(min = 48.dp),
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Number
-        )
-    )
-}
-
 
 @Composable
 private fun DescriptionText(

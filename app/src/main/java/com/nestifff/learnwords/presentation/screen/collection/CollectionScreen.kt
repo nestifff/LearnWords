@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.ErrorCreatingWordEmptyValue
+import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.LearningZeroOrEmptyWordsErrorMessage
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToLearnScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToSettingsScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NotAvailableYetMessage
@@ -44,19 +45,20 @@ import com.nestifff.learnwords.presentation.utils.showToast
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun CollectionScreen(
-    viewModel: CollectionViewModel,
+    vm: CollectionViewModel,
     navigateToSettingsScreen: () -> Unit,
     navigateToLearnScreen: (LearnScreenArgument) -> Unit,
 ) {
 
-    val state by viewModel.uiState.collectAsState()
+    val state by vm.uiState.collectAsState()
 
     val context = LocalContext.current
-    onEffect(effect = viewModel.uiEffect) { effect ->
+    onEffect(effect = vm.uiEffect) { effect ->
         when (effect) {
             is NavigateToSettingsScreen -> navigateToSettingsScreen()
             is NavigateToLearnScreen -> navigateToLearnScreen(effect.data)
 
+            is LearningZeroOrEmptyWordsErrorMessage -> context.showToast("Number of words to learn must be more than 0")
             is ErrorCreatingWordEmptyValue -> context.showToast("You can't create word with empty value")
             is NotAvailableYetMessage -> context.showToast("Coming soon")
         }
@@ -72,18 +74,18 @@ fun CollectionScreen(
         topBar = {
             CollectionTopBar(
                 modifier = Modifier.padding(top = 4.dp, end = 4.dp),
-                onSettingsButtonClick = { viewModel.onSettingsClicked() },
-                onMenuButtonClick = { viewModel.onMenuClicked() },
-                onDebugOptionAddWordsClicked = { viewModel.onDebugOptionAddWordsClicked() }
+                onSettingsButtonClick = { vm.onSettingsClicked() },
+                onMenuButtonClick = { vm.onMenuClicked() },
+                onDebugOptionAddWordsClicked = { vm.onDebugOptionAddWordsClicked() }
             )
         },
         bottomBar = {
             AddWordBottomBar(
                 state = state.addWordDialogState,
-                onValuesChange = { rus, eng -> viewModel.onAddWordValuesChanged(rus, eng) },
-                onAddWordClick = { viewModel.onAddWordClicked() },
-                onDismiss = { viewModel.onCloseAddWordDialogClicked() },
-                onOpenClick = { viewModel.onOpenAddWordDialogClicked() }
+                onValuesChange = { rus, eng -> vm.onAddWordValuesChanged(rus, eng) },
+                onAddWordClick = { vm.onAddWordClicked() },
+                onDismiss = { vm.onCloseAddWordDialogClicked() },
+                onOpenClick = { vm.onOpenAddWordDialogClicked() }
             )
         },
         floatingActionButton = {
@@ -93,8 +95,8 @@ fun CollectionScreen(
                 exit = fadeOut() + scaleOut(),
             ) {
                 CollectionLearnButton(
-                    onClick = { viewModel.onLearnButtonClicked() },
-                    onLongClick = { viewModel.onLearnButtonLongClicked() },
+                    onClick = { vm.onLearnButtonClicked() },
+                    onCustomizeClick = { vm.onCustomLearnButtonClicked() }
                 )
             }
         },
@@ -123,28 +125,33 @@ fun CollectionScreen(
                 collections = state.collections,
                 currCollectionType = state.currCollectionType,
                 modifier = Modifier.fillMaxSize(),
-                onNewPageSelect = { viewModel.onNewCollectionTypeSelected(it) },
-                onEditWordSaveClick = { viewModel.onWordUpdateClicked() },
-                onDeleteWordClick = { viewModel.onWordDeleteClicked(it) },
-                onWordClick = { viewModel.onWordItemClicked(it) },
-                onMakeFavoriteClick = { viewModel.onMakeFavoriteClicked(it) },
+                onNewPageSelect = { vm.onNewCollectionTypeSelected(it) },
+                onEditWordSaveClick = { vm.onWordUpdateClicked() },
+                onDeleteWordClick = { vm.onWordDeleteClicked(it) },
+                onWordClick = { vm.onWordItemClicked(it) },
+                onMakeFavoriteClick = { vm.onMakeFavoriteClicked(it) },
                 onEditWordValuesChange = { rus, eng ->
-                    viewModel.onEditWordValuesChanged(rus, eng)
+                    vm.onEditWordValuesChanged(rus, eng)
                 },
             )
             CollectionsSwitcher(
                 collections = state.collections,
                 selectedType = state.currCollectionType,
-                onCollectionTypeClick = { viewModel.onNewCollectionTypeSelected(it) },
+                onCollectionTypeClick = { vm.onNewCollectionTypeSelected(it) },
                 modifier = Modifier.padding(horizontal = 10.dp),
             )
 
-            CustomLearnDialog(
-                state = state.customLearnDialogState,
-                onNumberToLearnChange = { viewModel.onCustomLeanDialogNumberChanged(it) },
-                onLearnClick = { viewModel.onCustomLeanDialogLearnClicked() },
-                onDismiss = { viewModel.onCustomLeanDialogDismissed() }
-            )
+            state.customLearnDialogState?.let {
+                CustomLearnDialog(
+                    state = it,
+                    onNumberToLearnChange = { vm.onCustomLearnDialogNumberChanged(it) },
+                    onLearnClick = { vm.onCustomLearnDialogLearnClicked() },
+                    onDismiss = { vm.onCustomLearnDialogDismiss() },
+                    onSelectWayToLearnClick = { vm.onCustomLearnDialogSelectWayToLearnClicked() },
+                    onWayToLearnSelect = { vm.onCustomLearnDialogWayToLearnSelected(it) },
+                    onDismissWayToLearnMenu = { vm.onCustomLearnDialogWayToLearnMenuDismiss() },
+                )
+            }
         }
     }
 
@@ -156,8 +163,8 @@ fun CollectionScreen(
                 duration = SnackbarDuration.Short
             )
             when (result) {
-                SnackbarResult.ActionPerformed -> viewModel.onUndoDeleteClicked()
-                SnackbarResult.Dismissed -> viewModel.undoDeleteWordShownWithoutUndoing()
+                SnackbarResult.ActionPerformed -> vm.onUndoDeleteClicked()
+                SnackbarResult.Dismissed -> vm.undoDeleteWordShownWithoutUndoing()
             }
         }
     }

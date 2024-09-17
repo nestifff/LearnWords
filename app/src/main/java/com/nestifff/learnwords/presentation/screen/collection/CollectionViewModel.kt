@@ -8,7 +8,6 @@ import com.nestifff.learnwords.app.core.UiState
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.emptyImmutableList
 import com.nestifff.learnwords.presentation.model.CollectionType
-import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.model.fromCollectionIndex
 import com.nestifff.learnwords.presentation.model.toIndex
 import com.nestifff.learnwords.presentation.model.toUI
@@ -21,6 +20,7 @@ import com.nestifff.learnwords.presentation.screen.collection.model.change
 import com.nestifff.learnwords.presentation.screen.collection.model.toExpandedState
 import com.nestifff.learnwords.presentation.screen.collection.model.toUI
 import com.nestifff.words.domain.collection.usecase.GetAllCollectionsFlowUseCase
+import com.nestifff.words.domain.learn.model.WayToLearnDomain
 import com.nestifff.words.domain.settings.usecase.GetSettingsUseCase
 import com.nestifff.words.domain.word.model.NewWordToAddDomain
 import com.nestifff.words.domain.word.usecase.AddWordUseCase
@@ -61,6 +61,7 @@ class CollectionViewModel(
             val data: LearnScreenArgument
         ) : Effect()
 
+        data object LearningZeroOrEmptyWordsErrorMessage : Effect()
         data object NotAvailableYetMessage : Effect()
         data object ErrorCreatingWordEmptyValue : Effect()
     }
@@ -103,35 +104,71 @@ class CollectionViewModel(
         }
     }
 
-    fun onLearnButtonLongClicked() {
+    fun onCustomLearnButtonClicked() {
         // todo cache last entered value
         produceState(
             state.copy(
                 customLearnDialogState = CustomLearnDialogState(
-                    numberToLearn = 20,
-                    wayToLearn = WayToLearn.EngToRus
+                    numberToLearnStr = "20",
+                    wayToLearn = WayToLearnDomain.ENG_TO_RUS,
+                    isWayToLearnMenuVisible = false
                 )
             )
         )
     }
 
-    fun onCustomLeanDialogDismissed() {
+    fun onCustomLearnDialogDismiss() {
         produceState(state.copy(customLearnDialogState = null))
     }
 
-    fun onCustomLeanDialogNumberChanged(number: Int) {
+    fun onCustomLearnDialogNumberChanged(newValue: String) {
         val dialogState = state.customLearnDialogState ?: return
-        produceState(state.copy(customLearnDialogState = dialogState.copy(numberToLearn = number)))
+        produceState(state.copy(customLearnDialogState = dialogState.copy(numberToLearnStr = newValue)))
     }
 
-    fun onCustomLeanDialogLearnClicked() {
-        val customLearn = state.customLearnDialogState ?: return
+    fun onCustomLearnDialogWayToLearnSelected(newWayToLearn: WayToLearnDomain) {
+        val dialogState = state.customLearnDialogState ?: return
+        produceState(
+            state.copy(
+                customLearnDialogState = dialogState.copy(
+                    wayToLearn = newWayToLearn,
+                    isWayToLearnMenuVisible = false
+                )
+            )
+        )
+    }
+
+    fun onCustomLearnDialogSelectWayToLearnClicked() {
+        val dialogState = state.customLearnDialogState ?: return
+        produceState(
+            state.copy(
+                customLearnDialogState = dialogState.copy(isWayToLearnMenuVisible = true)
+            )
+        )
+    }
+
+    fun onCustomLearnDialogWayToLearnMenuDismiss() {
+        val dialogState = state.customLearnDialogState ?: return
+        produceState(
+            state.copy(
+                customLearnDialogState = dialogState.copy(isWayToLearnMenuVisible = false)
+            )
+        )
+    }
+
+    fun onCustomLearnDialogLearnClicked() {
+        val dialogState = state.customLearnDialogState ?: return
+        val numberToLearn = dialogState.numberToLearnStr.toIntOrNull() ?: 0
+        if (numberToLearn <= 0) {
+            produceEffect(Effect.LearningZeroOrEmptyWordsErrorMessage)
+            return
+        }
         produceState(state.copy(customLearnDialogState = null))
         produceEffect(
             Effect.NavigateToLearnScreen(
                 LearnScreenArgument(
-                    wordsCount = customLearn.numberToLearn,
-                    wayToLearn = customLearn.wayToLearn,
+                    wordsCount = numberToLearn,
+                    wayToLearn = dialogState.wayToLearn.toUI(),
                     collectionType = state.getCurrentCollectionType()
                 )
             )

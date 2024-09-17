@@ -28,7 +28,7 @@ fun NavGraphBuilder.collectionScreenDestination(
         val viewModel: CollectionViewModel = daggerViewModel { daggerComponent.getViewModel() }
 
         CollectionScreen(
-            viewModel = viewModel,
+            vm = viewModel,
             navigateToSettingsScreen = { navController.navigate(SettingsNavGraph.prepareRoute(Unit)) },
             navigateToLearnScreen = { navController.navigate(LearnScreenDestination.prepareRoute(it)) }
         )

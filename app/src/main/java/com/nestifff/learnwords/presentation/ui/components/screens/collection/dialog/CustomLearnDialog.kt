@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,75 +22,80 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.text.isDigitsOnly
 import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
+import com.nestifff.learnwords.presentation.ui.components.common.EditableWayToLearn
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryNumbersTextField
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
+import com.nestifff.words.domain.learn.model.WayToLearnDomain
 
 @Composable
 fun CustomLearnDialog(
-    state: CustomLearnDialogState?,
-    onNumberToLearnChange: (Int) -> Unit,
+    state: CustomLearnDialogState,
+    onNumberToLearnChange: (String) -> Unit,
+    onSelectWayToLearnClick: () -> Unit,
+    onWayToLearnSelect: (WayToLearnDomain) -> Unit,
+    onDismissWayToLearnMenu: () -> Unit,
     onLearnClick: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (state != null) {
-        Dialog(
-            onDismissRequest = onDismiss,
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false
-            ),
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(),
+    ) {
+        Column(
+            modifier = modifier
+                .clip(RoundedCornerShape(12.dp))
+                .background(AppTheme.colors.background)
+                .padding(16.dp),
         ) {
-            Column(
-                modifier = modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(AppTheme.colors.background)
-                    .fillMaxWidth(0.75f)
-                    .padding(16.dp),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Number:",
-                        style = AppTheme.typography.h2MediumTextStyle,
-                        color = AppTheme.colors.content,
-                    )
-                    PrimaryTextField(
-                        value = state.numberToLearn.toString(),
-                        onValueChange = {
-                            if (it.isDigitsOnly()) {
-                                onNumberToLearnChange(it.toInt())
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .width(64.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.padding(top = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Way to learn: todo",
-                        style = AppTheme.typography.h2MediumTextStyle,
-                        color = AppTheme.colors.content,
-                    )
-                }
-
-                PrimaryButton(
-                    text = "Learn",
-                    onClick = onLearnClick,
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .align(Alignment.End)
-                        .width(120.dp)
+                Text(
+                    text = "Number or words:",
+                    style = AppTheme.typography.h2MediumTextStyle,
+                    color = AppTheme.colors.content,
+                )
+                PrimaryNumbersTextField(
+                    value = state.numberToLearnStr,
+                    onValueChange = onNumberToLearnChange,
                 )
             }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Way to learn:",
+                    style = AppTheme.typography.h2MediumTextStyle,
+                    color = AppTheme.colors.content,
+                )
+                EditableWayToLearn(
+                    currentWayToLearn = state.wayToLearn,
+                    isExpandedMenuVisible = state.isWayToLearnMenuVisible,
+                    onWayToLearnSelect = onWayToLearnSelect,
+                    onOpenMenuClick = onSelectWayToLearnClick,
+                    onMenuDismiss = onDismissWayToLearnMenu,
+                )
+            }
+
+            PrimaryButton(
+                text = "Learn",
+                onClick = onLearnClick,
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .align(Alignment.End)
+                    .width(120.dp)
+            )
         }
     }
 }
@@ -100,12 +106,16 @@ private fun CustomLearnDialogPreview() {
     ThemeProvider {
         CustomLearnDialog(
             state = CustomLearnDialogState(
-                numberToLearn = 0,
-                wayToLearn = WayToLearn.EngToRus
+                numberToLearnStr = "100",
+                wayToLearn = WayToLearnDomain.ENG_TO_RUS,
+                isWayToLearnMenuVisible = false
             ),
             onNumberToLearnChange = {},
             onLearnClick = {},
             onDismiss = {},
+            onSelectWayToLearnClick = {},
+            onWayToLearnSelect = {},
+            onDismissWayToLearnMenu = {},
         )
     }
 }

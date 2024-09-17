@@ -1,8 +1,9 @@
 package com.nestifff.learnwords.presentation.screen.collection.model
 
-import com.nestifff.learnwords.presentation.model.WayToLearn
+import com.nestifff.words.domain.learn.model.WayToLearnDomain
 
 data class CustomLearnDialogState(
-    val numberToLearn: Int,
-    val wayToLearn: WayToLearn,
+    val numberToLearnStr: String,
+    val wayToLearn: WayToLearnDomain,
+    val isWayToLearnMenuVisible: Boolean
 )
