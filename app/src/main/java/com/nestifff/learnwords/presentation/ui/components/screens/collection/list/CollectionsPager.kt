@@ -1,7 +1,6 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -89,7 +88,9 @@ fun CollectionsPager(
     }
 
     LaunchedEffect(pagerState, currCollectionType) {
+        var previousPageDoNotTriggerPageChange: Int? = null
         if (pagerState.currentPage != currCollectionType.toIndex()) {
+            previousPageDoNotTriggerPageChange = pagerState.currentPage
             // scroll programmatically if currCollectionType was changed from different place (e.g collectionsSwitcher)
             // we need coroutine here because if user interrupts animation by scrolling to different page, animation will not be finished
             launch {
@@ -100,7 +101,11 @@ fun CollectionsPager(
             delay(100)
         }
         snapshotFlow { pagerState.currentPage }.distinctUntilChanged().collect { page ->
-            onNewPageSelect(page)
+            if(page == previousPageDoNotTriggerPageChange) {
+                previousPageDoNotTriggerPageChange = null
+            } else {
+                onNewPageSelect(page)
+            }
         }
     }
 }
