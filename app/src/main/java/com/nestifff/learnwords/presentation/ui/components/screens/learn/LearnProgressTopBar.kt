@@ -3,6 +3,7 @@ package com.nestifff.learnwords.presentation.ui.components.screens.learn
 import android.inputmethodservice.Keyboard
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,13 +36,19 @@ fun LearnProgressTopBar(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.End
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(AppTheme.colors.backgroundMedium.copy(alpha = 0.3f))
-        ) {
+        Box {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(24.dp)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .border(
+                        1.5.dp,
+                        AppTheme.colors.textFieldBackground,
+                        RoundedCornerShape(percent = 50)
+                    )
+                    .background(AppTheme.colors.primaryLight.copy(alpha = 0.4f))
+            )
             // max() is used to prevent dividing by zero when data is not loaded
             val finishedPart = animateFloatAsState(
                 targetValue = state.doneWordsCount.toFloat() / (max(1, state.allWordsCount))
@@ -49,8 +56,8 @@ fun LearnProgressTopBar(
             Box(
                 modifier = Modifier
                     .fillMaxWidth(finishedPart.value)
-                    .height(20.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .height(24.dp)
+                    .clip(RoundedCornerShape(percent = 50))
                     .background(AppTheme.colors.primary)
             )
         }

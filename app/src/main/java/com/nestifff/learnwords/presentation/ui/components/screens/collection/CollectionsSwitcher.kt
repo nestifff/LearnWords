@@ -34,11 +34,11 @@ fun CollectionsSwitcher(
         modifier = modifier
             .fillMaxWidth()
             .border(
-                width = 2.dp,
+                width = 1.5.dp,
                 color = AppTheme.colors.backgroundMedium,
-                shape = RoundedCornerShape(32.dp)
+                shape = RoundedCornerShape(percent = 50)
             )
-            .clip(RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(percent = 50))
             .background(color = AppTheme.colors.background)
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {

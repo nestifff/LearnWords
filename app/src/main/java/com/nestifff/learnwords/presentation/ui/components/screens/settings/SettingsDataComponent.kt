@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,7 @@ fun SettingsDataComponent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
+                .background(AppTheme.colors.backgroundLight)
                 .border(1.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
@@ -127,6 +129,7 @@ fun SettingsDataComponent(
             modifier = Modifier
                 .padding(top = 32.dp)
                 .fillMaxWidth()
+                .background(AppTheme.colors.backgroundLight)
                 .clip(RoundedCornerShape(12.dp))
                 .border(1.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(12.dp))
                 .padding(16.dp)

@@ -34,15 +34,11 @@ fun PrimaryTwoButtonsDialog(
 ) {
     Dialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
     ) {
         Column(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(AppTheme.colors.background)
-                .fillMaxWidth(0.75f)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

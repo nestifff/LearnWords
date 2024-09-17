@@ -89,11 +89,11 @@ fun AddWordBottomBar(
             Text(
                 modifier = Modifier
                     .padding(top = 8.dp, start = 24.dp)
-                    .clip(RoundedCornerShape(24.dp))
+                    .clip(RoundedCornerShape(percent = 50))
                     .border(
-                        width = 2.dp,
+                        width = 1.5.dp,
                         color = AppTheme.colors.contentLight,
-                        shape = RoundedCornerShape(24.dp)
+                        shape = RoundedCornerShape(percent = 50)
                     )
                     .clickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),

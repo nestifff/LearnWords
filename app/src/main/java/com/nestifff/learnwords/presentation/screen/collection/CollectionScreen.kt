@@ -145,7 +145,6 @@ fun CollectionScreen(
                 modifier = Modifier.transparentGradientBackground()
             ) {
                 CollectionTopBar(
-                    modifier = Modifier,
                     onSettingsButtonClick = { vm.onSettingsClicked() },
                     onMenuButtonClick = { vm.onMenuClicked() },
                     onDebugOptionAddWordsClicked = { vm.onDebugOptionAddWordsClicked() }

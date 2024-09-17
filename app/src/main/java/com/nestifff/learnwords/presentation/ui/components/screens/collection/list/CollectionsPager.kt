@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.ui.components.screens.collection.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -146,7 +147,7 @@ private fun ItemsList(
             SwipeToDismiss(
                 state = removeDismissState,
                 modifier = Modifier
-                    .padding(vertical = 5.dp)
+                    .padding(vertical = 6.dp)
                     .animateItemPlacement(),
                 background = { WordListItemDeleteBackground(removeDismissState) },
                 directions = setOf(DismissDirection.EndToStart),
@@ -186,8 +187,9 @@ fun EmptyListScreen(collectionType: CollectionType, modifier: Modifier = Modifie
             .fillMaxSize()
             .padding(horizontal = 32.dp)
             .padding(top = 148.dp, bottom = 64.dp)
-            .clip(RoundedCornerShape(32.dp))
-            .border(2.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(24.dp))
+            .background(AppTheme.colors.backgroundLight)
+            .border(1.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(24.dp))
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

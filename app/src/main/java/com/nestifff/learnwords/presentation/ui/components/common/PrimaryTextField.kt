@@ -26,7 +26,7 @@ fun PrimaryTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    backgroundColor: Color = AppTheme.colors.backgroundLight,
+    backgroundColor: Color = AppTheme.colors.textFieldBackground,
     textStyle: TextStyle = AppTheme.typography.h2RegularTextStyle,
     isIndicatorVisible: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -52,7 +52,7 @@ fun PrimaryTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun getTextFieldColors(
-    backgroundColor: Color = AppTheme.colors.backgroundLight,
+    backgroundColor: Color = AppTheme.colors.textFieldBackground,
     cursorColor: Color = AppTheme.colors.primary,
     selectionColors: TextSelectionColors = TextSelectionColors(
         handleColor = AppTheme.colors.primary,
@@ -60,7 +60,7 @@ fun getTextFieldColors(
     ),
     isIndicatorVisible: Boolean = true
 ): TextFieldColors {
-    val indicatorColor = if(isIndicatorVisible) {
+    val indicatorColor = if (isIndicatorVisible) {
         AppTheme.colors.contentLight.copy(alpha = 0.8f)
     } else {
         Color.Transparent

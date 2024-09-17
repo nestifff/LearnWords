@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import com.nestifff.learnwords.BuildConfig
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
@@ -34,10 +36,17 @@ fun CollectionTopBar(
     onDebugOptionAddWordsClicked: () -> Unit,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(top = 6.dp, bottom = 4.dp),
-        horizontalArrangement = Arrangement.End,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 6.dp, bottom = 4.dp)
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Text(
+            text = "Learn Words",
+            style = AppTheme.typography.h1BoldTextStyle.copy(color = AppTheme.colors.content)
+        )
 //        Icon(
 //            modifier = Modifier
 //                .padding(start = 16.dp)
@@ -66,7 +75,6 @@ fun CollectionTopBar(
 
         Icon(
             modifier = Modifier
-                .padding(end = 16.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .clickable { onSettingsButtonClick() }
                 .padding(4.dp)

@@ -89,7 +89,7 @@ fun WordsListItem(
 @Composable
 fun WordListItemDeleteBackground(dismissState: DismissState) {
     val color by animateColorAsState(
-        targetValue = Color.Red,
+        targetValue = AppTheme.colors.warning,
         animationSpec = tween(durationMillis = 500),
         label = ""
     )

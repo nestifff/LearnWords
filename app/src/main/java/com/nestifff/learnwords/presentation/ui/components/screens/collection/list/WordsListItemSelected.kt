@@ -41,7 +41,6 @@ internal fun ExpandedWordItem(
             onValueChange = {
                 onEditWordValuesChange(state.word.rus, it)
             },
-            backgroundColor = AppTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = {
@@ -55,7 +54,6 @@ internal fun ExpandedWordItem(
             onValueChange = {
                 onEditWordValuesChange(it, state.word.eng)
             },
-            backgroundColor = AppTheme.colors.backgroundMedium.copy(alpha = 0.6f),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()

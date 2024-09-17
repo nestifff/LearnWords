@@ -3,8 +3,8 @@ package com.nestifff.learnwords.presentation.ui.theme.values.colors
 import androidx.compose.ui.graphics.Color
 
 val wordsLightPalette = ColorCommon(
-    background = Color(0xFFFFFFFF),
-    backgroundLight = Color(0xFFF7F7F7),
+    background = Color(0xFFF9F9F9),
+    backgroundLight = Color(0xFFFFFFFF),
     backgroundMedium = Color(0xFFB6B6B6),
     content = Color(0xFF1A1A1A),
     contentLight = Color(0xFF676767),
