@@ -1,10 +1,16 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,16 +29,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.app.navigation.destinations.LearnScreenArgument
 import com.nestifff.learnwords.ext.onEffect
+import com.nestifff.learnwords.presentation.model.CollectionType
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.ErrorCreatingWordEmptyValue
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.LearningZeroOrEmptyWordsErrorMessage
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToLearnScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToSettingsScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NotAvailableYetMessage
+import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionLearnButton
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionTopBar
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionsSwitcher
@@ -40,6 +49,7 @@ import com.nestifff.learnwords.presentation.ui.components.screens.collection.dia
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.dialog.CustomLearnDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.list.CollectionsPager
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
+import com.nestifff.learnwords.presentation.utils.keyboardAsState
 import com.nestifff.learnwords.presentation.utils.showToast
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -80,13 +90,19 @@ fun CollectionScreen(
             )
         },
         bottomBar = {
-            AddWordBottomBar(
-                state = state.addWordDialogState,
-                onValuesChange = { rus, eng -> vm.onAddWordValuesChanged(rus, eng) },
-                onAddWordClick = { vm.onAddWordClicked() },
-                onDismiss = { vm.onCloseAddWordDialogClicked() },
-                onOpenClick = { vm.onOpenAddWordDialogClicked() }
-            )
+            AnimatedVisibility(
+                visible = state.currCollectionType == CollectionType.InProgress,
+                enter = fadeIn(tween(120)) + expandIn(tween(120)),
+                exit = shrinkOut(tween(120)) + fadeOut(tween(120)),
+            ) {
+                AddWordBottomBar(
+                    state = state.addWordDialogState,
+                    onValuesChange = { rus, eng -> vm.onAddWordValuesChanged(rus, eng) },
+                    onAddWordClick = { vm.onAddWordClicked() },
+                    onDismiss = { vm.onCloseAddWordDialogClicked() },
+                    onOpenClick = { vm.onOpenAddWordDialogClicked() }
+                )
+            }
         },
         floatingActionButton = {
             AnimatedVisibility(
@@ -166,6 +182,13 @@ fun CollectionScreen(
                 SnackbarResult.ActionPerformed -> vm.onUndoDeleteClicked()
                 SnackbarResult.Dismissed -> vm.undoDeleteWordShownWithoutUndoing()
             }
+        }
+    }
+
+    val isKeyboardVisible by keyboardAsState()
+    BackHandler {
+        if (state.addWordDialogState is AddWordDialogState.Expanded && !isKeyboardVisible) {
+            vm.onCloseAddWordDialogClicked()
         }
     }
 }
