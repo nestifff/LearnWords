@@ -1,7 +1,5 @@
 package com.nestifff.learnwords.presentation.ui.components.common
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -45,7 +43,7 @@ fun PrimaryTextField(
             RoundedCornerShape(8.dp)
         },
         textStyle = textStyle,
-        colors = getTextFieldColors(backgroundColor),
+        colors = getTextFieldColors(backgroundColor, isIndicatorVisible = isIndicatorVisible),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
     )
@@ -59,14 +57,20 @@ fun getTextFieldColors(
     selectionColors: TextSelectionColors = TextSelectionColors(
         handleColor = AppTheme.colors.primary,
         backgroundColor = AppTheme.colors.primaryLight
-    )
+    ),
+    isIndicatorVisible: Boolean = true
 ): TextFieldColors {
+    val indicatorColor = if(isIndicatorVisible) {
+        AppTheme.colors.contentLight.copy(alpha = 0.8f)
+    } else {
+        Color.Transparent
+    }
     return TextFieldDefaults.textFieldColors(
         containerColor = backgroundColor,
         cursorColor = cursorColor,
-        focusedIndicatorColor = AppTheme.colors.contentLight.copy(alpha = 0.8f),
-        unfocusedIndicatorColor = AppTheme.colors.contentLight.copy(alpha = 0.8f),
-        disabledIndicatorColor = AppTheme.colors.contentLight.copy(alpha = 0.8f),
+        focusedIndicatorColor = indicatorColor,
+        unfocusedIndicatorColor = indicatorColor,
+        disabledIndicatorColor = indicatorColor,
         selectionColors = selectionColors,
     )
 }
@@ -78,7 +82,8 @@ private fun PrimaryTextField_Preview() {
         PrimaryTextField(
             value = "test text",
             onValueChange = {},
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            isIndicatorVisible = false
         )
     }
 }

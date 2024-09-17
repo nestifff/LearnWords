@@ -200,6 +200,7 @@ private fun OneValueEnterRow(
             textStyle = AppTheme.typography.h1RegularTextStyle,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
+            isIndicatorVisible = false
         )
     }
 }

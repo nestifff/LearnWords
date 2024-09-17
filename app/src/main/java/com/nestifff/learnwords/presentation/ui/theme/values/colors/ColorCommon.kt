@@ -14,5 +14,8 @@ data class ColorCommon(
     val primary: Color,
     val primaryLight: Color,
     val secondary: Color,
-    val expandedDialogBackground: Color
+    val warning: Color,
+    val expandedDialogBackground: Color,
+    val textFieldBackground: Color,
+    val popupBackground: Color, // surface in material theme
 )

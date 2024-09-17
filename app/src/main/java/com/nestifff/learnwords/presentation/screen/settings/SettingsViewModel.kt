@@ -18,21 +18,23 @@ class SettingsViewModel(
     data class State(
         val currentSettings: SettingsDomain? = null,
 
-        val updatedNumberToLearn: Int? = null,
-        val updatedCountOnFirstTry: Int? = null,
-        val isChangeWayToLearnDialogVisible: Boolean = false,
+        val updatedNumberToLearn: String? = null,
+        val updatedCountOnFirstTry: String? = null,
+        val isChangeWayToLearnMenuVisible: Boolean = false,
         val updatedWayToLearn: WayToLearnDomain? = null,
         val updatedDarkMode: Boolean? = null,
+        val isWarningCountOnFirstTryVisible: Boolean = false,
 
         val isSaveButtonEnabled: Boolean = false,
         val isSavingInProgress: Boolean = false,
-        val isConfirmExitDialogVisible: Boolean = false,
 
-        val isSaveSuccessMessageVisible: Boolean = false,
+        val isConfirmExitDialogVisible: Boolean = false,
     ) : UiState
 
     sealed class Effect : UiEffect {
         data object NavigateBack : Effect()
+        data object SaveSuccessMessage : Effect()
+        data object ErrorZeroOrEmptyValuesMessage : Effect()
     }
 
     init {
@@ -42,7 +44,7 @@ class SettingsViewModel(
         }
     }
 
-    fun onNumberToLearnChanged(newValue: Int) {
+    fun onNumberToLearnChanged(newValue: String) {
         produceState(
             state.copy(
                 updatedNumberToLearn = newValue,
@@ -51,7 +53,7 @@ class SettingsViewModel(
         )
     }
 
-    fun onCountOnFirstTryChanged(newValue: Int) {
+    fun onCountOnFirstTryChanged(newValue: String) {
         produceState(
             state.copy(
                 updatedCountOnFirstTry = newValue,
@@ -64,17 +66,18 @@ class SettingsViewModel(
         produceState(
             state.copy(
                 updatedWayToLearn = newWayToLearn,
-                isSaveButtonEnabled = hasUnsavedData(updatedWayToLearn = newWayToLearn)
+                isSaveButtonEnabled = hasUnsavedData(updatedWayToLearn = newWayToLearn),
+                isChangeWayToLearnMenuVisible = false
             )
         )
     }
 
     fun onSelectWayToLearnClicked() {
-        produceState(state.copy(isChangeWayToLearnDialogVisible = true))
+        produceState(state.copy(isChangeWayToLearnMenuVisible = true))
     }
 
-    fun onWayToLearnDialogDismiss() {
-        produceState(state.copy(isChangeWayToLearnDialogVisible = false))
+    fun onWayToLearnMenuDismiss() {
+        produceState(state.copy(isChangeWayToLearnMenuVisible = false))
     }
 
     fun onDarkModeChanged(newValue: Boolean) {
@@ -87,16 +90,22 @@ class SettingsViewModel(
     }
 
     fun onSaveClicked() {
-        produceState(state.copy(isSavingInProgress = true, isSaveButtonEnabled = false))
+        val newNumberToLearn = state.updatedNumberToLearn?.toIntOrNull() ?: 0
+        val newCountOnFirstTry = state.updatedCountOnFirstTry?.toIntOrNull() ?: 0
+        if (newNumberToLearn <= 0 || newCountOnFirstTry <= 0) {
+            produceEffect(Effect.ErrorZeroOrEmptyValuesMessage)
+        }
         viewModelScope.launch {
+            produceState(state.copy(isSavingInProgress = true, isSaveButtonEnabled = false))
             updateSettingsUseCase.execute(
-                defaultNumberToLearn = state.updatedNumberToLearn,
+                defaultNumberToLearn = newNumberToLearn,
                 defaultWayToLearn = state.updatedWayToLearn,
-                countOnFirstTryToMoveToLearned = state.updatedCountOnFirstTry,
+                countOnFirstTryToMoveToLearned = newCountOnFirstTry,
                 isDarkMode = state.updatedDarkMode
             )
             produceState(
                 state.copy(
+                    currentSettings = getSettingsUseCase.execute(),
                     updatedNumberToLearn = null,
                     updatedWayToLearn = null,
                     updatedCountOnFirstTry = null,
@@ -105,6 +114,7 @@ class SettingsViewModel(
                     isSaveButtonEnabled = false
                 )
             )
+            produceEffect(Effect.SaveSuccessMessage)
         }
     }
 
@@ -126,34 +136,39 @@ class SettingsViewModel(
     }
 
     private fun hasUnsavedData(
-        updatedNumberToLearn: Int? = null,
-        updatedCountOnFirstTry: Int? = null,
+        updatedNumberToLearn: String? = null,
+        updatedCountOnFirstTry: String? = null,
         updatedWayToLearn: WayToLearnDomain? = null,
         updatedDarkMode: Boolean? = null
     ): Boolean {
-        val setting = state.currentSettings ?: return false
-        val isNumberToLearnChanged = if (updatedNumberToLearn == null) {
-            setting.defaultNumberToLearn == state.updatedNumberToLearn
-        } else {
-            setting.defaultNumberToLearn == updatedNumberToLearn
+        try {
+            val setting = state.currentSettings ?: return false
+
+            val numberToLearnToCompare = updatedNumberToLearn ?: state.updatedNumberToLearn
+            val isNumberToLearnChanged = numberToLearnToCompare?.let {
+                it.toInt() != setting.defaultNumberToLearn
+            } ?: false
+
+            val countOnFirstTryToCompare = updatedCountOnFirstTry ?: state.updatedCountOnFirstTry
+            val isCountOnFirstTryChanged = countOnFirstTryToCompare?.let {
+                it.toInt() != setting.countOnFirstTryToMoveToLearned
+            } ?: false
+
+            val wayToLearnToCompare = updatedWayToLearn ?: state.updatedWayToLearn
+            val isWayToLearnChanged = wayToLearnToCompare?.let {
+                it != setting.defaultWayToLearn
+            } ?: false
+
+            val darkModeToCompare = updatedDarkMode ?: state.updatedDarkMode
+            val isDarkModeChanged = darkModeToCompare?.let {
+                it != setting.isDarkMode
+            } ?: false
+
+            return isNumberToLearnChanged || isCountOnFirstTryChanged || isWayToLearnChanged
+                    || isDarkModeChanged
+        } catch (ex: Exception) {
+            return false
         }
-        val isCountOnFirstTryChanged = if (updatedCountOnFirstTry == null) {
-            setting.countOnFirstTryToMoveToLearned == state.updatedCountOnFirstTry
-        } else {
-            setting.countOnFirstTryToMoveToLearned == updatedCountOnFirstTry
-        }
-        val isWayToLearnChanged = if (updatedWayToLearn == null) {
-            setting.defaultWayToLearn == state.updatedWayToLearn
-        } else {
-            setting.defaultWayToLearn == updatedWayToLearn
-        }
-        val isDarkModeChangedChanged = if (updatedDarkMode == null) {
-            setting.isDarkMode == state.updatedDarkMode
-        } else {
-            setting.defaultWayToLearn == updatedWayToLearn
-        }
-        return isNumberToLearnChanged || isCountOnFirstTryChanged || isWayToLearnChanged
-                || isDarkModeChangedChanged
     }
 
     override fun createInitialState(): State = State()

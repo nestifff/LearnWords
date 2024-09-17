@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.noRippleClickable
@@ -28,7 +29,8 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
+    enabledBackgroundColor: Color = AppTheme.colors.primaryLight
 ) {
     Box(
         modifier = modifier
@@ -36,7 +38,7 @@ fun PrimaryButton(
             .then(
                 if (isEnabled) {
                     Modifier
-                        .background(color = AppTheme.colors.primaryLight)
+                        .background(color = enabledBackgroundColor)
                         .clickable { onClick() }
                 } else {
                     Modifier
