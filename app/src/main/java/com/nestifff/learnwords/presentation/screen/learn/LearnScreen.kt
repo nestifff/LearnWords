@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.learn
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,13 +27,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.onEffect
+import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel.Effect.NavigateBack
 import com.nestifff.learnwords.presentation.screen.learn.LearnViewModel.Effect.NavigateToResultScreen
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnButtonState
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnNextButtonType
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTwoButtonsDialog
 import com.nestifff.learnwords.presentation.ui.components.common.getTextFieldColors
-import com.nestifff.learnwords.presentation.ui.components.screens.learn.LearnProgressTopBar
 import com.nestifff.learnwords.presentation.ui.components.screens.learn.AnswerResultComponent
+import com.nestifff.learnwords.presentation.ui.components.screens.learn.LearnProgressTopBar
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 
@@ -40,6 +43,7 @@ import kotlinx.coroutines.delay
 fun LearnScreen(
     viewModel: LearnViewModel,
     navigateToResultScreen: () -> Unit,
+    navigateBack: () -> Unit
 ) {
 
     val state by viewModel.uiState.collectAsState()
@@ -47,6 +51,7 @@ fun LearnScreen(
     onEffect(effect = viewModel.uiEffect) { effect ->
         when (effect) {
             NavigateToResultScreen -> navigateToResultScreen()
+            NavigateBack -> navigateBack()
         }
     }
 
@@ -63,7 +68,7 @@ fun LearnScreen(
         Column {
             LearnProgressTopBar(
                 state = state.progressState,
-                modifier = Modifier.padding(top = 32.dp, bottom = 32.dp)
+                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
             )
             Text(
                 text = state.word?.shownValue ?: "",
@@ -101,6 +106,22 @@ fun LearnScreen(
             isEnabled = state.buttonState.isEnabled,
             isLoading = state.buttonState.isLoading
         )
+    }
+
+    if (state.isConfirmExitDialogVisible) {
+        PrimaryTwoButtonsDialog(
+            text = "Are you sure you want to exit?",
+            positiveButtonText = "Exit",
+            negativeButtonText = "Cancel",
+            onPositiveClick = { viewModel.onConfirmExitDialogExitClicked() },
+            onNegativeClick = { viewModel.onDismissConfirmExitDialog() },
+            onDismiss = { viewModel.onDismissConfirmExitDialog() },
+            descriptionText = "All changes for words will be saved"
+        )
+    }
+
+    BackHandler {
+        viewModel.onBackTriggered()
     }
 }
 

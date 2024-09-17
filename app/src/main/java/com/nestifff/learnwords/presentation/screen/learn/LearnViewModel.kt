@@ -14,6 +14,7 @@ import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultS
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
 import com.nestifff.learnwords.presentation.screen.learn.model.increaseIfCondition
 import com.nestifff.learnwords.presentation.screen.learn.model.toDomain
+import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect
 import com.nestifff.words.domain.learn.model.NextWordResultDomain
 import com.nestifff.words.domain.learn.model.UserAnswerFeedback.Correct
 import com.nestifff.words.domain.learn.usecase.GetNextWordUseCase
@@ -37,10 +38,12 @@ class LearnViewModel @AssistedInject constructor(
         val progressState: LearnProgressIndicatorState = LearnProgressIndicatorState(),
         val buttonState: LearnButtonState = LearnButtonState(CheckAnswer, isEnabled = false),
         val resulAnimationState: UserAnswerResultState? = null,
+        val isConfirmExitDialogVisible: Boolean = false
     ) : UiState
 
     sealed class Effect : UiEffect {
         data object NavigateToResultScreen : Effect()
+        data object NavigateBack : Effect()
     }
 
     init {
@@ -79,6 +82,19 @@ class LearnViewModel @AssistedInject constructor(
                 CheckAnswer -> checkAnswer()
             }
         }
+    }
+
+    fun onBackTriggered() {
+        produceState(state.copy(isConfirmExitDialogVisible = true))
+    }
+
+    fun onDismissConfirmExitDialog() {
+        produceState(state.copy(isConfirmExitDialogVisible = false))
+    }
+
+    fun onConfirmExitDialogExitClicked() {
+        produceState(state.copy(isConfirmExitDialogVisible = false))
+        produceEffect(Effect.NavigateBack)
     }
 
     private suspend fun checkAnswer() {

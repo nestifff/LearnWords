@@ -49,13 +49,17 @@ fun PrimaryButton(
             .padding(vertical = 12.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = text,
-            style = AppTheme.typography.h2MediumTextStyle,
-            color = AppTheme.colors.content,
-        )
-        if (isLoading) {
-            CircularProgressIndicator(color = AppTheme.colors.primary)
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                style = AppTheme.typography.h2MediumTextStyle,
+                color = AppTheme.colors.content,
+            )
+            if (isLoading) {
+                CircularProgressIndicator(color = AppTheme.colors.primary)
+            }
         }
     }
 }

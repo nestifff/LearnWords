@@ -62,7 +62,8 @@ fun NavGraphBuilder.learnScreenDestination(
             viewModel = viewModel,
             navigateToResultScreen = {
                 navController.navigate(ResultScreenDestination.prepareRoute(Unit))
-            }
+            },
+            navigateBack = { navController.popBackStack() }
         )
     }
 }
