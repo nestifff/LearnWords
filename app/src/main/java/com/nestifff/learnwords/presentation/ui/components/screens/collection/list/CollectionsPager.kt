@@ -127,7 +127,7 @@ private fun ItemsList(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(top = 104.dp, bottom = 128.dp)
+        contentPadding = PaddingValues(top = 108.dp, bottom = 128.dp)
     ) {
         itemsIndexed(
             items = list,
