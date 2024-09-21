@@ -92,6 +92,7 @@ private fun SettingsScreenContent(
                 Text(
                     text = "Settings",
                     style = AppTheme.typography.h0MediumTextStyle,
+                    color = AppTheme.colors.content,
                     modifier = Modifier.padding(start = 10.dp)
                 )
             }

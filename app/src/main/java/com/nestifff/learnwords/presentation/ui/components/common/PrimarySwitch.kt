@@ -19,7 +19,7 @@ fun PrimarySwitch(
         onCheckedChange = onCheckedChange,
         modifier = modifier,
         colors = SwitchDefaults.colors(
-            checkedThumbColor = AppTheme.colors.background,
+            checkedThumbColor = AppTheme.colors.switcherThumb, // todo lalala mb separate and lignt in both modes
             uncheckedThumbColor = AppTheme.colors.contentLight,
             uncheckedBorderColor = AppTheme.colors.contentLight,
             checkedTrackColor = AppTheme.colors.primary,

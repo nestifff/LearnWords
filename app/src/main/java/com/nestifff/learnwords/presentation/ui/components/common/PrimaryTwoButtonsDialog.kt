@@ -39,14 +39,14 @@ fun PrimaryTwoButtonsDialog(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(AppTheme.colors.background)
-                .padding(16.dp),
+                .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = text,
                 style = AppTheme.typography.h1MediumTextStyle,
+                color = AppTheme.colors.content,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 16.dp)
             )
             if (descriptionText != null) {
                 Text(
@@ -62,12 +62,14 @@ fun PrimaryTwoButtonsDialog(
                 modifier = Modifier
                     .padding(top = 64.dp)
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.End
             ) {
                 PrimaryButton(
                     text = negativeButtonText,
                     onClick = onNegativeClick,
-                    modifier = Modifier.widthIn(min = 82.dp),
+                    modifier = Modifier
+                        .padding(end = 24.dp)
+                        .widthIn(min = 82.dp),
                     enabledBackgroundColor = AppTheme.colors.textFieldBackground
                 )
                 PrimaryButton(

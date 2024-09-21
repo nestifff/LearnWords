@@ -45,7 +45,7 @@ fun CollectionLearnButton(
             Icon(
                 imageVector = Icons.Default.PlayArrow,
                 contentDescription = null,
-                tint = AppTheme.colors.content,
+                tint = AppTheme.colors.contentOnPrimary,
                 modifier = Modifier.size(32.dp)
             )
         }

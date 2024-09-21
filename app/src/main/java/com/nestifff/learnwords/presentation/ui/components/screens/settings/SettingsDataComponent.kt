@@ -56,7 +56,7 @@ fun SettingsDataComponent(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
                 .background(AppTheme.colors.backgroundLight)
-                .border(1.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(12.dp))
+                .border(1.dp, AppTheme.colors.sectionDivider, RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
             SectionTitle(
@@ -129,9 +129,9 @@ fun SettingsDataComponent(
             modifier = Modifier
                 .padding(top = 32.dp)
                 .fillMaxWidth()
-                .background(AppTheme.colors.backgroundLight)
                 .clip(RoundedCornerShape(12.dp))
-                .border(1.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(12.dp))
+                .background(AppTheme.colors.backgroundLight)
+                .border(1.dp, AppTheme.colors.sectionDivider, RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
             SectionTitle(
@@ -175,6 +175,7 @@ private fun RowScope.SettingItemTitle(
     Text(
         text = text,
         style = AppTheme.typography.h2MediumTextStyle,
+        color = AppTheme.colors.content,
         modifier = modifier
             .weight(1f)
             .padding(end = 16.dp)

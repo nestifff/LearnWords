@@ -9,7 +9,7 @@ import androidx.compose.runtime.Immutable
 @Immutable
 object AppRippleTheme : RippleTheme {
     @Composable
-    override fun defaultColor() = LocalContentColor.current
+    override fun defaultColor() = AppTheme.colors.ripple
 
     @Composable
     override fun rippleAlpha() = DefaultRippleAlpha

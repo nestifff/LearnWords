@@ -66,12 +66,16 @@ fun getTextFieldColors(
         Color.Transparent
     }
     return TextFieldDefaults.textFieldColors(
+        textColor = AppTheme.colors.content,
+        disabledTextColor = AppTheme.colors.contentLight,
         containerColor = backgroundColor,
         cursorColor = cursorColor,
         focusedIndicatorColor = indicatorColor,
         unfocusedIndicatorColor = indicatorColor,
         disabledIndicatorColor = indicatorColor,
         selectionColors = selectionColors,
+        focusedSupportingTextColor = AppTheme.colors.content,
+        unfocusedSupportingTextColor = AppTheme.colors.content,
     )
 }
 

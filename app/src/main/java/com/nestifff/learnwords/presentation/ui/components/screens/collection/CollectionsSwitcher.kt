@@ -34,12 +34,12 @@ fun CollectionsSwitcher(
         modifier = modifier
             .fillMaxWidth()
             .border(
-                width = 1.5.dp,
+                width = 1.dp,
                 color = AppTheme.colors.backgroundMedium,
                 shape = RoundedCornerShape(percent = 50)
             )
             .clip(RoundedCornerShape(percent = 50))
-            .background(color = AppTheme.colors.background)
+            .background(color = AppTheme.colors.backgroundLight)
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
         Row(
@@ -81,7 +81,11 @@ private fun SwitcherItem(
         Text(
             text = collection,
             style = AppTheme.typography.h2MediumTextStyle,
-            color = AppTheme.colors.content,
+            color = if (isActive) {
+                AppTheme.colors.contentOnPrimary
+            } else {
+                AppTheme.colors.content
+            }
         )
     }
 }

@@ -46,36 +46,34 @@ fun EditableWayToLearn(
             Text(
                 text = currentWayToLearn.getTitle(),
                 style = AppTheme.typography.h2RegularTextStyle,
+                color = AppTheme.colors.content,
             )
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
                 modifier = Modifier
                     .size(24.dp)
                     .clip(RoundedCornerShape(4.dp)),
+                tint = AppTheme.colors.content,
                 contentDescription = null
             )
         }
-
-//        MaterialTheme(
-//            colorScheme = MaterialTheme.colorScheme.copy(surface = AppTheme.colors.background)
-//        ) {
-            DropdownMenu(
-                expanded = isExpandedMenuVisible,
-                onDismissRequest = onMenuDismiss,
-                modifier = Modifier.background(AppTheme.colors.popupBackground)
-            ) {
-                WayToLearnDomain.entries.forEach { wayToLearn ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = wayToLearn.getTitle(),
-                                style = AppTheme.typography.h2RegularTextStyle
-                            )
-                        },
-                        onClick = { onWayToLearnSelect(wayToLearn) }
-                    )
-                }
-//            }
+        DropdownMenu(
+            expanded = isExpandedMenuVisible,
+            onDismissRequest = onMenuDismiss,
+            modifier = Modifier.background(AppTheme.colors.popupBackground)
+        ) {
+            WayToLearnDomain.entries.forEach { wayToLearn ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = wayToLearn.getTitle(),
+                            style = AppTheme.typography.h2RegularTextStyle,
+                            color = AppTheme.colors.content,
+                        )
+                    },
+                    onClick = { onWayToLearnSelect(wayToLearn) }
+                )
+            }
         }
     }
 }

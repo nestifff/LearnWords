@@ -1,6 +1,7 @@
 package com.nestifff.learnwords.presentation.screen.root
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.nestifff.learnwords.app.navigation.SetupNavGraph
+import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -16,7 +18,8 @@ fun RootScreen() {
     val navController = rememberNavController()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        containerColor = AppTheme.colors.background
     ) {
         SetupNavGraph(
             navController = navController,

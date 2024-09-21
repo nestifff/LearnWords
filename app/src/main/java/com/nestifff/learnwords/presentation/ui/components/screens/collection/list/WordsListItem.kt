@@ -77,7 +77,7 @@ fun WordsListItem(
                 tint = if (word.isFavorite) {
                     AppTheme.colors.primary
                 } else {
-                    AppTheme.colors.backgroundMedium
+                    AppTheme.colors.contentLight.copy(alpha = 0.4f)
                 }
             )
         }

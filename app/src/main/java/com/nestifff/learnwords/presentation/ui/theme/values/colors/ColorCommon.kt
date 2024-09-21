@@ -9,13 +9,15 @@ data class ColorCommon(
     val backgroundLight: Color,
     val backgroundMedium: Color,
     val content: Color,
+    val contentOnPrimary: Color,
     val contentLight: Color,
     val ripple: Color,
     val primary: Color,
     val primaryLight: Color,
     val secondary: Color,
     val warning: Color,
-    val expandedDialogBackground: Color,
     val textFieldBackground: Color,
     val popupBackground: Color, // surface in material theme
+    val sectionDivider: Color,
+    val switcherThumb: Color,
 )

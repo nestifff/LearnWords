@@ -9,19 +9,19 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.nestifff.learnwords.presentation.ui.theme.values.typography.wordsTypography
-import com.nestifff.learnwords.presentation.ui.theme.values.PaletteMode
 import com.nestifff.learnwords.presentation.ui.theme.values.colors.wordsDarkPalette
 import com.nestifff.learnwords.presentation.ui.theme.values.colors.wordsLightPalette
 
 
 @Composable
 fun ThemeProvider(
-    paletteMode: PaletteMode = PaletteMode.Light,
+    isDarkMode: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colors = when (paletteMode) {
-        PaletteMode.Dark -> wordsDarkPalette
-        PaletteMode.Light -> wordsLightPalette
+    val colors = if (isDarkMode) {
+        wordsDarkPalette
+    } else {
+        wordsLightPalette
     }
 
     val typography = wordsTypography
@@ -30,10 +30,8 @@ fun ThemeProvider(
 
     val systemUiController = rememberSystemUiController()
     SideEffect {
-        val darkIcons = when (paletteMode) {
-            PaletteMode.Dark -> false
-            PaletteMode.Light -> true
-        }
+        val darkIcons = !isDarkMode
+
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
             darkIcons = darkIcons

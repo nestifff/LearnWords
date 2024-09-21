@@ -2,8 +2,11 @@ package com.nestifff.words.domain.settings
 
 import com.nestifff.words.domain.learn.model.WayToLearnDomain
 import com.nestifff.words.domain.settings.model.SettingsDomain
+import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
+
+    suspend fun observeDarkMode(): Flow<Boolean>
 
     suspend fun getSettings(): SettingsDomain
 

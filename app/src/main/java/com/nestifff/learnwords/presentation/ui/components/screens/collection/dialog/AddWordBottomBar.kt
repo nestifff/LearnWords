@@ -91,15 +91,15 @@ fun AddWordBottomBar(
                     .padding(top = 8.dp, start = 24.dp)
                     .clip(RoundedCornerShape(percent = 50))
                     .border(
-                        width = 1.5.dp,
-                        color = AppTheme.colors.contentLight,
+                        width = 1.dp,
+                        color = AppTheme.colors.content.copy(alpha = 0.8f),
                         shape = RoundedCornerShape(percent = 50)
                     )
                     .clickable { onOpenClick() }
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 text = "Tap to add a new word",
                 style = AppTheme.typography.h1MediumTextStyle,
-                color = AppTheme.colors.contentLight
+                color = AppTheme.colors.content.copy(alpha = 0.8f)
             )
         } else {
             Icon(
@@ -111,6 +111,7 @@ fun AddWordBottomBar(
                     .padding(4.dp),
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
+                tint = AppTheme.colors.content
             )
         }
 

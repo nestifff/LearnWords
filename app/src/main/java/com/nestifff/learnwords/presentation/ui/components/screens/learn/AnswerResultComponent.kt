@@ -60,10 +60,12 @@ fun AnswerResultComponent(
                 Text(
                     text = "Correct:",
                     style = AppTheme.typography.h1RegularTextStyle,
+                    color = AppTheme.colors.content
                 )
                 Text(
                     text = state?.getCorrectAnswerOrNull() ?: "",
                     style = AppTheme.typography.h1BoldTextStyle,
+                    color = AppTheme.colors.content,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
@@ -78,6 +80,7 @@ fun AnswerResultComponent(
             Text(
                 text = "Was moved to Learned! \uD83C\uDF89",
                 style = AppTheme.typography.h3MediumTextStyle,
+                color = AppTheme.colors.content,
             )
         }
 

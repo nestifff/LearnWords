@@ -189,7 +189,7 @@ fun EmptyListScreen(collectionType: CollectionType, modifier: Modifier = Modifie
             .padding(top = 148.dp, bottom = 64.dp)
             .clip(RoundedCornerShape(24.dp))
             .background(AppTheme.colors.backgroundLight)
-            .border(1.dp, AppTheme.colors.backgroundMedium, RoundedCornerShape(24.dp))
+            .border(1.dp, AppTheme.colors.sectionDivider, RoundedCornerShape(24.dp))
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -205,6 +205,7 @@ fun EmptyListScreen(collectionType: CollectionType, modifier: Modifier = Modifie
             text = "Your collection is empty",
             modifier = Modifier.padding(bottom = 12.dp),
             style = AppTheme.typography.h2MediumTextStyle,
+            color = AppTheme.colors.content,
             textAlign = TextAlign.Center
         )
         Text(

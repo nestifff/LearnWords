@@ -16,6 +16,7 @@ import com.nestifff.words.domain.settings.SettingsRepository.Companion.INITIAL_N
 import com.nestifff.words.domain.settings.SettingsRepository.Companion.INITIAL_NUMBER_TO_LEARN
 import com.nestifff.words.domain.settings.SettingsRepository.Companion.INITIAL_WAY_TO_LEARN
 import com.nestifff.words.domain.settings.model.SettingsDomain
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -25,6 +26,11 @@ class SettingsRepositoryImpl @Inject constructor(
 ) : SettingsRepository {
 
     private val dataStore = app.dataStore
+
+    override suspend fun observeDarkMode(): Flow<Boolean> {
+        return dataStore.data.map { it[Key.IS_DARK_MODE] ?: INITIAL_IS_DARK_MODE }
+    }
+
 
     override suspend fun getSettings(): SettingsDomain {
         val settings = dataStore.data.map { prefs ->

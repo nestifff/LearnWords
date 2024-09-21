@@ -38,7 +38,7 @@ fun CollectionTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 6.dp, bottom = 4.dp)
+            .padding(top = 10.dp, bottom = 4.dp)
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

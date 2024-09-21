@@ -42,12 +42,12 @@ fun LearnProgressTopBar(
                     .fillMaxWidth()
                     .height(24.dp)
                     .clip(RoundedCornerShape(percent = 50))
-                    .border(
-                        1.5.dp,
-                        AppTheme.colors.textFieldBackground,
-                        RoundedCornerShape(percent = 50)
-                    )
-                    .background(AppTheme.colors.primaryLight.copy(alpha = 0.4f))
+//                    .border(
+//                        1.5.dp,
+//                        AppTheme.colors.textFieldBackground,
+//                        RoundedCornerShape(percent = 50)
+//                    )
+                    .background(AppTheme.colors.textFieldBackground)
             )
             // max() is used to prevent dividing by zero when data is not loaded
             val finishedPart = animateFloatAsState(
