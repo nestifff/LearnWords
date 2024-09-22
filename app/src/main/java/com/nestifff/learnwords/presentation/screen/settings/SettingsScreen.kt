@@ -29,6 +29,7 @@ import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Ef
 import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect.NavigateBack
 import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect.SaveSuccessMessage
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTopBar
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTwoButtonsDialog
 import com.nestifff.learnwords.presentation.ui.components.screens.settings.SettingsDataComponent
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
@@ -74,28 +75,10 @@ private fun SettingsScreenContent(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            // top bar
-            Row(
-                modifier = Modifier.padding(bottom = 32.dp, top = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .clickable { viewModel.onBackTriggered() }
-                        .padding(4.dp),
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
-                    tint = AppTheme.colors.content
-                )
-                Text(
-                    text = "Settings",
-                    style = AppTheme.typography.h0MediumTextStyle,
-                    color = AppTheme.colors.content,
-                    modifier = Modifier.padding(start = 10.dp)
-                )
-            }
+            PrimaryTopBar(
+                title = "Settings",
+                onNavigationButtonClick = { viewModel.onBackTriggered() }
+            )
             SettingsDataComponent(
                 state = state,
                 modifier = Modifier.padding(bottom = 32.dp),

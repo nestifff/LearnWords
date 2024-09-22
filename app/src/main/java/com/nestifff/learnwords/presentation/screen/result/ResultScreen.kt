@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -36,7 +37,10 @@ import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.result.ResultViewModel.Effect.ReturnToCollectionScreen
 import com.nestifff.learnwords.presentation.screen.result.ResultViewModel.State
+import com.nestifff.learnwords.presentation.ui.components.common.DataSectionTitle
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTopBar
+import com.nestifff.learnwords.presentation.ui.components.common.dataSectionShape
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import com.nestifff.words.domain.learn.model.LearnProcessResult
@@ -55,51 +59,47 @@ fun ResultScreen(
         }
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.colors.background)
             .systemBarsPadding()
+            .padding(horizontal = 16.dp)
     ) {
+        PrimaryTopBar(
+            title = "Results",
+            onNavigationButtonClick = { viewModel.onBackTriggered() },
+            navigationButtonVector = Icons.Default.Close
+        )
+
         when (val currState = state) {
             is State.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = AppTheme.colors.primary
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = AppTheme.colors.primary
+                    )
+                }
             }
 
             is State.Display -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 16.dp, bottom = 32.dp),
+                        .padding(bottom = 16.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp)
-                            .weight(1f)
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        Text(
-                            text = "Results",
-                            style = AppTheme.typography.h0MediumTextStyle,
-                            modifier = Modifier.padding(bottom = 32.dp)
-                        )
-                        ResultDataComponent(
-                            data = currState.data,
-                            modifier = Modifier.weight(weight = 1f, fill = false)
-                        )
-                    }
+                    ResultDataComponent(
+                        data = currState.data,
+                        modifier = Modifier.weight(1f)
+                    )
                     PrimaryButton(
                         text = "Return to main ->",
                         onClick = { viewModel.onReturnToMainClicked() },
                         modifier = Modifier
-                            .padding(end = 16.dp)
                             .fillMaxWidth(0.6f)
                             .align(Alignment.End)
+                            .padding(top = 32.dp, bottom = 16.dp, end = 16.dp)
                     )
                 }
             }
@@ -119,80 +119,65 @@ private fun ResultDataComponent(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.dataSectionShape()) {
+            DataSectionTitle(text = "General")
             ResultItemRow(
                 title = "On first try:",
                 content = data.wordsAnsweredOnFirstTry.size.toString() + " words"
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(10.dp))
             ResultItemRow(
                 title = "Average amount of tries:",
                 content = data.averageTriesCountToAnswerWord.toFloat().toString(),
             )
-            Divider(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .width(160.dp)
-                    .padding(top = 16.dp)
-                    .height(2.dp),
-                color = AppTheme.colors.primary
-            )
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
+
+        if (data.wordsMovedToLearnedCollection.isNotEmpty()
+            || data.wordsRemovedFromLearnedCollection.isNotEmpty()
         ) {
-            if (data.wordsMovedToLearnedCollection.isNotEmpty()
-                || data.wordsRemovedFromLearnedCollection.isNotEmpty()
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(end = 12.dp)
-                ) {
-                    if (data.wordsMovedToLearnedCollection.isNotEmpty()) {
-                        ResultItemColumn(
-                            title = "Moved to Learned collection:",
-                            content = data.wordsMovedToLearnedCollection.joinToString("\n") { it.eng },
-                            modifier = Modifier.padding(top = 16.dp)
-                        )
-                    }
-                    if (data.wordsRemovedFromLearnedCollection.isNotEmpty()) {
-                        Spacer(Modifier.height(16.dp))
-                        ResultItemColumn(
-                            title = "Removed from Learned collection:",
-                            content = data.wordsRemovedFromLearnedCollection.joinToString("\n") { it.eng }
-                        )
-                    }
-                }
-                Divider(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .height(160.dp),
-                    color = AppTheme.colors.primary
-                )
-            }
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(start = 16.dp)
+                    .padding(top = 16.dp)
+                    .dataSectionShape()
             ) {
+                DataSectionTitle(text = "Learned stats")
+                if (data.wordsMovedToLearnedCollection.isNotEmpty()) {
+                    ResultItemColumn(
+                        title = "Moved to Learned collection:",
+                        content = data.wordsMovedToLearnedCollection.joinToString(", ") { it.eng },
+                    )
+                }
+                if (data.wordsRemovedFromLearnedCollection.isNotEmpty()) {
+                    if (data.wordsMovedToLearnedCollection.isNotEmpty()) {
+                        Spacer(Modifier.height(20.dp))
+                    }
+                    ResultItemColumn(
+                        title = "Removed from Learned collection:",
+                        content = data.wordsRemovedFromLearnedCollection.joinToString(", ") { it.eng }
+                    )
+                }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .dataSectionShape()
+        ) {
+            DataSectionTitle(text = "Words stats")
+            if (data.mostDifficultWordsWithTriesCount.isNotEmpty()) {
+                ResultItemColumn(
+                    title = "The most difficult words with amount of tries:",
+                    content = data.mostDifficultWordsWithTriesCount.joinToString("\n") { it.first.eng + "  -  " + it.second },
+                )
+            }
+            if (data.wordsAnsweredOnFirstTry.isNotEmpty()) {
                 if (data.mostDifficultWordsWithTriesCount.isNotEmpty()) {
-                    ResultItemColumn(
-                        title = "The most difficult words with amount of tries:",
-                        content = data.mostDifficultWordsWithTriesCount.joinToString("\n") { it.first.eng + "  -  " + it.second },
-                        modifier = Modifier.padding(top = 16.dp)
-                    )
+                    Spacer(Modifier.height(20.dp))
                 }
-                if (data.wordsAnsweredOnFirstTry.isNotEmpty()) {
-                    Spacer(Modifier.height(16.dp))
-                    ResultItemColumn(
-                        title = "All words answered on first try:",
-                        content = data.wordsAnsweredOnFirstTry.joinToString("\n") { it.eng }
-                    )
-                }
+                ResultItemColumn(
+                    title = "All words answered on first try:",
+                    content = data.wordsAnsweredOnFirstTry.joinToString(", ") { it.eng },
+                )
             }
         }
     }
@@ -204,7 +189,7 @@ private fun ResultItemRow(
     content: String,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(
             text = title,
             style = AppTheme.typography.h2RegularTextStyle
@@ -228,11 +213,11 @@ private fun ResultItemColumn(
             text = title,
             style = AppTheme.typography.h2MediumTextStyle
         )
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(10.dp))
         Text(
             text = content,
             style = AppTheme.typography.h2RegularTextStyle,
-            modifier = Modifier.padding(start = 12.dp)
+            modifier = Modifier.padding(start = 24.dp)
         )
     }
 }
@@ -253,7 +238,7 @@ private fun ResultScreenContent_Preview() {
                 wordsAnsweredOnFirstTry = words,
                 mostDifficultWordsWithTriesCount = words.mapIndexed { i, w -> Pair(w, i) }
                     .sortedByDescending { it.second },
-                wordsMovedToLearnedCollection = listOf(),
+                wordsMovedToLearnedCollection = listOf(words[0], words[1]),
                 wordsRemovedFromLearnedCollection = listOf(words[0], words[1]),
                 averageTriesCountToAnswerWord = 3.33333333333
             )
