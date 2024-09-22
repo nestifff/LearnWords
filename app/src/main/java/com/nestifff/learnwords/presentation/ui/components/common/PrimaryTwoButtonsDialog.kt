@@ -70,7 +70,7 @@ fun PrimaryTwoButtonsDialog(
                     modifier = Modifier
                         .padding(end = 24.dp)
                         .widthIn(min = 82.dp),
-                    enabledBackgroundColor = AppTheme.colors.textFieldBackground
+                    enabledBackgroundColor = AppTheme.colors.backgroundMedium.copy(alpha = 0.8f)
                 )
                 PrimaryButton(
                     text = positiveButtonText,
