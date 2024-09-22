@@ -2,36 +2,30 @@ package com.nestifff.learnwords.presentation.screen.settings
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.ext.onEffect
 import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect.ErrorZeroOrEmptyValuesMessage
 import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect.NavigateBack
-import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect.SaveSuccessMessage
-import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
+import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect.UpdateSuccessMessage
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTopBar
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTwoButtonsDialog
-import com.nestifff.learnwords.presentation.ui.components.screens.settings.SettingsDataComponent
+import com.nestifff.learnwords.presentation.ui.components.screens.settings.GeneralSettingsDataComponent
+import com.nestifff.learnwords.presentation.ui.components.screens.settings.LearnProcessSettingsDataComponent
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.utils.showToast
 
@@ -48,7 +42,7 @@ fun SettingsScreen(
         when (it) {
             NavigateBack -> navigateBack()
             ErrorZeroOrEmptyValuesMessage -> context.showToast("Values can't be blank or 0")
-            SaveSuccessMessage -> context.showToast("New settings were successfully saved")
+            UpdateSuccessMessage -> context.showToast("New settings were successfully saved")
         }
     }
 
@@ -69,38 +63,31 @@ private fun SettingsScreenContent(
             .fillMaxSize()
             .background(color = AppTheme.colors.background)
             .systemBarsPadding()
+            .imePadding()
             .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
+        PrimaryTopBar(
+            title = "Settings",
+            onNavigationButtonClick = { viewModel.onBackTriggered() }
+        )
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            PrimaryTopBar(
-                title = "Settings",
-                onNavigationButtonClick = { viewModel.onBackTriggered() }
-            )
-            SettingsDataComponent(
+            LearnProcessSettingsDataComponent(
                 state = state,
-                modifier = Modifier.padding(bottom = 32.dp),
                 onNumberToLearnChange = { viewModel.onNumberToLearnChanged(it) },
                 onCountOnFirstTryChange = { viewModel.onCountOnFirstTryChanged(it) },
                 onWayToLearnSelect = { viewModel.onWayToLearnSelected(it) },
                 onSelectWayToLearnClick = { viewModel.onSelectWayToLearnClicked() },
                 onWayToLearnMenuDismiss = { viewModel.onWayToLearnMenuDismiss() },
+                onUpdateClick = { viewModel.onUpdateLearnProcessClicked() },
+            )
+            GeneralSettingsDataComponent(
+                isDarkMode = state.currentSettings?.isDarkMode,
                 onDarkModeChange = { viewModel.onDarkModeChanged(it) },
+                modifier = Modifier.padding(top = 16.dp),
             )
         }
-
-        PrimaryButton(
-            text = "Save",
-            onClick = { viewModel.onSaveClicked() },
-            isEnabled = state.isSaveButtonEnabled,
-            isLoading = state.isSavingInProgress,
-            modifier = Modifier
-                .padding(bottom = 32.dp, end = 16.dp)
-                .widthIn(min = 112.dp)
-                .align(Alignment.End)
-        )
     }
 
     if (state.isConfirmExitDialogVisible) {

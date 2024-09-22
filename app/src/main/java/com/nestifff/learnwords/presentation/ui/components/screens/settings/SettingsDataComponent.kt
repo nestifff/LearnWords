@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -19,6 +22,7 @@ import com.nestifff.learnwords.presentation.ui.components.common.EditableWayToLe
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryNumbersTextField
 import com.nestifff.learnwords.presentation.ui.components.common.PrimarySwitch
 import com.nestifff.learnwords.presentation.ui.components.common.DataSectionTitle
+import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
 import com.nestifff.learnwords.presentation.ui.components.common.dataSectionShape
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
@@ -26,114 +30,128 @@ import com.nestifff.words.domain.learn.model.WayToLearnDomain
 import com.nestifff.words.domain.settings.model.SettingsDomain
 
 @Composable
-fun SettingsDataComponent(
+fun GeneralSettingsDataComponent(
+    isDarkMode: Boolean?,
+    onDarkModeChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (isDarkMode == null) {
+        return
+    }
+    Column(
+        modifier = modifier.dataSectionShape()
+    ) {
+        DataSectionTitle(
+            text = "General"
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SettingItemTitle(text = "Dark mode")
+            PrimarySwitch(
+                isChecked = isDarkMode,
+                onCheckedChange = onDarkModeChange
+            )
+        }
+    }
+}
+
+@Composable
+fun LearnProcessSettingsDataComponent(
     state: SettingsViewModel.State,
     onNumberToLearnChange: (String) -> Unit,
     onCountOnFirstTryChange: (String) -> Unit,
     onWayToLearnSelect: (WayToLearnDomain) -> Unit,
     onSelectWayToLearnClick: () -> Unit,
     onWayToLearnMenuDismiss: () -> Unit,
-    onDarkModeChange: (Boolean) -> Unit,
+    onUpdateClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (state.currentSettings == null) {
         return
     }
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
+        modifier = modifier.dataSectionShape()
     ) {
-        Column(
-            modifier = Modifier.dataSectionShape()
+        DataSectionTitle(
+            text = "Learn process"
+        )
+        val numberToLearn =
+            state.updatedNumberToLearn ?: state.currentSettings.defaultNumberToLearn.toString()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            DataSectionTitle(
-                text = "Learn process"
+            SettingItemTitle(
+                text = "Default number of words to learn"
             )
-            val numberToLearn =
-                state.updatedNumberToLearn ?: state.currentSettings.defaultNumberToLearn.toString()
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SettingItemTitle(
-                    text = "Default number of words to learn"
-                )
-                PrimaryNumbersTextField(
-                    value = numberToLearn,
-                    onValueChange = onNumberToLearnChange
-                )
-            }
-            val wayToLearn = state.updatedWayToLearn ?: state.currentSettings.defaultWayToLearn
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SettingItemTitle(
-                    text = "Default way to learn"
-                )
-                EditableWayToLearn(
-                    currentWayToLearn = wayToLearn,
-                    isExpandedMenuVisible = state.isChangeWayToLearnMenuVisible,
-                    onWayToLearnSelect = onWayToLearnSelect,
-                    onMenuDismiss = onWayToLearnMenuDismiss,
-                    onOpenMenuClick = onSelectWayToLearnClick
-                )
-            }
-            DescriptionText(
-                text = when (wayToLearn) {
-                    WayToLearnDomain.RUS_TO_ENG -> "While learning you see native language translation and you need to enter word"
-                    WayToLearnDomain.ENG_TO_RUS -> "While learning you see word to learn and you need to enter native language translation"
-                },
-                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
-            )
-            val countOnFirstTry = state.updatedCountOnFirstTry
-                ?: state.currentSettings.countOnFirstTryToMoveToLearned.toString()
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SettingItemTitle(
-                    text = "Count to enter on 1st try"
-                )
-                PrimaryNumbersTextField(
-                    value = countOnFirstTry,
-                    onValueChange = onCountOnFirstTryChange
-                )
-            }
-            DescriptionText(
-                text = "After you enter word correctly on 1st try this amount of times, it will be moved to Learned",
+            PrimaryNumbersTextField(
+                value = numberToLearn,
+                onValueChange = onNumberToLearnChange
             )
         }
-
-        Column(
+        val wayToLearn = state.updatedWayToLearn ?: state.currentSettings.defaultWayToLearn
+        Row(
             modifier = Modifier
-                .padding(top = 16.dp)
-                .dataSectionShape()
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            DataSectionTitle(
-                text = "General"
+            SettingItemTitle(
+                text = "Default way to learn"
             )
-            val isDarkMode = state.updatedDarkMode ?: state.currentSettings.isDarkMode
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SettingItemTitle(text = "Dark mode")
-                PrimarySwitch(
-                    isChecked = isDarkMode,
-                    onCheckedChange = onDarkModeChange
-                )
-            }
+            EditableWayToLearn(
+                currentWayToLearn = wayToLearn,
+                isExpandedMenuVisible = state.isChangeWayToLearnMenuVisible,
+                onWayToLearnSelect = onWayToLearnSelect,
+                onMenuDismiss = onWayToLearnMenuDismiss,
+                onOpenMenuClick = onSelectWayToLearnClick
+            )
         }
+        DescriptionText(
+            text = when (wayToLearn) {
+                WayToLearnDomain.RUS_TO_ENG -> "While learning you see native language translation and you need to enter word"
+                WayToLearnDomain.ENG_TO_RUS -> "While learning you see word to learn and you need to enter native language translation"
+            },
+            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
+        val countOnFirstTry = state.updatedCountOnFirstTry
+            ?: state.currentSettings.countOnFirstTryToMoveToLearned.toString()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SettingItemTitle(
+                text = "Count to enter on 1st try"
+            )
+            PrimaryNumbersTextField(
+                value = countOnFirstTry,
+                onValueChange = onCountOnFirstTryChange
+            )
+        }
+        DescriptionText(
+            text = "After you enter word correctly on 1st try this amount of times, it will be moved to Learned",
+        )
+
+        PrimaryButton(
+            text = "Update",
+            onClick = onUpdateClick,
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .widthIn(min = 102.dp)
+                .align(Alignment.End),
+            isEnabled = state.isUpdateLearnProcessEnabled
+        )
     }
 }
+
 
 @Composable
 private fun RowScope.SettingItemTitle(
@@ -167,9 +185,19 @@ private fun DescriptionText(
 
 @Preview(showBackground = true)
 @Composable
-private fun SettingsData_Preview() {
+private fun GeneralSettingsData_Preview() {
     ThemeProvider {
-        SettingsDataComponent(
+        GeneralSettingsDataComponent(
+            isDarkMode = true, onDarkModeChange = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LearnProcessSettingsData_Preview() {
+    ThemeProvider {
+        LearnProcessSettingsDataComponent(
             state = SettingsViewModel.State(
                 currentSettings = SettingsDomain(
                     defaultNumberToLearn = 15,
@@ -183,7 +211,8 @@ private fun SettingsData_Preview() {
             onWayToLearnSelect = {},
             onSelectWayToLearnClick = {},
             onWayToLearnMenuDismiss = {},
-            onDarkModeChange = {},
+            onUpdateClick = {}
         )
     }
 }
+

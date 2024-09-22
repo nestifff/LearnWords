@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,17 +50,13 @@ fun PrimaryButton(
             .padding(vertical = 12.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = text,
-                style = AppTheme.typography.h2MediumTextStyle,
-                color = AppTheme.colors.content,
-            )
-            if (isLoading) {
-                CircularProgressIndicator(color = AppTheme.colors.primary)
-            }
+        Text(
+            text = text,
+            style = AppTheme.typography.h2MediumTextStyle,
+            color = AppTheme.colors.content,
+        )
+        if (isLoading) {
+            CircularProgressIndicator(color = AppTheme.colors.primary)
         }
     }
 }
