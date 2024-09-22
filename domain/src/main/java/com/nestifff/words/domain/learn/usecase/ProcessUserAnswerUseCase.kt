@@ -12,6 +12,7 @@ class ProcessUserAnswerUseCase @Inject constructor(
     private val getCorrectAnswerUseCase: GetCorrectAnswerUseCase,
 ) {
 
+    // todo: mb return here all the info - next work, words left, etc and get rid of GetNextWordUseCase
     suspend fun execute(userAnswer: WordUserAnswerDomain): UserAnswerFeedback {
 
         val isCorrect = checkIsWordCorrectUseCase.getIsCorrect(userAnswer)

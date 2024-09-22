@@ -14,7 +14,6 @@ import com.nestifff.learnwords.presentation.screen.learn.model.UserAnswerResultS
 import com.nestifff.learnwords.presentation.screen.learn.model.LearnScreenWordItem
 import com.nestifff.learnwords.presentation.screen.learn.model.increaseIfCondition
 import com.nestifff.learnwords.presentation.screen.learn.model.toDomain
-import com.nestifff.learnwords.presentation.screen.settings.SettingsViewModel.Effect
 import com.nestifff.words.domain.learn.model.NextWordResultDomain
 import com.nestifff.words.domain.learn.model.UserAnswerFeedback.Correct
 import com.nestifff.words.domain.learn.usecase.GetNextWordUseCase
@@ -121,13 +120,11 @@ class LearnViewModel @AssistedInject constructor(
     private suspend fun showNextWord() {
         produceState(
             state.copy(
-                word = null,
                 isEnteringWordEnabled = false,
                 buttonState = state.buttonState.copy(isEnabled = false, isLoading = true),
                 resulAnimationState = null,
             )
         )
-
         when (val wordResult = getNextWordUseCase.invoke()) {
 
             is NextWordResultDomain.WordsEnded ->

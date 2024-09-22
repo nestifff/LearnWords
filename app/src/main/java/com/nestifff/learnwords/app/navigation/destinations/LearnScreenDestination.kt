@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.nestifff.learnwords.app.di.utils.daggerViewModel
 import com.nestifff.learnwords.app.navigation.core.Destination
+import com.nestifff.learnwords.app.navigation.core.scaleIntoContainer
+import com.nestifff.learnwords.app.navigation.core.scaleOutOfContainer
 import com.nestifff.learnwords.app.navigation.graphs.MainNavGraph
 import com.nestifff.learnwords.ext.getApplication
 import com.nestifff.learnwords.presentation.model.CollectionType
@@ -49,6 +51,10 @@ fun NavGraphBuilder.learnScreenDestination(
 ) {
     composable(
         route = LearnScreenDestination.route,
+        enterTransition = { scaleIntoContainer() },
+        exitTransition = { scaleOutOfContainer(isInside = true) },
+        popEnterTransition = { scaleIntoContainer(isInside = false) },
+        popExitTransition = { scaleOutOfContainer() }
     ) {
 
         val arg = LearnScreenDestination.getArgs(it)

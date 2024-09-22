@@ -48,10 +48,16 @@ fun LearnScreen(
 
     val state by viewModel.uiState.collectAsState()
 
+    val keyboard = LocalSoftwareKeyboardController.current
     onEffect(effect = viewModel.uiEffect) { effect ->
         when (effect) {
-            NavigateToResultScreen -> navigateToResultScreen()
-            NavigateBack -> navigateBack()
+            NavigateToResultScreen -> {
+                keyboard?.hide()
+                navigateToResultScreen()
+            }
+            NavigateBack -> {
+                navigateBack()
+            }
         }
     }
 
@@ -77,7 +83,6 @@ fun LearnScreen(
             )
 
             val focusRequester = remember { FocusRequester() }
-            val keyboard = LocalSoftwareKeyboardController.current
             LearnTextField(
                 value = state.word?.enteredValue ?: "",
                 onValueChange = { viewModel.onEnteredValueChanged(it) },
