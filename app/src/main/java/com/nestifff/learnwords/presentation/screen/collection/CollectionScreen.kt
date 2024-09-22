@@ -42,6 +42,7 @@ import com.nestifff.learnwords.presentation.screen.collection.CollectionViewMode
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NavigateToSettingsScreen
 import com.nestifff.learnwords.presentation.screen.collection.CollectionViewModel.Effect.NotAvailableYetMessage
 import com.nestifff.learnwords.presentation.screen.collection.model.AddWordDialogState
+import com.nestifff.learnwords.presentation.ui.components.common.PrimarySnackbarHost
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionLearnButton
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionTopBar
 import com.nestifff.learnwords.presentation.ui.components.screens.collection.CollectionsSwitcher
@@ -107,16 +108,7 @@ fun CollectionScreen(
                 )
             }
         },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) {
-                Snackbar(
-                    snackbarData = it,
-                    actionColor = AppTheme.colors.primaryLight,
-                    containerColor = AppTheme.colors.content,
-                    contentColor = AppTheme.colors.backgroundLight
-                )
-            }
-        },
+        snackbarHost = { PrimarySnackbarHost(snackbarHostState) },
     ) { scaffoldPadding ->
         Box(
             modifier = Modifier

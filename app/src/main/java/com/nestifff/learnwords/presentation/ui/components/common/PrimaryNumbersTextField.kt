@@ -3,11 +3,11 @@ package com.nestifff.learnwords.presentation.ui.components.common
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +21,7 @@ fun PrimaryNumbersTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
     PrimaryTextField(
         value = value,
         onValueChange = {
@@ -28,12 +29,15 @@ fun PrimaryNumbersTextField(
                 onValueChange(it)
             }
         },
-        modifier = modifier
-            .width(64.dp)
-            .heightIn(min = 48.dp),
+        modifier = modifier.width(64.dp),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Number
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus()
+            }
         )
     )
 }

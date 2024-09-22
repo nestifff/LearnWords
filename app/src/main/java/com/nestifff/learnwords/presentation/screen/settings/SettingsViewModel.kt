@@ -31,7 +31,6 @@ class SettingsViewModel(
     sealed class Effect : UiEffect {
         data object NavigateBack : Effect()
         data object UpdateSuccessMessage : Effect()
-        data object ErrorZeroOrEmptyValuesMessage : Effect()
     }
 
     init {
@@ -45,7 +44,7 @@ class SettingsViewModel(
         produceState(
             state.copy(
                 updatedNumberToLearn = newValue,
-                isUpdateLearnProcessEnabled = hasUnsavedData(updatedNumberToLearn = newValue)
+                isUpdateLearnProcessEnabled = checkIfDataCanBeUpdated(updatedNumberToLearn = newValue)
             )
         )
     }
@@ -54,7 +53,7 @@ class SettingsViewModel(
         produceState(
             state.copy(
                 updatedCountOnFirstTry = newValue,
-                isUpdateLearnProcessEnabled = hasUnsavedData(updatedCountOnFirstTry = newValue)
+                isUpdateLearnProcessEnabled = checkIfDataCanBeUpdated(updatedCountOnFirstTry = newValue)
             )
         )
     }
@@ -63,7 +62,7 @@ class SettingsViewModel(
         produceState(
             state.copy(
                 updatedWayToLearn = newWayToLearn,
-                isUpdateLearnProcessEnabled = hasUnsavedData(updatedWayToLearn = newWayToLearn),
+                isUpdateLearnProcessEnabled = checkIfDataCanBeUpdated(updatedWayToLearn = newWayToLearn),
                 isChangeWayToLearnMenuVisible = false
             )
         )
@@ -85,10 +84,16 @@ class SettingsViewModel(
     }
 
     fun onUpdateLearnProcessClicked() {
-        val newNumberToLearn = state.updatedNumberToLearn?.toIntOrNull() ?: 0
-        val newCountOnFirstTry = state.updatedCountOnFirstTry?.toIntOrNull() ?: 0
-        if (newNumberToLearn <= 0 || newCountOnFirstTry <= 0) {
-            produceEffect(Effect.ErrorZeroOrEmptyValuesMessage)
+        val currentSettings = state.currentSettings ?: return
+        val newNumberToLearn = if (state.updatedNumberToLearn == null) {
+            currentSettings.defaultNumberToLearn
+        } else {
+            state.updatedNumberToLearn!!.toInt()
+        }
+        val newCountOnFirstTry = if (state.updatedCountOnFirstTry == null) {
+            currentSettings.countOnFirstTryToMoveToLearned
+        } else {
+            state.updatedCountOnFirstTry!!.toInt()
         }
         viewModelScope.launch {
             produceState(state.copy(isUpdateLearnProcessEnabled = false))
@@ -111,7 +116,7 @@ class SettingsViewModel(
     }
 
     fun onBackTriggered() {
-        if (hasUnsavedData()) {
+        if (checkIfDataCanBeUpdated()) {
             produceState(state.copy(isConfirmExitDialogVisible = true))
         } else {
             produceEffect(Effect.NavigateBack)
@@ -127,30 +132,31 @@ class SettingsViewModel(
         produceEffect(Effect.NavigateBack)
     }
 
-    private fun hasUnsavedData(
+    private fun checkIfDataCanBeUpdated(
         updatedNumberToLearn: String? = null,
         updatedCountOnFirstTry: String? = null,
         updatedWayToLearn: WayToLearnDomain? = null
     ): Boolean {
         try {
-            val setting = state.currentSettings ?: return false
+            val settings = state.currentSettings ?: return false
 
             val numberToLearnToCompare = updatedNumberToLearn ?: state.updatedNumberToLearn
-            val isNumberToLearnChanged = numberToLearnToCompare?.let {
-                it.toInt() != setting.defaultNumberToLearn
+            val isNumberToLearnChangedAndLegal = numberToLearnToCompare?.let {
+                it.toInt() != settings.defaultNumberToLearn && it.toInt() > 0
             } ?: false
 
             val countOnFirstTryToCompare = updatedCountOnFirstTry ?: state.updatedCountOnFirstTry
-            val isCountOnFirstTryChanged = countOnFirstTryToCompare?.let {
-                it.toInt() != setting.countOnFirstTryToMoveToLearned
+            val isCountOnFirstTryChangedAndLegal = countOnFirstTryToCompare?.let {
+                it.toInt() != settings.countOnFirstTryToMoveToLearned && it.toInt() > 0
             } ?: false
 
             val wayToLearnToCompare = updatedWayToLearn ?: state.updatedWayToLearn
             val isWayToLearnChanged = wayToLearnToCompare?.let {
-                it != setting.defaultWayToLearn
+                it != settings.defaultWayToLearn
             } ?: false
 
-            return isNumberToLearnChanged || isCountOnFirstTryChanged || isWayToLearnChanged
+            return isNumberToLearnChangedAndLegal || isCountOnFirstTryChangedAndLegal
+                    || isWayToLearnChanged
         } catch (ex: Exception) {
             return false
         }
