@@ -20,6 +20,7 @@ class LearnRepositoryImpl @Inject constructor(
     private lateinit var collectionType: CollectionTypeDomain
 
     private var currentWord: WordDomain? = null
+    private var previousWord: WordDomain? = null
 
     override suspend fun setDataForLearning(
         wayToLearn: WayToLearnDomain,
@@ -36,7 +37,6 @@ class LearnRepositoryImpl @Inject constructor(
 
     override fun addOnePerformedTryToWord() {
         wordsToTriesToAnswer[currentWord!!] = wordsToTriesToAnswer[currentWord]!! + 1
-        Log.i("Lalala", "addOnePerformedTryToWord: wordsToTriesToAnswer[currentWord] = ${wordsToTriesToAnswer[currentWord]}")
     }
 
     override fun removeWordFromRemaining() {
@@ -46,6 +46,7 @@ class LearnRepositoryImpl @Inject constructor(
     override suspend fun getRemainingWords() = remainingWords
 
     override fun setNewCurrentWord(word: WordDomain?) {
+        previousWord = currentWord
         currentWord = word
     }
 
@@ -53,18 +54,15 @@ class LearnRepositoryImpl @Inject constructor(
 
     override fun getCurrentWord() = currentWord
 
+    override fun getPreviousWord(): WordDomain? = previousWord
+
     override suspend fun refreshWord(id: String) {
         val updatedWord = wordsRepository.getWordById(id)!!
-
-        Log.i("Lalala", "refreshWord id = $id: updatedWord.isLearned = ${updatedWord.isLearned}")
 
         // refresh currentWord if needed
         if (currentWord?.id == id) {
             currentWord = updatedWord
         }
-
-        Log.i("Lalala", "refreshWord id = $id: currentWord = $currentWord")
-
 
         // refresh in wordsToTriesToAnswer
         val outdatedWord = wordsToTriesToAnswer.keys.find { it.id == id }!!

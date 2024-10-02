@@ -24,6 +24,8 @@ interface LearnRepository {
 
     fun getCurrentWord(): WordDomain?
 
+    fun getPreviousWord(): WordDomain?
+
     suspend fun refreshWord(id: String)
 
     fun getWordNumberOfPerformedTries(): Int?

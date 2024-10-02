@@ -14,8 +14,6 @@ class GetLearnProcessResultUseCase @Inject constructor(
     suspend fun execute(): LearnProcessResult = withContext(Dispatchers.Default) {
         val wordToTriesCountMap = learnRepository.getLearnProcessStatisticsMap()
 
-        Log.i("Lalala", "execute: wordToTriesCountMap = $wordToTriesCountMap")
-
         val wordsAnsweredOnFirstTry = wordToTriesCountMap.filter { it.value == 1 }.keys.toList()
 
         val mostDifficultWordsWithTriesCount = wordToTriesCountMap.map { Pair(it.key, it.value) }
@@ -35,13 +33,8 @@ class GetLearnProcessResultUseCase @Inject constructor(
         }
         val averageTriesCountToAnswerWord = wordToTriesCountMap.values.average()
 
-        Log.i("Lalala", "wordsAnsweredOnFirstTry: $wordsAnsweredOnFirstTry")
-        Log.i("Lalala", "mostDifficultWordsWithTriesCount: $mostDifficultWordsWithTriesCount")
-        Log.i("Lalala", "wordsMovedToLearnedCollection: $wordsMovedToLearnedCollection")
-        Log.i("Lalala", "wordsRemovedFromLearnedCollection: $wordsRemovedFromLearnedCollection")
-        Log.i("Lalala", "averageTriesCountToAnswerWord: $averageTriesCountToAnswerWord")
-
         return@withContext LearnProcessResult(
+            allWordsNum = wordToTriesCountMap.keys.size,
             wordsAnsweredOnFirstTry = wordsAnsweredOnFirstTry,
             mostDifficultWordsWithTriesCount = mostDifficultWordsWithTriesCount,
             wordsMovedToLearnedCollection = wordsMovedToLearnedCollection,

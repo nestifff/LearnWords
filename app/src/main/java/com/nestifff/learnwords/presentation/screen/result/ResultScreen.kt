@@ -118,6 +118,10 @@ private fun ResultDataComponent(
         Column(modifier = Modifier.dataSectionShape()) {
             DataSectionTitle(text = "General")
             ResultItemRow(
+                title = "All words:",
+                content = data.allWordsNum.toString()
+            )
+            ResultItemRow(
                 title = "On first try:",
                 content = data.wordsAnsweredOnFirstTry.size.toString() + " words"
             )
@@ -235,6 +239,7 @@ private fun ResultScreenContent_Preview() {
         }
         ResultDataComponent(
             data = LearnProcessResult(
+                allWordsNum = 10,
                 wordsAnsweredOnFirstTry = words,
                 mostDifficultWordsWithTriesCount = words.mapIndexed { i, w -> Pair(w, i) }
                     .sortedByDescending { it.second },
