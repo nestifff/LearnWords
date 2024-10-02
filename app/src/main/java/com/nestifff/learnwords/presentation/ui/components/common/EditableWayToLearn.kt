@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -80,8 +79,8 @@ fun EditableWayToLearn(
 
 private fun WayToLearnDomain.getTitle(): String {
     return when (this) {
-        WayToLearnDomain.RUS_TO_ENG -> "Write learning word"
-        WayToLearnDomain.ENG_TO_RUS -> "Write translation"
+        WayToLearnDomain.WRITE_LEARNING_VALUE -> "Write learning word"
+        WayToLearnDomain.WRITE_TRANSLATION -> "Write translation"
     }
 }
 
@@ -90,7 +89,7 @@ private fun WayToLearnDomain.getTitle(): String {
 private fun EditableWayToLearn_Preview() {
     ThemeProvider {
         EditableWayToLearn(
-            currentWayToLearn = WayToLearnDomain.ENG_TO_RUS,
+            currentWayToLearn = WayToLearnDomain.WRITE_TRANSLATION,
             isExpandedMenuVisible = true,
             onWayToLearnSelect = {},
             onOpenMenuClick = {},

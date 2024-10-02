@@ -14,8 +14,8 @@ class GetCorrectAnswerUseCase @Inject constructor(
         val fullWord = learnRepository.getCurrentWord() ?: throw IllegalStateException()
 
         return when (wayToLearn) {
-            WayToLearnDomain.RUS_TO_ENG -> fullWord.eng
-            WayToLearnDomain.ENG_TO_RUS -> fullWord.rus
+            WayToLearnDomain.WRITE_LEARNING_VALUE -> fullWord.learningValue
+            WayToLearnDomain.WRITE_TRANSLATION -> fullWord.translation
         }
     }
 }

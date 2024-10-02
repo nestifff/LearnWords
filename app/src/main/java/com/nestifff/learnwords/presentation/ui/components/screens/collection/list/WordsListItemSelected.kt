@@ -37,9 +37,9 @@ internal fun ExpandedWordItem(
         modifier = modifier.padding(vertical = 12.dp)
     ) {
         PrimaryTextField(
-            value = state.word.eng,
+            value = state.word.value,
             onValueChange = {
-                onEditWordValuesChange(state.word.rus, it)
+                onEditWordValuesChange(state.word.translation, it)
             },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
@@ -50,9 +50,9 @@ internal fun ExpandedWordItem(
         )
         PrimaryTextField(
             modifier = Modifier.padding(top = 6.dp),
-            value = state.word.rus,
+            value = state.word.translation,
             onValueChange = {
-                onEditWordValuesChange(it, state.word.eng)
+                onEditWordValuesChange(it, state.word.value)
             },
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -88,8 +88,8 @@ private fun SelectedItemContentPreview() {
         ExpandedWordItem(
             state = CollectionWordItem(
                 id = "",
-                eng = "English",
-                rus = "Russian",
+                value = "English",
+                translation = "Russian",
                 isFavorite = false
             ).toExpandedState(),
             onSaveButtonClick = { },

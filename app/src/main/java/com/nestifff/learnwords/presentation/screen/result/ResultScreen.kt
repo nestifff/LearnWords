@@ -2,7 +2,6 @@ package com.nestifff.learnwords.presentation.screen.result
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,7 +62,8 @@ fun ResultScreen(
         PrimaryTopBar(
             title = "Results",
             onNavigationButtonClick = { viewModel.onBackTriggered() },
-            navigationButtonVector = Icons.Default.Close
+            navigationButtonVector = Icons.Default.Close,
+            bottomPadding = 16.dp
         )
 
         when (val currState = state) {
@@ -93,7 +93,7 @@ fun ResultScreen(
                         modifier = Modifier
                             .fillMaxWidth(0.6f)
                             .align(Alignment.End)
-                            .padding(top = 32.dp, bottom = 16.dp, end = 16.dp)
+                            .padding(top = 16.dp, bottom = 16.dp, end = 16.dp)
                     )
                 }
             }
@@ -111,7 +111,9 @@ private fun ResultDataComponent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(top = 16.dp, bottom = 16.dp)
     ) {
         Column(modifier = Modifier.dataSectionShape()) {
             DataSectionTitle(text = "General")
@@ -138,7 +140,7 @@ private fun ResultDataComponent(
                 if (data.wordsMovedToLearnedCollection.isNotEmpty()) {
                     ResultItemColumn(
                         title = "Moved to Learned collection:",
-                        content = data.wordsMovedToLearnedCollection.joinToString(", ") { it.eng },
+                        content = data.wordsMovedToLearnedCollection.joinToString("\n") { it.learningValue },
                     )
                 }
                 if (data.wordsRemovedFromLearnedCollection.isNotEmpty()) {
@@ -147,7 +149,7 @@ private fun ResultDataComponent(
                     }
                     ResultItemColumn(
                         title = "Removed from Learned collection:",
-                        content = data.wordsRemovedFromLearnedCollection.joinToString(", ") { it.eng }
+                        content = data.wordsRemovedFromLearnedCollection.joinToString("\n") { it.learningValue }
                     )
                 }
             }
@@ -161,7 +163,7 @@ private fun ResultDataComponent(
             if (data.mostDifficultWordsWithTriesCount.isNotEmpty()) {
                 ResultItemColumn(
                     title = "The most difficult words with amount of tries:",
-                    content = data.mostDifficultWordsWithTriesCount.joinToString("\n") { it.first.eng + "  -  " + it.second },
+                    content = data.mostDifficultWordsWithTriesCount.joinToString("\n") { it.first.learningValue + "  -  " + it.second },
                 )
             }
             if (data.wordsAnsweredOnFirstTry.isNotEmpty()) {
@@ -170,7 +172,7 @@ private fun ResultDataComponent(
                 }
                 ResultItemColumn(
                     title = "All words answered on first try:",
-                    content = data.wordsAnsweredOnFirstTry.joinToString(", ") { it.eng },
+                    content = data.wordsAnsweredOnFirstTry.joinToString("\n") { it.learningValue },
                 )
             }
         }

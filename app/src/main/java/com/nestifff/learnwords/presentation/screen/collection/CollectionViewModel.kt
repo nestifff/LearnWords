@@ -109,8 +109,8 @@ class CollectionViewModel(
         produceState(
             state.copy(
                 customLearnDialogState = CustomLearnDialogState(
-                    numberToLearnStr = "20",
-                    wayToLearn = WayToLearnDomain.ENG_TO_RUS,
+                    numberToLearnStr = "10",
+                    wayToLearn = WayToLearnDomain.WRITE_LEARNING_VALUE,
                     isWayToLearnMenuVisible = false
                 )
             )
@@ -201,7 +201,7 @@ class CollectionViewModel(
 
     fun onEditWordValuesChanged(rus: String, eng: String) {
         state.expandedWordState?.let { expanded ->
-            produceState(state.copy(expandedWordState = expanded.change(rus = rus, eng = eng)))
+            produceState(state.copy(expandedWordState = expanded.change(translation = rus, value = eng)))
         }
     }
 
@@ -220,8 +220,8 @@ class CollectionViewModel(
             )
             updateWordUseCase.execute(
                 id = wordState.word.id,
-                newRus = wordState.word.rus,
-                newEng = wordState.word.eng
+                newTranslation = wordState.word.translation,
+                newValue = wordState.word.value
             )
             delay(600)
             produceState(state.copy(expandedWordState = null))
@@ -257,20 +257,21 @@ class CollectionViewModel(
         produceState(state.copy(addWordDialogState = AddWordDialogState.Collapsed))
     }
 
-    fun onAddWordValuesChanged(rus: String, eng: String) {
+    fun onAddWordValuesChanged(translation: String, value: String) {
         val dialogState = state.addWordDialogState as? AddWordDialogState.Expanded ?: return
-        produceState(state.copy(addWordDialogState = dialogState.copy(rus = rus, eng = eng)))
+        val newDialogState = dialogState.copy(translation = translation, value = value)
+        produceState(state.copy(addWordDialogState = newDialogState))
     }
 
     fun onAddWordClicked() {
         val dialogState = state.addWordDialogState as? AddWordDialogState.Expanded ?: return
-        if (dialogState.eng.isBlank() || dialogState.rus.isBlank()) {
+        if (dialogState.value.isBlank() || dialogState.translation.isBlank()) {
             produceEffect(Effect.ErrorCreatingWordEmptyValue)
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
             addWordUseCase.execute(
-                NewWordToAddDomain(rus = dialogState.rus, eng = dialogState.eng)
+                NewWordToAddDomain(translation = dialogState.translation, value = dialogState.value)
             )
             produceState(state.copy(addWordDialogState = AddWordDialogState.Collapsed))
         }
@@ -290,8 +291,8 @@ class CollectionViewModel(
                 val randomValue = Random.nextInt(0, 1000)
                 addWordUseCase.execute(
                     newWord = NewWordToAddDomain(
-                        rus = "rus$i $randomValue",
-                        eng = "eng$i $randomValue"
+                        translation = "rus$i $randomValue",
+                        value = "eng$i $randomValue"
                     )
                 )
             }

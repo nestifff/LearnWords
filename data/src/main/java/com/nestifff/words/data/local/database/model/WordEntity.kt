@@ -9,9 +9,9 @@ data class WordEntity(
     @PrimaryKey
     val id: String,
     @ColumnInfo
-    val rus: String,
-    @ColumnInfo
-    val eng: String,
+    val translation: String,
+    @ColumnInfo(name = "learning_value")
+    val learningValue: String,
     @ColumnInfo(defaultValue = "0")
     val enteredOnFirstTry: Int,
     // 2^0 = isFavorite, 2^1 = isLearned

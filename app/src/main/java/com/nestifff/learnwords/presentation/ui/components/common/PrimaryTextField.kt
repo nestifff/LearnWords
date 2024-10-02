@@ -26,6 +26,7 @@ fun PrimaryTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
+    singleLine: Boolean = true,
     backgroundColor: Color = AppTheme.colors.textFieldBackground,
     textStyle: TextStyle = AppTheme.typography.h2RegularTextStyle,
     isIndicatorVisible: Boolean = true,
@@ -42,6 +43,7 @@ fun PrimaryTextField(
         } else {
             RoundedCornerShape(8.dp)
         },
+        singleLine = singleLine,
         textStyle = textStyle,
         colors = getTextFieldColors(backgroundColor, isIndicatorVisible = isIndicatorVisible),
         keyboardOptions = keyboardOptions,

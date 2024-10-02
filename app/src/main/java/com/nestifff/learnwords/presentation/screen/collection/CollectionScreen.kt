@@ -92,7 +92,7 @@ fun CollectionScreen(
             ) {
                 AddWordBottomBar(
                     state = state.addWordDialogState,
-                    onValuesChange = { rus, eng -> vm.onAddWordValuesChanged(rus, eng) },
+                    onValuesChange = { translation, learning -> vm.onAddWordValuesChanged(translation, learning) },
                     onAddWordClick = { vm.onAddWordClicked() },
                     onDismiss = { vm.onCloseAddWordDialogClicked() },
                     onOpenClick = { vm.onOpenAddWordDialogClicked() }
@@ -131,8 +131,8 @@ fun CollectionScreen(
                 onDeleteWordClick = { vm.onWordDeleteClicked(it) },
                 onWordClick = { vm.onWordItemClicked(it) },
                 onMakeFavoriteClick = { vm.onMakeFavoriteClicked(it) },
-                onEditWordValuesChange = { rus, eng ->
-                    vm.onEditWordValuesChanged(rus, eng)
+                onEditWordValuesChange = { translation, value ->
+                    vm.onEditWordValuesChanged(translation, value)
                 },
             )
             Column(

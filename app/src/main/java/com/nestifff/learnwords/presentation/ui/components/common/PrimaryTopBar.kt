@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
@@ -24,10 +25,11 @@ fun PrimaryTopBar(
     title: String,
     onNavigationButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-    navigationButtonVector: ImageVector = Icons.AutoMirrored.Filled.ArrowBack
+    navigationButtonVector: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
+    bottomPadding: Dp = 32.dp
 ) {
     Row(
-        modifier = modifier.padding(bottom = 32.dp, top = 16.dp),
+        modifier = modifier.padding(bottom = bottomPadding, top = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

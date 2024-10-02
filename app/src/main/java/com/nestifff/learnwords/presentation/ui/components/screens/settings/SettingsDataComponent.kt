@@ -5,12 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -114,8 +110,8 @@ fun LearnProcessSettingsDataComponent(
         }
         DescriptionText(
             text = when (wayToLearn) {
-                WayToLearnDomain.RUS_TO_ENG -> "While learning you see native language translation and you need to enter word"
-                WayToLearnDomain.ENG_TO_RUS -> "While learning you see word to learn and you need to enter native language translation"
+                WayToLearnDomain.WRITE_LEARNING_VALUE -> "While learning you see native language translation and you need to enter word"
+                WayToLearnDomain.WRITE_TRANSLATION -> "While learning you see word to learn and you need to enter native language translation"
             },
             modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
         )
@@ -201,7 +197,7 @@ private fun LearnProcessSettingsData_Preview() {
             state = SettingsViewModel.State(
                 currentSettings = SettingsDomain(
                     defaultNumberToLearn = 15,
-                    defaultWayToLearn = WayToLearnDomain.RUS_TO_ENG,
+                    defaultWayToLearn = WayToLearnDomain.WRITE_LEARNING_VALUE,
                     countOnFirstTryToMoveToLearned = 3,
                     isDarkMode = false
                 )

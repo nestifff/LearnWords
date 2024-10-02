@@ -25,7 +25,7 @@ class GetCollectionFlowUseCase @Inject constructor(
                         LEARNED -> it.isLearned
                         FAVORITE -> it.isFavorite
                     }
-                }.sortedBy { it.eng }
+                }.sortedBy { it.learningValue }
             }
         }
 }

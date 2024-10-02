@@ -23,8 +23,8 @@ class GetNextWordUseCase @Inject constructor(
 
             } else {
                 val valueToShow = when (wayToLearn) {
-                    RUS_TO_ENG -> word.rus
-                    ENG_TO_RUS -> word.eng
+                    WRITE_LEARNING_VALUE -> word.translation
+                    WRITE_TRANSLATION -> word.learningValue
                 }
                 NextWordResultDomain.Word(valueToShow = valueToShow)
             }

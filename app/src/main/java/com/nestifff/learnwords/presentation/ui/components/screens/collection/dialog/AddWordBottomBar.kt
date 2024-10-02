@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -128,11 +129,25 @@ fun AddWordBottomBar(
             val focusRequester = remember { FocusRequester() }
             val keyboard = LocalSoftwareKeyboardController.current
             val focusManager = LocalFocusManager.current
-            Column {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
                 OneValueEnterRow(
-                    text = "Rus",
-                    value = state.rus,
-                    onValueChange = { onValuesChange(it, state.eng) },
+                    text = "Word",
+                    value = state.value,
+                    onValueChange = { onValuesChange(state.translation, it) },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { onAddWordClick() }
+                    )
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OneValueEnterRow(
+                    text = "Translation",
+                    value = state.translation,
+                    onValueChange = { onValuesChange(it, state.value) },
                     modifier = Modifier.focusRequester(focusRequester),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(
@@ -141,16 +156,11 @@ fun AddWordBottomBar(
                         }
                     )
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                OneValueEnterRow(
-                    text = "Eng",
-                    value = state.eng,
-                    onValueChange = { onValuesChange(state.rus, it) },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = { onAddWordClick() }
-                    )
-                )
+//                Text(
+//                    text = "Enter translation in native language here",
+//                    style = AppTheme.typography.h3RegularTextStyle,
+//                    color = AppTheme.colors.content
+//                )
             }
             Icon(
                 modifier = Modifier
@@ -184,8 +194,11 @@ private fun OneValueEnterRow(
     keyboardActions: KeyboardActions,
 ) {
     Row(
-        modifier = modifier.height(IntrinsicSize.Min),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = text,
@@ -194,7 +207,7 @@ private fun OneValueEnterRow(
         )
         Spacer(modifier = Modifier.width(12.dp))
         PrimaryTextField(
-            modifier = Modifier.fillMaxWidth(0.75f),
+            modifier = Modifier.widthIn(100.dp),
             value = value,
             onValueChange = onValueChange,
             backgroundColor = AppTheme.colors.backgroundLight.copy(alpha = 0.8f),

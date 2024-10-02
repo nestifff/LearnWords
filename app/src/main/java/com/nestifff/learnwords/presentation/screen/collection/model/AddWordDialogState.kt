@@ -7,7 +7,7 @@ sealed class AddWordDialogState {
     data object Collapsed : AddWordDialogState()
 
     data class Expanded(
-        val rus: String = emptyString(),
-        val eng: String = emptyString(),
+        val translation: String = emptyString(),
+        val value: String = emptyString(),
     ) : AddWordDialogState()
 }

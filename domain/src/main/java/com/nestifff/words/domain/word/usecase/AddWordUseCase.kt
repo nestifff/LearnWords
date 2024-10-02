@@ -13,8 +13,8 @@ class AddWordUseCase @Inject constructor(
     suspend fun execute(newWord: NewWordToAddDomain) {
         val mappedWord = WordDomain(
             id = UUID.randomUUID().toString(),
-            rus = newWord.rus,
-            eng = newWord.eng,
+            translation = newWord.translation,
+            learningValue = newWord.value,
             enteredOnFirstTry = 0,
             isFavorite = false,
             isLearned = false

@@ -8,24 +8,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.text.isDigitsOnly
-import com.nestifff.learnwords.presentation.model.WayToLearn
 import com.nestifff.learnwords.presentation.screen.collection.model.CustomLearnDialogState
 import com.nestifff.learnwords.presentation.ui.components.common.EditableWayToLearn
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryButton
 import com.nestifff.learnwords.presentation.ui.components.common.PrimaryNumbersTextField
-import com.nestifff.learnwords.presentation.ui.components.common.PrimaryTextField
 import com.nestifff.learnwords.presentation.ui.theme.ThemeProvider
 import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.words.domain.learn.model.WayToLearnDomain
@@ -107,7 +102,7 @@ private fun CustomLearnDialogPreview() {
         CustomLearnDialog(
             state = CustomLearnDialogState(
                 numberToLearnStr = "100",
-                wayToLearn = WayToLearnDomain.ENG_TO_RUS,
+                wayToLearn = WayToLearnDomain.WRITE_TRANSLATION,
                 isWayToLearnMenuVisible = false
             ),
             onNumberToLearnChange = {},

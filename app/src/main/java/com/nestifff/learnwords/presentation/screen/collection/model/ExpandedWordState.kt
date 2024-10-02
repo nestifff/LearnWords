@@ -11,7 +11,10 @@ fun CollectionWordItem.toExpandedState(): ExpandedWordState {
     return ExpandedWordState(word = this.copy(), oldWord = this)
 }
 
-fun ExpandedWordState.change(rus: String, eng: String): ExpandedWordState {
-    val isChanged = rus != this.oldWord.rus || eng != this.oldWord.eng
-    return this.copy(word = this.word.copy(rus = rus, eng = eng), isSaveEnabled = isChanged)
+fun ExpandedWordState.change(translation: String, value: String): ExpandedWordState {
+    val isChanged = translation != this.oldWord.translation || value != this.oldWord.value
+    return this.copy(
+        word = this.word.copy(translation = translation, value = value),
+        isSaveEnabled = isChanged
+    )
 }

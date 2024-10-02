@@ -19,7 +19,7 @@ interface SettingsRepository {
 
     companion object {
         const val INITIAL_NUMBER_TO_LEARN = 3
-        val INITIAL_WAY_TO_LEARN = WayToLearnDomain.ENG_TO_RUS
+        val INITIAL_WAY_TO_LEARN = WayToLearnDomain.WRITE_TRANSLATION
         const val INITIAL_NUMBER_ON_FIRST_TRY = 1
         const val INITIAL_IS_DARK_MODE = false
     }

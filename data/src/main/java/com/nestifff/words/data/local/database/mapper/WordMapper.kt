@@ -6,8 +6,8 @@ import com.nestifff.words.domain.word.model.WordDomain
 fun WordEntity.toWordDomain(): WordDomain =
     WordDomain(
         id = this.id,
-        rus = this.rus,
-        eng = this.eng,
+        translation = this.translation,
+        learningValue = this.learningValue,
         isLearned = this.flags.flagsGetIsLearned(),
         isFavorite = this.flags.flagsGetIsFavorite(),
         enteredOnFirstTry = this.enteredOnFirstTry
@@ -16,8 +16,8 @@ fun WordEntity.toWordDomain(): WordDomain =
 fun WordDomain.toWordEntity(): WordEntity =
     WordEntity(
         id = this.id,
-        rus = this.rus,
-        eng = this.eng,
+        translation = this.translation,
+        learningValue = this.learningValue,
         flags = createFlags(isFavorite = isFavorite, isLearned = isLearned),
         enteredOnFirstTry = this.enteredOnFirstTry,
     )
