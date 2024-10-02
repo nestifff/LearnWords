@@ -1,5 +1,6 @@
 package com.nestifff.learnwords.presentation.screen.collection
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -53,6 +54,7 @@ import com.nestifff.learnwords.presentation.ui.theme.AppTheme
 import com.nestifff.learnwords.presentation.utils.keyboardAsState
 import com.nestifff.learnwords.presentation.utils.showToast
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun CollectionScreen(
@@ -79,7 +81,8 @@ fun CollectionScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background),
+            .background(color = AppTheme.colors.background)
+            .statusBarsPadding(),
         containerColor = AppTheme.colors.background,
         bottomBar = {
             AnimatedVisibility(
@@ -109,11 +112,10 @@ fun CollectionScreen(
             }
         },
         snackbarHost = { PrimarySnackbarHost(snackbarHostState) },
-    ) { scaffoldPadding ->
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(scaffoldPadding)
         ) {
             if (state.collections.isEmpty()) {
                 return@Box
