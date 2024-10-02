@@ -140,7 +140,9 @@ fun AddWordBottomBar(
                     onValueChange = { onValuesChange(state.translation, it) },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
-                        onDone = { onAddWordClick() }
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
                     )
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -151,9 +153,7 @@ fun AddWordBottomBar(
                     modifier = Modifier.focusRequester(focusRequester),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(
-                        onNext = {
-                            focusManager.moveFocus(FocusDirection.Down)
-                        }
+                        onDone = { onAddWordClick() }
                     )
                 )
 //                Text(
